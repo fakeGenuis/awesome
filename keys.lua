@@ -1,25 +1,14 @@
---      ██╗  ██╗███████╗██╗   ██╗███████╗
---      ██║ ██╔╝██╔════╝╚██╗ ██╔╝██╔════╝
---      █████╔╝ █████╗   ╚████╔╝ ███████╗
---      ██╔═██╗ ██╔══╝    ╚██╔╝  ╚════██║
---      ██║  ██╗███████╗   ██║   ███████║
---      ╚═╝  ╚═╝╚══════╝   ╚═╝   ╚══════╝
-
-
 -- ===================================================================
 -- Initialization
 -- ===================================================================
-
 
 local awful = require("awful")
 local gears = require("gears")
 local naughty = require("naughty")
 local beautiful = require("beautiful")
+local lain = require("lain")
 local dpi = beautiful.xresources.apply_dpi
 beautiful.useless_gap = dpi(5)
-
--- shifty - dynamic tagging library
--- local shifty = require("shifty")
 
 -- Define mod keys
 local modkey = "Mod4"
@@ -28,10 +17,7 @@ local altkey = "Mod1"
 local hotkeys_popup = require("awful.hotkeys_popup")
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
-require("awful.hotkeys_popup.keys")
-
--- exit screen widget
-require("components.exit-screen")
+-- require("awful.hotkeys_popup.keys")
 
 -- define module table
 local keys = {}
@@ -118,7 +104,9 @@ keys.desktopbuttons = gears.table.join(
       function ()
          naughty.destroy_all_notifications()
       end
-   )
+   ),
+    awful.button({ }, 4, awful.tag.viewprev),
+    awful.button({ }, 5, awful.tag.viewnext)
 )
 
 -- Mouse buttons on the client
@@ -159,12 +147,28 @@ keys.globalkeys = gears.table.join(
       end,
       {description = "application launcher", group = "launcher"}
    ),
-   awful.key({ modkey }, "p",
+   awful.key({modkey}, "e",
       function()
-         menubar.show()
+         awful.spawn(apps.editor)
       end,
-      {description = "show the menubar", group = "awesome"}
+      {description = "open editor", group = "launcher"}
    ),
+   awful.key({modkey}, "d",
+      function()
+         awful.spawn(apps.filebrowser)
+      end,
+      {description = "open file browser", group = "launcher"}
+   ),
+   awful.key({modkey}, "f",
+      awful.client.floating.toggle,
+      {description = "toggle floating", group = "client"}
+   ),
+--   awful.key({ modkey }, "p",
+--      function()
+--         menubar.show()
+--      end,
+--      {description = "show the menubar", group = "awesome"}
+--   ),
    awful.key({ modkey }, "F1",
       hotkeys_popup.show_help,
       {description = "show help", group = "awesome"}
@@ -257,7 +261,8 @@ keys.globalkeys = gears.table.join(
    awful.key({modkey, "Shift"}, "q",
       function()
          -- emit signal to show the exit screen
-         awesome.emit_signal("show_exit_screen")
+         -- awesome.emit_signal("show_exit_screen")
+         awful.util.spawn(apps.power_menu, false)
       end,
       {description = "toggle exit screen", group = "awesome"}
    ),
@@ -410,29 +415,79 @@ keys.globalkeys = gears.table.join(
          end
       end,
       {description = "restore minimized", group = "client"}
-   )
+   ),
 
    -- =========================================
-   -- SHIFTY SPECIFIC
+   -- DYNAMIC TAGGING
    -- =========================================
-   -- awful.key({modkey, "Ctrl"}, "d",
-   --    shifty.del,
-   --    {description = "delete a tag", group = "tag"}
-   -- ),
-   -- awful.key({modkey, "Ctrl"}, "a",
-   --    shifty.add,
-   --    {description = "add a tag", group = "tag"}
-   -- ),
-   -- awful.key({modkey, "Shift"}, "a",
-   -- function()
-   --       shifty.add({nopopup = true})
-   -- end,
-   --    {description = "nopopup new tag", group = "tag"}
-   -- ),
-   -- awful.key({modkey, "Ctrl"}, "r",
-   --    shifty.rename,
-   --    {description = "rename a tag", group = "tag"}
-   -- )
+   awful.key({ modkey, "Shift" }, "a", function () lain.util.add_tag() end,
+             {description = "add new tag", group = "tag"}),
+   awful.key({ modkey, "Shift" }, "r", function () lain.util.rename_tag() end,
+             {description = "rename tag", group = "tag"}),
+   awful.key({ modkey, "Shift" }, "Left", function () lain.util.move_tag(-1) end,
+             {description = "move tag to the left", group = "tag"}),
+   awful.key({ modkey, "Shift" }, "Right", function () lain.util.move_tag(1) end,
+             {description = "move tag to the right", group = "tag"}),
+   awful.key({ modkey, "Shift" }, "d", function () lain.util.delete_tag() end,
+             {description = "delete tag", group = "tag"}),
+
+   -- =========================================
+   -- SELECT TAG
+   -- =========================================
+    awful.key {
+        modifiers   = { modkey },
+        keygroup    = "numrow",
+        description = "only view tag",
+        group       = "tag",
+        on_press    = function (index)
+            local screen = awful.screen.focused()
+            local tag = screen.tags[index]
+            if tag then
+                tag:view_only()
+            end
+        end,
+    },
+    awful.key {
+        modifiers   = { modkey, "Control" },
+        keygroup    = "numrow",
+        description = "toggle tag",
+        group       = "tag",
+        on_press    = function (index)
+            local screen = awful.screen.focused()
+            local tag = screen.tags[index]
+            if tag then
+                awful.tag.viewtoggle(tag)
+            end
+        end,
+    },
+    awful.key {
+        modifiers = { modkey, "Shift" },
+        keygroup    = "numrow",
+        description = "move focused client to tag",
+        group       = "tag",
+        on_press    = function (index)
+            if client.focus then
+                local tag = client.focus.screen.tags[index]
+                if tag then
+                    client.focus:move_to_tag(tag)
+                end
+            end
+        end,
+    },
+    awful.key {
+        modifiers   = { modkey, "Control", "Shift" },
+        keygroup    = "numrow",
+        description = "toggle focused client on tag",
+        group       = "tag",
+        on_press    = function (index)
+            if client.focus then
+                local tag = client.focus.screen.tags[index]
+                if tag then
+                    client.focus:toggle_tag(tag)
+                end
+            end
+        end,
+    }
 
 )
 
@@ -466,7 +521,7 @@ keys.clientkeys = gears.table.join(
    ),
 
    -- toggle fullscreen
-   awful.key({modkey}, "f",
+   awful.key({modkey}, "F11",
       function(c)
          c.fullscreen = not c.fullscreen
       end,
@@ -498,34 +553,5 @@ keys.clientkeys = gears.table.join(
       {description = "(un)maximize", group = "client"}
    )
 )
-
--- Bind all key numbers to tags
-for i = 1, 9 do
-   keys.globalkeys = gears.table.join(keys.globalkeys,
-      -- Switch to tag
-      awful.key({modkey}, "#" .. i + 9,
-         function()
-            local screen = awful.screen.focused()
-            local tag = screen.tags[i]
-            if tag then
-               tag:view_only()
-            end
-         end,
-         {description = "view tag #"..i, group = "tag"}
-      ),
-      -- Move client to tag
-      awful.key({modkey, "Shift"}, "#" .. i + 9,
-         function()
-            if client.focus then
-               local tag = client.focus.screen.tags[i]
-               if tag then
-                  client.focus:move_to_tag(tag)
-               end
-            end
-         end,
-         {description = "move focused client to tag #"..i, group = "tag"}
-      )
-   )
-end
 
 return keys

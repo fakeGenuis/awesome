@@ -1,10 +1,3 @@
---      ██████╗ ██╗   ██╗██╗     ███████╗███████╗
---      ██╔══██╗██║   ██║██║     ██╔════╝██╔════╝
---      ██████╔╝██║   ██║██║     █████╗  ███████╗
---      ██╔══██╗██║   ██║██║     ██╔══╝  ╚════██║
---      ██║  ██║╚██████╔╝███████╗███████╗███████║
---      ╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚══════╝╚══════╝
-
 -- ===================================================================
 -- Initialization
 -- ===================================================================
@@ -31,16 +24,13 @@ ruled.client.connect_signal("request::rules", function()
     ruled.client.append_rule {
         id       = "floating",
         rule_any = {
-            instance = { "copyq", "pinentry" },
+            instance = {},
             class    = {
-                "Arandr", "Blueman-manager", "Gpick", "Kruler", "Sxiv",
-                "Tor Browser", "Wpa_gui", "veromix", "xtightvncviewer",
-                "netease-cloud-music"
+                "Blueman-manager", "netease-cloud-music"
             },
             -- Note that the name property shown in xprop might be set slightly after creation of the client
             -- and the name shown there might not match defined rules here.
             name    = {
-                "Event Tester",  -- xev.
             },
             role    = {
                 "AlarmWindow",    -- Thunderbird's calendar.
@@ -66,3 +56,4 @@ ruled.client.connect_signal("request::rules", function()
 end)
 
 -- }}}
+
