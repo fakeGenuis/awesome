@@ -8,7 +8,6 @@ local naughty = require("naughty")
 local beautiful = require("beautiful")
 local lain = require("lain")
 local dpi = beautiful.xresources.apply_dpi
-beautiful.useless_gap = dpi(5)
 
 -- Define mod keys
 local modkey = "Mod4"
@@ -159,10 +158,6 @@ keys.globalkeys = gears.table.join(
       end,
       {description = "open file browser", group = "launcher"}
    ),
-   awful.key({modkey}, "f",
-      awful.client.floating.toggle,
-      {description = "toggle floating", group = "client"}
-   ),
 --   awful.key({ modkey }, "p",
 --      function()
 --         menubar.show()
@@ -172,6 +167,16 @@ keys.globalkeys = gears.table.join(
    awful.key({ modkey }, "F1",
       hotkeys_popup.show_help,
       {description = "show help", group = "awesome"}
+   ),
+   awful.key({ modkey , "Ctrl"}, "q",
+      awesome.quit,
+      {description = "quit awesome", group = "awesome"}
+   ),
+   awful.key({modkey, "Ctrl"}, "l",
+      function()
+         awful.spawn(apps.lock)
+      end,
+      {description = "lock screen", group = "awesome"}
    ),
    -- awful.key({modkey}, "F4", function()
    --    awful.prompt.run({prompt = "Run Lua code: "},
@@ -293,6 +298,16 @@ keys.globalkeys = gears.table.join(
          raise_client()
       end,
       {description = "focus previous by index", group = "client"}
+   ),
+   awful.key({modkey}, "f",
+      awful.client.floating.toggle,
+      {description = "toggle floating", group = "client"}
+   ),
+   awful.key({modkey}, "t",
+      function()
+         client.focus.ontop = not client.focus.ontop
+      end,
+      {description = "toggle floating", group = "client"}
    ),
 
    -- =========================================

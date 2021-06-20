@@ -14,7 +14,7 @@ set -e
 set -u
 
 # All supported choices
-all=(suspend reboot lockscreen shutdown hibernate)
+all=(suspend reboot shutdown hibernate)
 
 # By default, show all (i.e., just copy the array)
 show=("${all[@]}")
@@ -39,7 +39,7 @@ icons[shutdown]="\uf011"
 icons[cancel]="\u00d7"
 
 declare -A actions
-actions[lockscreen]="sleep 1 && light-locker-command -l"
+actions[lockscreen]="betterlockscreen -l dim"
 #actions[switchuser]="???"
 actions[logout]="loginctl terminate-session ${XDG_SESSION_ID-}"
 actions[suspend]="systemctl suspend"
@@ -48,7 +48,7 @@ actions[reboot]="systemctl reboot"
 actions[shutdown]="systemctl poweroff"
 
 # By default, ask for confirmation for actions that are irreversible
-confirmations=(reboot shutdown logout)
+confirmations=(suspend reboot shutdown logout)
 
 # By default, no dry run
 dryrun=false

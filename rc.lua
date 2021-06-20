@@ -35,7 +35,7 @@ awful.spawn.with_shell("~/.config/awesome/autostart.sh")
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
-beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
+beautiful.init(gears.filesystem.get_configuration_dir() .. "/themes/sky/theme.lua")
 
 -- define default apps (global variable so other components can access it)
 apps = {
@@ -45,7 +45,7 @@ apps = {
    terminal = "alacritty",
    editor = os.getenv("EDITOR") or "nvim",
    launcher = "rofi -show combi",
-   lock = "light-locker-command -l",
+   lock = "betterlockscreen -l dim",
    browser = "librewolf",
  --  screenshot = "scrot -e 'mv $f ~/Pictures/ 2>/dev/null'",
    filebrowser = "dolphin"
@@ -59,6 +59,7 @@ tag.connect_signal("request::default_layouts", function()
     awful.layout.append_default_layouts({
         awful.layout.suit.tile,
         awful.layout.suit.floating,
+        awful.layout.suit.spiral,
         awful.layout.suit.max,
     })
 end)
