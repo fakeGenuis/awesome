@@ -8,10 +8,9 @@ function run {
 }
 
 run picom
-run light-locker
 run redshift
 # run blueman-applet
-run pasystray
+# run pasystray
 run variety
 run nextcloud
 run qv2ray

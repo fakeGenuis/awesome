@@ -5,6 +5,7 @@
 -- If you want SVGs and extras, get them from garoth.com/awesome/sky-theme
 
 local theme_assets = require("beautiful.theme_assets")
+local beautiful = require("beautiful")
 local xresources = require("beautiful.xresources")
 local rnotification = require("ruled.notification")
 local dpi = xresources.apply_dpi
@@ -19,7 +20,9 @@ theme.bg_focus      = "#d1cbc000"
 theme.bg_normal     = "#c6e2ff00"
 theme.bg_urgent     = "#ff0051"
 theme.bg_minimize   = "#dfc2b2"
-theme.bg_systray    = theme.bg_normal
+
+theme.bg_systray    = nil
+theme.systray_icon_spacing = dpi(5)
 
 theme.fg_normal     = "#2e3436"
 theme.fg_focus      = "#1aa698"
