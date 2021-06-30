@@ -5,8 +5,10 @@
 local wibox = require("wibox")
 local awful = require("awful")
 local gears = require("gears")
+local lain = require("lain")
 local beautiful = require("beautiful")
 local dpi = beautiful.xresources.apply_dpi
+local mywidgets = require("mywidgets")
 
 -- {{{ Wibar
 
@@ -14,26 +16,63 @@ local dpi = beautiful.xresources.apply_dpi
 mykeyboardlayout = awful.widget.keyboardlayout()
 
 -- Create a textclock widget
-local mytextclock = wibox.widget {
-    {
-        {format = "%H:%M", widget = wibox.widget.textclock},
-        right = dpi(4),
-        left = dpi(4),
-        widget = wibox.container.margin
-    },
+local mytextclock = wibox.widget(mywidgets.text_in({
+    format = "%H:%M",
+    widget = wibox.widget.textclock
+}))
 
-    bg = '#C9DDFCff',
-    border_width = dpi(2),
-    border_color = "#ffffff00",
-    shape = function(c, w, h) gears.shape.rounded_rect(c, w, h, dpi(7)) end,
-    widget = wibox.widget.background
-}
+local myinfoblock = wibox.widget(mywidgets.text_in({
+    lain.widget.net({
+        settings = function()
+            widget:set_font(beautiful.iconfont)
+            widget:set_markup("󰁆" .. mywidgets.KMG(net_now.received) ..
+                                  "󰁞" .. mywidgets.KMG(net_now.sent))
+        end
+    }),
+    lain.widget.alsa({
+        settings = function()
+            widget:set_font(beautiful.iconfont)
+            if volume_now.status == 'off' then
+                widget:set_markup("󰝟")
+            else
+                local vl = tonumber(volume_now.level)
+                if vl == 0 then
+                    widget:set_markup("󰖁")
+                elseif vl < 33 then
+                    widget:set_markup("󰕿" .. volume_now.level)
+                elseif vl < 66 then
+                    widget:set_markup("󰖀" .. volume_now.level)
+                else
+                    widget:set_markup("󰕾" .. volume_now.level)
+                end
+            end
+        end
+    }),
+    lain.widget.cpu({
+        settings = function()
+            widget:set_markup("󰻠" .. cpu_now.usage)
+            widget:set_font(beautiful.iconfont)
+        end
+    }),
+    lain.widget.mem({
+        settings = function()
+            widget:set_font(beautiful.iconfont)
+            widget:set_markup("󰍛" .. string.format("%.0f", mem_now.perc))
+        end
+    }),
+    -- lain.widget.temp({
+    --     settings = function() widget:set_markup("󰈸" .. coretemp_now) end
+    -- }),
+    layout = wibox.layout.fixed.horizontal
+}))
 
 screen.connect_signal("request::desktop_decoration", function(s)
     -- Each screen has its own tag table.
-    local names = {"󰈹", "󰒓", "󰎆", "󰆍", "󰅪", "󰑴", "󰊗"}
+    local names = {"󰈹", "󰆍", "󰅪", "󰒓", "󰎆", "󰑴", "󰊗"}
     local l = awful.layout.suit
-    local layouts = {l.max, l.max, l.floating, l.max, l.max, l.floating}
+    local layouts = {
+        l.max, l.tile, l.spiral, l.floating, l.floating, l.tile, l.floating
+    }
     awful.tag(names, s, layouts)
 
     -- Create a promptbox for each screen
@@ -69,7 +108,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
         shape = function(c, w, h)
             gears.shape.rounded_rect(c, w, h, dpi(7))
         end,
-        widget = wibox.widget.background
+        widget = wibox.container.background
     }
 
     -- Create a taglist widget
@@ -77,27 +116,13 @@ screen.connect_signal("request::desktop_decoration", function(s)
         screen = s,
         filter = awful.widget.taglist.filter.noempty,
         style = {font = "Material Design Icons 16"},
-        layout = {
-            -- spacing = dpi(0),
-            layout = wibox.layout.fixed.horizontal
-        },
-        widget_template = {
-            {
-                id = "text_role",
-                align = "center",
-                valign = "center",
-                widget = wibox.widget.textbox
-            },
-            bg = '#C9DDFCff',
-            shape = function(c, w, h)
-                gears.shape.rounded_rect(c, w, h, dpi(7))
-            end,
-            border_width = dpi(2),
-            border_color = "#ffffff00",
-            forced_height = dpi(27),
-            forced_width = dpi(27),
-            widget = wibox.container.background
-        },
+        layout = {layout = wibox.layout.fixed.horizontal},
+        widget_template = mywidgets.text_in({
+            id = "text_role",
+            align = "center",
+            valign = "center",
+            widget = wibox.widget.textbox
+        }),
         buttons = {
             awful.button({}, 1, function(t) t:view_only() end),
             awful.button({modkey}, 1, function(t)
@@ -124,26 +149,12 @@ screen.connect_signal("request::desktop_decoration", function(s)
             {
                 {
                     {awful.widget.clienticon, widget = wibox.container.margin},
-                    {
-                        {
-                            {
-                                id = "text_role",
-                                align = "center",
-                                valign = "center",
-                                widget = wibox.widget.textbox
-                            },
-                            right = dpi(4),
-                            left = dpi(4),
-                            widget = wibox.container.margin
-                        },
-                        bg = '#C9DDFCff',
-                        border_width = dpi(2),
-                        border_color = "#ffffff00",
-                        shape = function(c, w, h)
-                            gears.shape.rounded_rect(c, w, h, dpi(7))
-                        end,
-                        widget = wibox.widget.background
-                    },
+                    mywidgets.text_in({
+                        id = "text_role",
+                        align = "center",
+                        valign = "center",
+                        widget = wibox.widget.textbox
+                    }),
                     layout = wibox.layout.fixed.horizontal
                 },
                 widget = wibox.container.background,
@@ -192,7 +203,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
         shape = function(c, w, h)
             gears.shape.rounded_rect(c, w, h, dpi(7))
         end,
-        widget = wibox.widget.background
+        widget = wibox.container.background
     }
 
     -- Create the wibox
@@ -213,18 +224,17 @@ screen.connect_signal("request::desktop_decoration", function(s)
             layout = wibox.layout.align.horizontal,
             -- expand = 'none',
             { -- Left widgets
-                spacing = dpi(5),
                 layout = wibox.layout.fixed.horizontal,
                 s.mytaglist,
                 s.mypromptbox
             },
             s.mytasklist, -- Middle widget
             { -- Right widgets
-                spacing = dpi(5),
                 layout = wibox.layout.fixed.horizontal,
                 -- mykeyboardlayout,
-                s.mysystray,
                 mytextclock,
+                myinfoblock,
+                s.mysystray,
                 s.mylayoutbox
             }
         },

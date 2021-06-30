@@ -29,13 +29,13 @@ end)
 
 
 -- {{{ Autostart
-awful.spawn.with_shell("~/.config/awesome/autostart.sh")
+awful.spawn.with_shell("~/.config/awesome/scripts/autostart.sh")
 -- }}}
 
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
-beautiful.init(gears.filesystem.get_configuration_dir() .. "/themes/sky/theme.lua")
+beautiful.init(gears.filesystem.get_configuration_dir() .. "/themes/default.lua")
 
 -- define default apps (global variable so other components can access it)
 apps = {
@@ -72,7 +72,7 @@ require("components.topbar")
 
 
 -- {{{ Key and Mouse bindings
-local keys = require("keys")
+local keys = require("components.keys")
 -- awful.keyboard.append_global_keybindings(keys.globalkeys)
 -- General Awesome keys and buttons
 root.keys(keys.globalkeys)
@@ -89,7 +89,7 @@ end)
 
 -- {{{ Rules
 -- Rules to apply to new clients.
-require("rules")
+require("components.rules")
 -- }}}
 
 
