@@ -47,8 +47,8 @@ apps = {
    launcher = "rofi -show combi",
    lock = "betterlockscreen -l dim",
    browser = "librewolf",
- --  screenshot = "scrot -e 'mv $f ~/Pictures/ 2>/dev/null'",
-   filebrowser = "dolphin"
+   screenshot = "spectacle",
+   filebrowser = "nautilus"
 }
 -- }}}
 

@@ -148,12 +148,6 @@ keys.globalkeys = gears.table.join(
    ),
    awful.key({modkey}, "e",
       function()
-         awful.spawn(apps.editor)
-      end,
-      {description = "open editor", group = "launcher"}
-   ),
-   awful.key({modkey}, "d",
-      function()
          awful.spawn(apps.filebrowser)
       end,
       {description = "open file browser", group = "launcher"}
@@ -228,19 +222,19 @@ keys.globalkeys = gears.table.join(
    ),
    awful.key({}, "XF86AudioNext",
       function()
-         awful.spawn("mpc next", false)
+         awful.spawn("playerctl -p netease-cloud-music next", false)
       end,
       {description = "next music", group = "hotkeys"}
    ),
    awful.key({}, "XF86AudioPrev",
       function()
-         awful.spawn("mpc prev", false)
+         awful.spawn("playerctl -p netease-cloud-music previous", false)
       end,
       {description = "previous music", group = "hotkeys"}
    ),
    awful.key({}, "XF86AudioPlay",
       function()
-         awful.spawn("mpc toggle", false)
+         awful.spawn("playerctl -p netease-cloud-music play-pause", false)
       end,
       {description = "play/pause music", group = "hotkeys"}
    ),

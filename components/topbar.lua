@@ -68,10 +68,10 @@ local myinfoblock = wibox.widget(mywidgets.text_in({
 
 screen.connect_signal("request::desktop_decoration", function(s)
     -- Each screen has its own tag table.
-    local names = {"󰈹", "󰆍", "󰅪", "󰒓", "󰎆", "󰑴", "󰊗"}
+    local names = {"󱁖", "󰅪", "󰭹", "󰒓", "󰑴", "󰊗"}
     local l = awful.layout.suit
     local layouts = {
-        l.max, l.tile, l.spiral, l.floating, l.floating, l.tile, l.floating
+        l.max, l.tile, l.max, l.spiral, l.tile, l.floating
     }
     awful.tag(names, s, layouts)
 
@@ -108,6 +108,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
         shape = function(c, w, h)
             gears.shape.rounded_rect(c, w, h, dpi(7))
         end,
+        shape_clip = true,
         widget = wibox.container.background
     }
 
@@ -184,7 +185,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
             {
                 screen = s or screen.primary,
                 base_size = dpi(23),
-                -- horizontal = true,
+                horizontal = true,
                 opacity = 0.01,
                 widget = wibox.widget.systray
             },

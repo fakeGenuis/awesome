@@ -7,6 +7,7 @@ function run {
   fi
 }
 
+run light-locker
 run picom
 run redshift
 run variety
