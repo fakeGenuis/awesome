@@ -16,6 +16,7 @@ local layout_icons_path = require("gears.filesystem").get_configuration_dir() ..
 local theme = {}
 theme.font          = "Sarasa Gothic SC 14"
 theme.iconfont      = "Material Design Icons 16"
+theme.wallpaper     = "~/Pictures/Wallpapers/83301612_p0.jpg"
 
 theme.bg_focus      = "#d1cbc000"
 theme.bg_normal     = "#c6e2ff00"
@@ -41,6 +42,12 @@ theme.tasklist_maximized = " "
 theme.tasklist_ontop = " "
 theme.tasklist_above = " "
 theme.tasklist_below = " "
+
+theme.hotkeys_opacity = 0.75
+theme.hotkeys_bg = "#292d3e"
+theme.hotkeys_fg = "#eeffff"
+theme.hotkeys_font = "mononoki Nerd Font Mono 14"
+theme.hotkeys_description_font = "Comic Shanns 13"
 
 -- IMAGES
 theme.layout_fairh           = layout_icons_path .. "fairh.png"

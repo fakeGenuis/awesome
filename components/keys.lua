@@ -6,17 +6,18 @@ local awful = require("awful")
 local gears = require("gears")
 local naughty = require("naughty")
 local beautiful = require("beautiful")
-local lain = require("lain")
+-- local lain = require("lain")
 local dpi = beautiful.xresources.apply_dpi
 
 -- Define mod keys
 local modkey = "Mod4"
 local altkey = "Mod1"
 -- hotkeys pop up
-local hotkeys_popup = require("awful.hotkeys_popup")
+local hotkeys_popup = require("awful.hotkeys_popup.widget")
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
--- require("awful.hotkeys_popup.keys")
+local pop_keys = require("awful.hotkeys_popup.keys")
+pop_keys.tmux.add_rules_for_terminal({ rule_any = { name = { "tmux" }, instance = {"tmux"}}})
 
 -- define module table
 local keys = {}
@@ -189,13 +190,13 @@ keys.globalkeys = gears.table.join(
       function()
          awful.spawn("xbacklight -inc 10", false)
       end,
-      {description = "+10%", group = "hotkeys"}
+      {description = "+10%", group = "awesome"}
    ),
    awful.key({}, "XF86MonBrightnessDown",
       function()
          awful.spawn("xbacklight -dec 10", false)
       end,
-      {description = "-10%", group = "hotkeys"}
+      {description = "-10%", group = "awesome"}
    ),
 
    -- ALSA volume control
@@ -204,46 +205,47 @@ keys.globalkeys = gears.table.join(
          awful.spawn("amixer -D pulse sset Master 5%+", false)
          awesome.emit_signal("volume_change")
       end,
-      {description = "volume up", group = "hotkeys"}
+      {description = "volume up", group = "awesome"}
    ),
    awful.key({}, "XF86AudioLowerVolume",
       function()
          awful.spawn("amixer -D pulse sset Master 5%-", false)
          awesome.emit_signal("volume_change")
       end,
-      {description = "volume down", group = "hotkeys"}
+      {description = "volume down", group = "awesome"}
    ),
    awful.key({}, "XF86AudioMute",
       function()
          awful.spawn("amixer -D pulse set Master 1+ toggle", false)
          awesome.emit_signal("volume_change")
       end,
-      {description = "toggle mute", group = "hotkeys"}
+      {description = "toggle mute", group = "awesome"}
    ),
    awful.key({}, "XF86AudioNext",
       function()
-         awful.spawn("playerctl -p netease-cloud-music next", false)
+         awful.spawn("playerctl next", false)
       end,
-      {description = "next music", group = "hotkeys"}
+      {description = "next music", group = "awesome"}
    ),
    awful.key({}, "XF86AudioPrev",
       function()
-         awful.spawn("playerctl -p netease-cloud-music previous", false)
+         awful.spawn("playerctl previous", false)
       end,
-      {description = "previous music", group = "hotkeys"}
+      {description = "previous music", group = "awesome"}
    ),
    awful.key({}, "XF86AudioPlay",
       function()
-         awful.spawn("playerctl -p netease-cloud-music play-pause", false)
+         awful.spawn("playerctl play-pause", false)
       end,
-      {description = "play/pause music", group = "hotkeys"}
+      {description = "play/pause music", group = "awesome"}
    ),
 
    -- Screenshot on prtscn using scrot
    awful.key({}, "Print",
       function()
-         awful.util.spawn(apps.screenshot, false)
-      end
+         awful.spawn(apps.screenshot, false)
+      end,
+      {description = "screenshot", group = "awesome"}
    ),
 
    -- =========================================
@@ -261,7 +263,7 @@ keys.globalkeys = gears.table.join(
       function()
          -- emit signal to show the exit screen
          -- awesome.emit_signal("show_exit_screen")
-         awful.util.spawn(apps.power_menu, false)
+         awful.spawn(apps.power_menu, false)
       end,
       {description = "toggle exit screen", group = "awesome"}
    ),
@@ -322,22 +324,26 @@ keys.globalkeys = gears.table.join(
    awful.key({modkey, "Control"}, "j",
       function(c)
          resize_client(client.focus, "up")
-      end
+      end,
+      {description = "resize up", group = "client"}
    ),
    awful.key({ modkey, "Control" }, "k",
       function(c)
          resize_client(client.focus, "down")
-      end
+      end,
+      {description = "resize down", group = "client"}
    ),
    awful.key({modkey, "Control"}, "h",
       function(c)
          resize_client(client.focus, "left")
-      end
+      end,
+      {description = "resize left", group = "client"}
    ),
    awful.key({modkey, "Control"}, "l",
       function(c)
          resize_client(client.focus, "right")
-      end
+      end,
+      {description = "resize right", group = "client"}
    ),
 
    -- =========================================
@@ -381,13 +387,13 @@ keys.globalkeys = gears.table.join(
       function()
          awful.tag.incgap(5, nil)
       end,
-      {description = "increment gaps size for the current tag", group = "gaps"}
+      {description = "increment gaps size for the current tag", group = "layout"}
    ),
    awful.key({modkey}, "minus",
       function()
          awful.tag.incgap(-5, nil)
       end,
-      {description = "decrement gap size for the current tag", group = "gaps"}
+      {description = "decrement gap size for the current tag", group = "layout"}
    ),
 
    -- =========================================
@@ -429,16 +435,16 @@ keys.globalkeys = gears.table.join(
    -- =========================================
    -- DYNAMIC TAGGING
    -- =========================================
-   awful.key({ modkey, "Shift" }, "a", function () lain.util.add_tag() end,
-             {description = "add new tag", group = "tag"}),
-   awful.key({ modkey, "Shift" }, "r", function () lain.util.rename_tag() end,
-             {description = "rename tag", group = "tag"}),
-   awful.key({ modkey, "Shift" }, "Left", function () lain.util.move_tag(-1) end,
-             {description = "move tag to the left", group = "tag"}),
-   awful.key({ modkey, "Shift" }, "Right", function () lain.util.move_tag(1) end,
-             {description = "move tag to the right", group = "tag"}),
-   awful.key({ modkey, "Shift" }, "d", function () lain.util.delete_tag() end,
-             {description = "delete tag", group = "tag"}),
+   -- awful.key({ modkey, "Shift" }, "a", function () lain.util.add_tag() end,
+   --           {description = "add new tag", group = "tag"}),
+   -- awful.key({ modkey, "Shift" }, "r", function () lain.util.rename_tag() end,
+   --           {description = "rename tag", group = "tag"}),
+   -- awful.key({ modkey, "Shift" }, "Left", function () lain.util.move_tag(-1) end,
+   --           {description = "move tag to the left", group = "tag"}),
+   -- awful.key({ modkey, "Shift" }, "Right", function () lain.util.move_tag(1) end,
+   --           {description = "move tag to the right", group = "tag"}),
+   -- awful.key({ modkey, "Shift" }, "d", function () lain.util.delete_tag() end,
+   --           {description = "delete tag", group = "tag"}),
 
    -- =========================================
    -- SELECT TAG
@@ -511,22 +517,26 @@ keys.clientkeys = gears.table.join(
    awful.key({modkey, "Shift"}, "j",
       function(c)
          move_client(c, "down")
-      end
+      end,
+      {description = "move up", group = "client"}
    ),
    awful.key({modkey, "Shift"}, "k",
       function(c)
          move_client(c, "up")
-      end
+      end,
+      {description = "move down", group = "client"}
    ),
    awful.key({modkey, "Shift"}, "h",
       function(c)
          move_client(c, "left")
-      end
+      end,
+      {description = "move left", group = "client"}
    ),
    awful.key({modkey, "Shift"}, "l",
       function(c)
          move_client(c, "right")
-      end
+      end,
+      {description = "move right", group = "client"}
    ),
 
    -- toggle fullscreen
@@ -562,5 +572,68 @@ keys.clientkeys = gears.table.join(
       {description = "(un)maximize", group = "client"}
    )
 )
+
+-- Table with all of our hotkeys
+local firefox_keys = {
+
+    ["LibreWolf: Bitwarden"] = {
+       {
+          modifiers = {"Ctrl", "Shift"},
+          keys = {
+             l = "auto-fill",
+             u = "open vault popup",
+             ["9"] = "generate and copy a new random password"
+          }
+       }
+    },
+    ["LibreWolf: Simple Translate"] = {
+       {
+          modifiers = {"Ctrl"},
+          keys = {
+             ['space'] = "translate selected text",
+          },
+       },
+       {
+          modifiers = {"Ctrl", "Shift"},
+          keys = {
+             ['space'] = "Open toolbar popup",
+          }
+       }
+    },
+    ["LibreWolf: Other extensions"] = {
+       {
+          modifiers = {"Ctrl", "Shift"},
+          keys = {
+             s = "open the LibreWolf Screenshots UI",
+          }
+       },
+       {
+          modifiers = {"Alt", "Shift"},
+          keys = {
+             d = "Dark Reader: toogle extension",
+             a = "Dark Reader: toogle current site",
+             y = "Grasp: capture page, with extra information",
+          },
+       },
+       {
+          modifiers = {"Ctrl", "Alt"},
+          keys = {
+             c = "Grasp: quick capture url, title and selection",
+             s = "Tab Session Manager: open toolbar popup",
+             t = "Tree Style Tab: Toggle 'Tree Style Tab' Sidebar",
+             j = "Vimium C - All by Keyboard: go one tab left",
+             k = "Vimium C - All by Keyboard: go one tab right",
+          },
+       },
+    }
+
+}
+
+hotkeys_popup.add_hotkeys(firefox_keys)
+
+-- Create the rule that we will use to match for the application.
+for group_name, _ in pairs(firefox_keys) do
+    hotkeys_popup.add_group_rules(group_name, {rule_any={ class = { "LibreWolf" } }})
+end
 
 return keys

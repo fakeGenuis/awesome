@@ -10,6 +10,6 @@ function run {
 run light-locker
 run picom
 run redshift
-run variety
+run blueman-applet
 run nextcloud
 run qv2ray

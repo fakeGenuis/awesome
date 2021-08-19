@@ -71,7 +71,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
     local names = {"󱁖", "󰅪", "󰭹", "󰒓", "󰑴", "󰊗"}
     local l = awful.layout.suit
     local layouts = {
-        l.max, l.tile, l.max, l.spiral, l.tile, l.floating
+        l.max, l.max, l.max, l.max, l.tile, l.floating
     }
     awful.tag(names, s, layouts)
 

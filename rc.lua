@@ -36,6 +36,10 @@ awful.spawn.with_shell("~/.config/awesome/scripts/autostart.sh")
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
 beautiful.init(gears.filesystem.get_configuration_dir() .. "/themes/default.lua")
+-- Wallpaper at awesome start
+for s = 1, screen.count() do
+   gears.wallpaper.maximized(beautiful.wallpaper, s, true)
+end
 
 -- define default apps (global variable so other components can access it)
 apps = {

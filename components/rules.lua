@@ -25,8 +25,9 @@ ruled.client.connect_signal("request::rules", function()
         id       = "floating",
         rule_any = {
             instance = {},
+            type = {"diaglog"},
             class    = {
-                "Blueman-manager", "netease-cloud-music"
+                "Blueman-manager", "YesPlayMusic"
             },
             -- Note that the name property shown in xprop might be set slightly after creation of the client
             -- and the name shown there might not match defined rules here.
@@ -38,13 +39,15 @@ ruled.client.connect_signal("request::rules", function()
                 "pop-up",         -- e.g. Google Chrome's (detached) Developer Tools.
             }
         },
-        properties = { floating = true }
+        properties = { floating = true,
+                       placement = awful.placement.centered
+        }
     }
 
     -- Add titlebars to normal clients and dialogs
     ruled.client.append_rule {
         id         = "titlebars",
-        rule_any   = { type = { "normal", "dialog" } },
+        rule_any   = { type = { "normal" } },
         properties = { titlebars_enabled = false      }
     }
 
