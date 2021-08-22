@@ -17,16 +17,24 @@ mykeyboardlayout = awful.widget.keyboardlayout()
 
 -- Create a textclock widget
 local mytextclock = wibox.widget(mywidgets.text_in({
-    format = "%H:%M",
+    refresh = 1,
+    format = "%H:%M:%S",
     widget = wibox.widget.textclock
 }))
 
 local myinfoblock = wibox.widget(mywidgets.text_in({
+    mywidgets.icon_text("󰁆"),
     lain.widget.net({
         settings = function()
-            widget:set_font(beautiful.iconfont)
-            widget:set_markup("󰁆" .. mywidgets.KMG(net_now.received) ..
-                                  "󰁞" .. mywidgets.KMG(net_now.sent))
+            widget:set_font(beautiful.font)
+            widget:set_markup(mywidgets.KMG(net_now.received))
+        end
+    }),
+    mywidgets.icon_text("󰁞"),
+    lain.widget.net({
+        settings = function()
+            widget:set_font(beautiful.font)
+            widget:set_markup(mywidgets.KMG(net_now.sent))
         end
     }),
     lain.widget.alsa({
@@ -39,25 +47,38 @@ local myinfoblock = wibox.widget(mywidgets.text_in({
                 if vl == 0 then
                     widget:set_markup("󰖁")
                 elseif vl < 33 then
-                    widget:set_markup("󰕿" .. volume_now.level)
+                    widget:set_markup("󰕿")
                 elseif vl < 66 then
-                    widget:set_markup("󰖀" .. volume_now.level)
+                    widget:set_markup("󰖀")
                 else
-                    widget:set_markup("󰕾" .. volume_now.level)
+                    widget:set_markup("󰕾")
                 end
             end
         end
     }),
-    lain.widget.cpu({
+    lain.widget.alsa({
         settings = function()
-            widget:set_markup("󰻠" .. cpu_now.usage)
-            widget:set_font(beautiful.iconfont)
+            widget:set_font(beautiful.font)
+            local vl = tonumber(volume_now.level)
+            if volume_now.status ~= 'on' or vl == 0 then
+                widget:set_markup("")
+            else
+                widget:set_markup(volume_now.level)
+            end
         end
     }),
+    mywidgets.icon_text("󰻠"),
+    lain.widget.cpu({
+        settings = function()
+            widget:set_markup(cpu_now.usage)
+            widget:set_font(beautiful.font)
+        end
+    }),
+    mywidgets.icon_text("󰍛"),
     lain.widget.mem({
         settings = function()
-            widget:set_font(beautiful.iconfont)
-            widget:set_markup("󰍛" .. string.format("%.0f", mem_now.perc))
+            widget:set_font(beautiful.font)
+            widget:set_markup(string.format("%.0f", mem_now.perc))
         end
     }),
     -- lain.widget.temp({
@@ -116,7 +137,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
     s.mytaglist = awful.widget.taglist {
         screen = s,
         filter = awful.widget.taglist.filter.noempty,
-        style = {font = "Material Design Icons 16"},
+        style = {font = beautiful.iconfont},
         layout = {layout = wibox.layout.fixed.horizontal},
         widget_template = mywidgets.text_in({
             id = "text_role",
@@ -141,23 +162,43 @@ screen.connect_signal("request::desktop_decoration", function(s)
         }
     }
 
-    -- Create a tasklist widget
-    s.mytasklist = awful.widget.tasklist {
+    -- Create a tasklist icon only widget
+    s.mytasklist_icons = awful.widget.tasklist {
         screen = s,
         filter = awful.widget.tasklist.filter.currenttags,
         style = {layout = wibox.layout.fixed.horizontal, spacing = dpi(5)},
         widget_template = {
             {
-                {
-                    {awful.widget.clienticon, widget = wibox.container.margin},
-                    mywidgets.text_in({
-                        id = "text_role",
-                        align = "center",
-                        valign = "center",
-                        widget = wibox.widget.textbox
-                    }),
-                    layout = wibox.layout.fixed.horizontal
-                },
+                {awful.widget.clienticon, widget = wibox.container.margin},
+                widget = wibox.container.background,
+                id = "background_role"
+            },
+            widget = wibox.container.place,
+            fill_horizontal = false
+        },
+        buttons = {
+            awful.button({}, 4, function()
+                awful.client.focus.byidx(-1)
+            end),
+            awful.button({}, 5, function()
+                awful.client.focus.byidx(1)
+            end)
+        }
+    }
+
+    -- Create a tasklist widget
+    s.mytask_title = awful.widget.tasklist {
+        screen = s,
+        filter = awful.widget.tasklist.filter.focused,
+        -- style = {layout = wibox.layout.fixed.horizontal, spacing = dpi(5)},
+        widget_template = {
+            {
+                mywidgets.text_in({
+                    id = "text_role",
+                    align = "center",
+                    valign = "center",
+                    widget = wibox.widget.textbox
+                }),
                 widget = wibox.container.background,
                 id = "background_role"
             },
@@ -167,15 +208,10 @@ screen.connect_signal("request::desktop_decoration", function(s)
         buttons = {
             awful.button({}, 1, function(c)
                 c:activate{context = "tasklist", action = "toggle_minimization"}
-            end), awful.button({}, 3, function()
-                awful.menu.client_list {theme = {width = 270}}
             end),
-            awful.button({}, 4, function()
-                awful.client.focus.byidx(-1)
-            end),
-            awful.button({}, 5, function()
-                awful.client.focus.byidx(1)
-            end)
+            -- awful.button({}, 3, function()
+            --     awful.menu.client_list {theme = {width = 270}}
+            -- end),
         }
     }
 
@@ -227,9 +263,10 @@ screen.connect_signal("request::desktop_decoration", function(s)
             { -- Left widgets
                 layout = wibox.layout.fixed.horizontal,
                 s.mytaglist,
+                s.mytasklist_icons,
                 s.mypromptbox
             },
-            s.mytasklist, -- Middle widget
+            s.mytask_title, -- Middle widget
             { -- Right widgets
                 layout = wibox.layout.fixed.horizontal,
                 -- mykeyboardlayout,
