@@ -22,24 +22,27 @@ local mytextclock = wibox.widget(mywidgets.text_in({
     widget = wibox.widget.textclock
 }))
 
+local net_up = wibox.widget.textbox();
+local net_down = wibox.widget.textbox();
+
+lain.widget.net {
+    wifi_state = "on",
+    eth_state = "on",
+    settings = function()
+        net_up:set_markup(mywidgets.KMG(net_now.sent))
+        net_down:set_markup(mywidgets.KMG(net_now.received))
+    end
+}
+
 local myinfoblock = wibox.widget(mywidgets.text_in({
     mywidgets.icon_text("󰁆"),
-    lain.widget.net({
-        settings = function()
-            widget:set_font(beautiful.font)
-            widget:set_markup(mywidgets.KMG(net_now.received))
-        end
-    }),
-    mywidgets.icon_text("󰁞"),
-    lain.widget.net({
-        settings = function()
-            widget:set_font(beautiful.font)
-            widget:set_markup(mywidgets.KMG(net_now.sent))
-        end
-    }),
+    net_down,
+    -- mywidgets.icon_text("󰁞"),
+    -- net_up,
+    mywidgets.icon_text("󰚰"),
+    awful.widget.watch('bash -c "pamac checkupdates | grep -E [0-9\\.]- | wc -l"', 3600),
     lain.widget.alsa({
         settings = function()
-            widget:set_font(beautiful.iconfont)
             if volume_now.status == 'off' then
                 widget:set_markup("󰝟")
             else
@@ -58,7 +61,6 @@ local myinfoblock = wibox.widget(mywidgets.text_in({
     }),
     lain.widget.alsa({
         settings = function()
-            widget:set_font(beautiful.font)
             local vl = tonumber(volume_now.level)
             if volume_now.status ~= 'on' or vl == 0 then
                 widget:set_markup("")
@@ -71,13 +73,11 @@ local myinfoblock = wibox.widget(mywidgets.text_in({
     lain.widget.cpu({
         settings = function()
             widget:set_markup(cpu_now.usage)
-            widget:set_font(beautiful.font)
         end
     }),
     mywidgets.icon_text("󰍛"),
     lain.widget.mem({
         settings = function()
-            widget:set_font(beautiful.font)
             widget:set_markup(string.format("%.0f", mem_now.perc))
         end
     }),

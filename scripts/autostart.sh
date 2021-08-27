@@ -8,6 +8,7 @@ function run {
 }
 
 run light-locker
+run /usr/lib/polkit-kde-authentication-agent-1
 run picom
 run redshift
 run blueman-applet
