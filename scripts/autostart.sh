@@ -9,7 +9,7 @@ function run {
 
 run light-locker
 run /usr/lib/polkit-kde-authentication-agent-1
-run picom
+run picom --experimental-backends
 run redshift
 run blueman-applet
 run nextcloud
