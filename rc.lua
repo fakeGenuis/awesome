@@ -41,6 +41,22 @@ for s = 1, screen.count() do
    gears.wallpaper.maximized(beautiful.wallpaper, s, true)
 end
 
+require("components.notifications")
+
+naughty.notification {
+    title   = 'A notification 1',
+    message = 'This is very informative',
+    icon    = beautiful.awesome_icon,
+    urgency = 'normal',
+}
+-- Create a normal notification.
+naughty.notification {
+    title   = 'A notification 2',
+    message = 'This is very informative',
+    icon    = beautiful.awesome_icon,
+    urgency = 'critical',
+}
+
 -- define default apps (global variable so other components can access it)
 apps = {
    network_manager = "", -- recommended: nm-connection-editor

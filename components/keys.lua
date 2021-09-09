@@ -573,62 +573,9 @@ keys.clientkeys = gears.table.join(
    )
 )
 
--- Table with all of our hotkeys
-local firefox_keys = {
 
-    ["LibreWolf: Bitwarden"] = {
-       {
-          modifiers = {"Ctrl", "Shift"},
-          keys = {
-             l = "auto-fill",
-             u = "open vault popup",
-             ["9"] = "generate and copy a new random password"
-          }
-       }
-    },
-    ["LibreWolf: Simple Translate"] = {
-       {
-          modifiers = {"Ctrl"},
-          keys = {
-             ['space'] = "translate selected text",
-          },
-       },
-       {
-          modifiers = {"Ctrl", "Shift"},
-          keys = {
-             ['space'] = "Open toolbar popup",
-          }
-       }
-    },
-    ["LibreWolf: Other extensions"] = {
-       {
-          modifiers = {"Ctrl", "Shift"},
-          keys = {
-             s = "open the LibreWolf Screenshots UI",
-          }
-       },
-       {
-          modifiers = {"Alt", "Shift"},
-          keys = {
-             d = "Dark Reader: toogle extension",
-             a = "Dark Reader: toogle current site",
-             y = "Grasp: capture page, with extra information",
-          },
-       },
-       {
-          modifiers = {"Ctrl", "Alt"},
-          keys = {
-             c = "Grasp: quick capture url, title and selection",
-             s = "Tab Session Manager: open toolbar popup",
-             t = "Tree Style Tab: Toggle 'Tree Style Tab' Sidebar",
-             j = "Vimium C - All by Keyboard: go one tab left",
-             k = "Vimium C - All by Keyboard: go one tab right",
-          },
-       },
-    }
-
-}
-
+-- Load firefox keyboard shortcuts
+local firefox_keys = require("components.firefox_keys")
 hotkeys_popup.add_hotkeys(firefox_keys)
 
 -- Create the rule that we will use to match for the application.
