@@ -12,6 +12,7 @@ local layout_icons_path = require("gears.filesystem").get_configuration_dir() ..
 local theme = {}
 theme.font = "Sarasa Gothic SC 14"
 theme.iconfont = "Material Design Icons 16"
+theme.icon_theme = "/usr/share/icons/Papirus"
 theme.wallpaper = "~/Pictures/Wallpapers/www.acg.gy_28.jpg"
 
 theme.tp = "#00000000"
@@ -28,7 +29,7 @@ theme.fg_minimize = "#000000"
 
 theme.wibar_bg = theme.tp
 theme.wibox_border_color = "#00000000"
-theme.bg_systray = theme.bg_normal
+theme.bg_systray = theme.bg_minimize
 theme.systray_icon_spacing = dpi(3)
 
 theme.useless_gap = dpi(4)
@@ -70,8 +71,9 @@ theme.layout_dwindle = layout_icons_path .. "dwindle.png"
 
 -- NOTIFICATION
 theme.notification_margin = dpi(16)
-theme.notification_border_width = dpi(2)
 theme.notification_opacity = 1
+theme.notification_border_width = dpi(2)
+theme.notification_border_color = theme.tp
 
 return theme
 

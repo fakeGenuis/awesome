@@ -1,3 +1,9 @@
+--     _     __        __  _____   ____     ___    __  __   _____
+--    / \    \ \      / / | ____| / ___|   / _ \  |  \/  | | ____|
+--   / _ \    \ \ /\ / /  |  _|   \___ \  | | | | | |\/| | |  _|
+--  / ___ \    \ V  V /   | |___   ___) | | |_| | | |  | | | |___
+-- /_/   \_\    \_/\_/    |_____| |____/   \___/  |_|  |_| |_____|
+
 -- awesome_mode: api-level=4:screen=on
 -- If LuaRocks is installed, make sure that packages installed through it are
 -- found (e.g. lgi). If LuaRocks is not installed, do nothing.
@@ -40,22 +46,6 @@ beautiful.init(gears.filesystem.get_configuration_dir() .. "/themes/default.lua"
 for s = 1, screen.count() do
    gears.wallpaper.maximized(beautiful.wallpaper, s, true)
 end
-
-require("components.notifications")
-
-naughty.notification {
-    title   = 'A notification 1',
-    message = 'This is very informative',
-    icon    = beautiful.awesome_icon,
-    urgency = 'normal',
-}
--- Create a normal notification.
-naughty.notification {
-    title   = 'A notification 2',
-    message = 'This is very informative',
-    icon    = beautiful.awesome_icon,
-    urgency = 'critical',
-}
 
 -- define default apps (global variable so other components can access it)
 apps = {
@@ -115,6 +105,8 @@ require("components.rules")
 
 -- {{{ Notifications
 
+require("components.notifications")
+
 ruled.notification.connect_signal('request::rules', function()
     -- All notifications will match this rule.
     ruled.notification.append_rule {
@@ -126,8 +118,18 @@ ruled.notification.connect_signal('request::rules', function()
     }
 end)
 
-naughty.connect_signal("request::display", function(n)
-    naughty.layout.box { notification = n }
-end)
+naughty.notification {
+    title   = 'A notification 1',
+    message = 'This is very informative',
+    icon    = beautiful.awesome_icon,
+    urgency = 'normal',
+}
+-- Create a normal notification.
+naughty.notification {
+    title   = 'A notification 2',
+    message = 'This is very informative',
+    icon    = beautiful.awesome_icon,
+    urgency = 'critical',
+}
 
 -- }}}

@@ -104,9 +104,9 @@ keys.desktopbuttons = gears.table.join(
       function ()
          naughty.destroy_all_notifications()
       end
-   ),
-    awful.button({ }, 4, awful.tag.viewprev),
-    awful.button({ }, 5, awful.tag.viewnext)
+   )
+    -- awful.button({ }, 4, awful.tag.viewprev),
+    -- awful.button({ }, 5, awful.tag.viewnext)
 )
 
 -- Mouse buttons on the client

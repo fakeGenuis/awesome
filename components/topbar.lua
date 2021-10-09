@@ -219,7 +219,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
     }
 
     -- systray widget
-    s.mysystray = mywidgets.block {
+    s.mysystray = mywidgets.block({
 
         {
             screen = s or screen.primary,
@@ -230,8 +230,8 @@ screen.connect_signal("request::desktop_decoration", function(s)
         },
         left = dpi(3),
         right = dpi(3),
-        widget = wibox.container.margin
-    }
+        widget = wibox.container.margin,
+                                  },{bg = beautiful.bg_minimize})
 
     -- Create the wibox
     s.mywibox = awful.wibar({
