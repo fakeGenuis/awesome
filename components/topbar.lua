@@ -107,9 +107,9 @@ local myinfoblock = mywidgets.block {
 
 screen.connect_signal("request::desktop_decoration", function(s)
     -- Each screen has its own tag table.
-    local names = {"󱁖", "󰅪", "󰭹", "󰒓", "󰑴", "󰊗"}
+    local names = {"󱁖", "󱃠", "󰅪", "󰭹", "󰒓", "󰑴", "󰊗"}
     local l = awful.layout.suit
-    local layouts = {l.max, l.tile, l.floating, l.max, l.tile, l.floating}
+    local layouts = {l.max, l.max, l.tile, l.floating, l.max, l.tile, l.floating}
     awful.tag(names, s, layouts)
 
     -- Create a promptbox for each screen
