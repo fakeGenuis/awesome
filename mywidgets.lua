@@ -33,16 +33,16 @@ function mywidgets.block(wdgt, extra)
         {
             wdgt,
             -- left and right margin: make up backgound shape round
-            left = dpi(4),
-            right = dpi(4),
+            left = dpi(2),
+            right = dpi(2),
             -- top and bottom margin: make up border round
-            top = dpi(2),
-            bottom = dpi(2),
+            -- top = dpi(2),
+            -- bottom = dpi(2),
             widget = wibox.container.margin
         },
         bg = beautiful.bg_normal,
-        border_width = beautiful.border_width,
-        border_color = beautiful.wibox_border_color,
+        -- border_width = beautiful.border_width,
+        -- border_color = beautiful.wibox_border_color,
         id = "background",
         shape = function(c, w, h)
             gears.shape.rounded_rect(c, w, h, dpi(7))

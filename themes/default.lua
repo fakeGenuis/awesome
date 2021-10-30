@@ -13,7 +13,7 @@ local theme = {}
 theme.font = "Sarasa Gothic SC 14"
 theme.iconfont = "Material Design Icons 16"
 theme.icon_theme = "/usr/share/icons/Papirus"
-theme.wallpaper = "~/Pictures/Wallpapers/www.acg.gy_28.jpg"
+theme.wallpaper = "~/Pictures/Wallpapers/www.acg.gy_66.jpg"
 
 theme.tp = "#00000000"
 -- theme.bg_normal      = "#87cefa"
@@ -31,6 +31,8 @@ theme.wibar_bg = theme.tp
 theme.wibox_border_color = "#00000000"
 theme.bg_systray = theme.bg_minimize
 theme.systray_icon_spacing = dpi(3)
+theme.taglist_spacing = dpi(3)
+theme.tasklist_spacing = dpi(3)
 
 theme.useless_gap = dpi(4)
 theme.border_width = dpi(2)

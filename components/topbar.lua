@@ -228,8 +228,8 @@ screen.connect_signal("request::desktop_decoration", function(s)
             opacity = 0,
             widget = wibox.widget.systray
         },
-        left = dpi(3),
-        right = dpi(3),
+        left = dpi(4),
+        right = dpi(4),
         widget = wibox.container.margin,
                                   },{bg = beautiful.bg_minimize})
 
@@ -237,13 +237,17 @@ screen.connect_signal("request::desktop_decoration", function(s)
     s.mywibox = awful.wibar({
         type = 'dock',
         position = "top",
-        height = dpi(27),
-        width = s.geometry.width,
+        height = dpi(23),
+        width = s.geometry.width - dpi(4),
+        margins = {
+          top = dpi(2),
+          bottom = dpi(0),
+        },
         opacity = 1,
         screen = s
     })
 
-    s.mywibox:struts{top = dpi(27)}
+    -- s.mywibox:struts{top = dpi(25)}
 
     -- Add widgets to the wibox
     s.mywibox:setup{
@@ -252,6 +256,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
             -- expand = 'none',
             { -- Left widgets
                 layout = wibox.layout.fixed.horizontal,
+                spacing = dpi(3),
                 s.mytaglist,
                 s.mytasklist_icons,
                 s.mypromptbox
@@ -259,6 +264,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
             s.mytask_title, -- Middle widget
             { -- Right widgets
                 layout = wibox.layout.fixed.horizontal,
+                spacing = dpi(3),
                 mytextclock,
                 myinfoblock,
                 s.mysystray,
