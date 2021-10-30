@@ -109,7 +109,9 @@ screen.connect_signal("request::desktop_decoration", function(s)
     -- Each screen has its own tag table.
     local names = {"󱁖", "󱃠", "󰅪", "󰭹", "󰒓", "󰑴", "󰊗"}
     local l = awful.layout.suit
-    local layouts = {l.max, l.max, l.tile, l.floating, l.max, l.tile, l.floating}
+    local layouts = {
+        l.max, l.max, l.tile, l.floating, l.max, l.tile, l.floating
+    }
     awful.tag(names, s, layouts)
 
     -- Create a promptbox for each screen
@@ -183,6 +185,22 @@ screen.connect_signal("request::desktop_decoration", function(s)
             widget = wibox.container.place
         },
         buttons = {
+            awful.button({}, 1, function(c)
+                if c == client.focus then
+                    c.minimized = true
+                else
+                    -- Without this, the following
+                    -- :isvisible() makes no sense
+                    c.minimized = false
+                    if not c:isvisible() and c.first_tag then
+                        c.first_tag:view_only()
+                    end
+                    -- This will also un-minimize
+                    -- the client, if needed
+                    c:emit_signal('request::activate')
+                    c:raise()
+                end
+            end),
             awful.button({}, 4, function()
                 awful.client.focus.byidx(-1)
             end),
@@ -230,8 +248,8 @@ screen.connect_signal("request::desktop_decoration", function(s)
         },
         left = dpi(4),
         right = dpi(4),
-        widget = wibox.container.margin,
-                                  },{bg = beautiful.bg_minimize})
+        widget = wibox.container.margin
+    }, {bg = beautiful.bg_minimize})
 
     -- Create the wibox
     s.mywibox = awful.wibar({
@@ -239,10 +257,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
         position = "top",
         height = dpi(23),
         width = s.geometry.width - dpi(4),
-        margins = {
-          top = dpi(2),
-          bottom = dpi(0),
-        },
+        margins = {top = dpi(2), bottom = dpi(0)},
         opacity = 1,
         screen = s
     })
