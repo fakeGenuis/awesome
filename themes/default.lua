@@ -30,7 +30,9 @@ theme.fg_minimize = "#000000"
 theme.wibar_bg = theme.tp
 theme.wibox_border_color = "#00000000"
 theme.bg_systray = theme.bg_minimize
-theme.systray_icon_spacing = dpi(3)
+theme.topbar_height = dpi(23)
+theme.spacing = dpi(3)
+theme.systray_icon_spacing = dpi(1)
 theme.taglist_spacing = dpi(3)
 theme.tasklist_spacing = dpi(3)
 

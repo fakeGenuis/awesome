@@ -122,13 +122,13 @@ screen.connect_signal("request::desktop_decoration", function(s)
     s.mylayoutbox = mywidgets.block {
         {
             format = "%H:%M",
-            forced_height = dpi(19),
-            forced_width = dpi(19),
+            forced_height = beautiful.topbar_height - dpi(2),
+            forced_width = beautiful.topbar_height - dpi(2),
             widget = awful.widget.layoutbox
         },
-        top = dpi(2),
-        bottom = dpi(2),
-        widget = wibox.container.margin
+        valign = 'center',
+        halign = 'center',
+        widget = wibox.container.place
     }
     s.mylayoutbox.buttons = {
         awful.button({}, 1, function() awful.layout.inc(1) end),
@@ -151,12 +151,11 @@ screen.connect_signal("request::desktop_decoration", function(s)
         buttons = {
             awful.button({}, 1, function(t) t:view_only() end),
             awful.button({}, 3, awful.tag.viewtoggle),
-            -- awful.button({modkey}, 1, function(t)
-            --     if client.focus then client.focus:move_to_tag(t) end
-            -- end),
-            -- awful.button({modkey}, 3, function(t)
-            --     if client.focus then client.focus:toggle_tag(t) end
-            -- end),
+            awful.button({modkey}, 1, function(t)
+                if client.focus then client.focus:move_to_tag(t) end
+            end), awful.button({modkey}, 3, function(t)
+                if client.focus then client.focus:toggle_tag(t) end
+            end),
             awful.button({}, 4, function(t)
                 awful.tag.viewprev(t.screen)
             end),
@@ -166,64 +165,23 @@ screen.connect_signal("request::desktop_decoration", function(s)
         }
     }
 
-    -- Create a tasklist icon only widget
-    s.mytasklist_icons = awful.widget.tasklist {
-        screen = s,
-        filter = awful.widget.tasklist.filter.currenttags,
-        widget_template = mywidgets.wibox_cb {
-            mywidgets.block {
-                {awful.widget.clienticon, widget = wibox.container.margin},
-                {
-                    mywidgets.icon_text('󰅙'),
-                    right = dpi(1),
-                    left = dpi(1),
-                    -- id = "background_role",
-                    widget = wibox.container.margin
-                },
-                layout = wibox.layout.align.horizontal
-            },
-            widget = wibox.container.place
-        },
-        buttons = {
-            awful.button({}, 1, function(c)
-                if c == client.focus then
-                    c.minimized = true
-                else
-                    -- Without this, the following
-                    -- :isvisible() makes no sense
-                    c.minimized = false
-                    if not c:isvisible() and c.first_tag then
-                        c.first_tag:view_only()
-                    end
-                    -- This will also un-minimize
-                    -- the client, if needed
-                    c:emit_signal('request::activate')
-                    c:raise()
-                end
-            end),
-            awful.button({}, 4, function()
-                awful.client.focus.byidx(-1)
-            end),
-            awful.button({}, 5, function()
-                awful.client.focus.byidx(1)
-            end)
-        }
-    }
-
     -- Create a tasklist widget
     s.mytask_title = awful.widget.tasklist {
         screen = s,
         filter = awful.widget.tasklist.filter.focused,
         widget_template = mywidgets.wibox_cb {
-            mywidgets.block {
-                id = "text_role",
-                align = "center",
-                valign = "center",
-                widget = wibox.widget.textbox
+            {
+                awful.widget.clienticon,
+                mywidgets.block {
+                    id = "text_role",
+                    align = "center",
+                    valign = "center",
+                    widget = wibox.widget.textbox
+                },
+                spacing = beautiful.spacing,
+                layout = wibox.layout.fixed.horizontal
             },
-            widget = wibox.container.place,
-            fill_horizontal = false,
-            fill_vertical = true
+            widget = wibox.container.place
         },
 
         buttons = {
@@ -241,7 +199,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
 
         {
             screen = s or screen.primary,
-            base_size = dpi(23),
+            base_size = beautiful.topbar_height,
             horizontal = true,
             opacity = 0,
             widget = wibox.widget.systray
@@ -255,9 +213,9 @@ screen.connect_signal("request::desktop_decoration", function(s)
     s.mywibox = awful.wibar({
         type = 'dock',
         position = "top",
-        height = dpi(23),
-        width = s.geometry.width - dpi(4),
-        margins = {top = dpi(2), bottom = dpi(0)},
+        height = beautiful.topbar_height,
+        width = s.geometry.width - 2 * beautiful.spacing,
+        margins = {top = beautiful.spacing, bottom = 0},
         opacity = 1,
         screen = s
     })
@@ -271,7 +229,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
             -- expand = 'none',
             { -- Left widgets
                 layout = wibox.layout.fixed.horizontal,
-                spacing = dpi(3),
+                spacing = beautiful.spacing,
                 s.mytaglist,
                 s.mytasklist_icons,
                 s.mypromptbox
@@ -279,7 +237,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
             s.mytask_title, -- Middle widget
             { -- Right widgets
                 layout = wibox.layout.fixed.horizontal,
-                spacing = dpi(3),
+                spacing = beautiful.spacing,
                 mytextclock,
                 myinfoblock,
                 s.mysystray,

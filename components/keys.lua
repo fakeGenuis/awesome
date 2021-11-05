@@ -153,7 +153,7 @@ keys.globalkeys = gears.table.join(
       end,
       {description = "open emacs", group = "launcher"}
    ),
-   awful.key({modkey}, "i",
+   awful.key({modkey}, "r",
       function()
          awful.spawn(apps.filebrowser)
       end,
