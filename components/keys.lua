@@ -141,17 +141,29 @@ keys.globalkeys = gears.table.join(
       {description = "open a terminal", group = "launcher"}
    ),
    -- launch rofi
-   awful.key({modkey}, "r",
+   awful.key({modkey}, "a",
       function()
          awful.spawn(apps.launcher)
       end,
-      {description = "application launcher", group = "launcher"}
+      {description = "open application launcher", group = "launcher"}
    ),
    awful.key({modkey}, "e",
+      function()
+         awful.spawn(apps.emacs)
+      end,
+      {description = "open emacs", group = "launcher"}
+   ),
+   awful.key({modkey}, "i",
       function()
          awful.spawn(apps.filebrowser)
       end,
       {description = "open file browser", group = "launcher"}
+   ),
+   awful.key({modkey}, "b",
+      function()
+         awful.spawn(apps.browser)
+      end,
+      {description = "open browser", group = "launcher"}
    ),
 --   awful.key({ modkey }, "p",
 --      function()
@@ -277,36 +289,6 @@ keys.globalkeys = gears.table.join(
    -- ),
 
    -- =========================================
-   -- CLIENT FOCUSING
-   -- =========================================
-
-   -- Focus client by direction (jk keys)
-   awful.key({modkey}, "j",
-      function()
-         awful.client.focus.byidx(1)
-         raise_client()
-      end,
-      {description = "focus next by index", group = "client"}
-   ),
-   awful.key({modkey}, "k",
-      function()
-         awful.client.focus.byidx(-1)
-         raise_client()
-      end,
-      {description = "focus previous by index", group = "client"}
-   ),
-   awful.key({modkey}, "f",
-      awful.client.floating.toggle,
-      {description = "toggle floating", group = "client"}
-   ),
-   awful.key({modkey}, "t",
-      function()
-         client.focus.ontop = not client.focus.ontop
-      end,
-      {description = "toggle floating", group = "client"}
-   ),
-
-   -- =========================================
    -- SCREEN FOCUSING
    -- =========================================
 
@@ -316,67 +298,6 @@ keys.globalkeys = gears.table.join(
    --       awful.screen.focus_relative(1)
    --    end
    -- ),
-
-   -- =========================================
-   -- CLIENT RESIZING
-   -- =========================================
-
-   awful.key({modkey, "Control"}, "j",
-      function(c)
-         resize_client(client.focus, "up")
-      end,
-      {description = "resize up", group = "client"}
-   ),
-   awful.key({ modkey, "Control" }, "k",
-      function(c)
-         resize_client(client.focus, "down")
-      end,
-      {description = "resize down", group = "client"}
-   ),
-   awful.key({modkey, "Control"}, "h",
-      function(c)
-         resize_client(client.focus, "left")
-      end,
-      {description = "resize left", group = "client"}
-   ),
-   awful.key({modkey, "Control"}, "l",
-      function(c)
-         resize_client(client.focus, "right")
-      end,
-      {description = "resize right", group = "client"}
-   ),
-
-   -- =========================================
-   -- NUMBER OF MASTER / COLUMN CLIENTS
-   -- =========================================
-
-   -- Number of master clients
-   awful.key({modkey, altkey}, "h",
-      function()
-         awful.tag.incnmaster( 1, nil, true)
-      end,
-      {description = "increase the number of master clients", group = "layout"}
-   ),
-   awful.key({ modkey, altkey }, "l",
-      function()
-         awful.tag.incnmaster(-1, nil, true)
-      end,
-      {description = "decrease the number of master clients", group = "layout"}
-   ),
-
-   -- Number of columns
-   awful.key({modkey, altkey}, "k",
-      function()
-         awful.tag.incncol(1, nil, true)
-      end,
-      {description = "increase the number of columns", group = "layout"}
-   ),
-   awful.key({modkey, altkey}, "j",
-      function()
-         awful.tag.incncol(-1, nil, true)
-      end,
-      {description = "decrease the number of columns", group = "layout"}
-   ),
 
    -- =========================================
    -- GAP CONTROL
@@ -416,23 +337,6 @@ keys.globalkeys = gears.table.join(
    ),
 
    -- =========================================
-   -- CLIENT MINIMIZATION
-   -- =========================================
-
-   -- restore minimized client
-   awful.key({modkey, "Shift"}, "n",
-      function()
-         local c = awful.client.restore()
-         -- Focus restored client
-         if c then
-            client.focus = c
-            c:raise()
-         end
-      end,
-      {description = "restore minimized", group = "client"}
-   ),
-
-   -- =========================================
    -- DYNAMIC TAGGING
    -- =========================================
    -- awful.key({ modkey, "Shift" }, "a", function () lain.util.add_tag() end,
@@ -449,6 +353,18 @@ keys.globalkeys = gears.table.join(
    -- =========================================
    -- SELECT TAG
    -- =========================================
+   awful.key({modkey}, "h",
+      function(s)
+         awful.tag.viewprev(s)
+      end,
+      {description = "focus previous tag by index", group = "tag"}
+   ),
+   awful.key({modkey}, "l",
+      function(s)
+         awful.tag.viewnext(s)
+      end,
+      {description = "focus next tag by index", group = "tag"}
+   ),
     awful.key {
         modifiers   = { modkey },
         keygroup    = "numrow",
@@ -506,13 +422,48 @@ keys.globalkeys = gears.table.join(
 
 )
 
-
 -- ===================================================================
 -- Client Key bindings
 -- ===================================================================
 
-
 keys.clientkeys = gears.table.join(
+   -- Focus client by direction (jk keys)
+   awful.key({modkey}, "j",
+      function()
+         awful.client.focus.byidx(1)
+         raise_client()
+      end,
+      {description = "focus next by index", group = "client"}
+   ),
+   awful.key({modkey}, "k",
+      function()
+         awful.client.focus.byidx(-1)
+         raise_client()
+      end,
+      {description = "focus previous by index", group = "client"}
+   ),
+   awful.key({modkey}, "f",
+      awful.client.floating.toggle,
+      {description = "toggle floating", group = "client"}
+   ),
+   awful.key({modkey}, "t",
+      function()
+         client.focus.ontop = not client.focus.ontop
+      end,
+      {description = "toggle ontop", group = "client"}
+   ),
+   -- restore minimized client
+   awful.key({modkey, "Shift"}, "n",
+      function()
+         local c = awful.client.restore()
+         -- Focus restored client
+         if c then
+            client.focus = c
+            c:raise()
+         end
+      end,
+      {description = "restore minimized", group = "client"}
+   ),
    -- Move to edge or swap by direction
    awful.key({modkey, "Shift"}, "j",
       function(c)
@@ -538,7 +489,6 @@ keys.clientkeys = gears.table.join(
       end,
       {description = "move right", group = "client"}
    ),
-
    -- toggle fullscreen
    awful.key({modkey}, "F11",
       function(c)
@@ -546,7 +496,6 @@ keys.clientkeys = gears.table.join(
       end,
       {description = "toggle fullscreen", group = "client"}
    ),
-
    -- close client
    awful.key({modkey}, "q",
       function(c)
@@ -570,6 +519,59 @@ keys.clientkeys = gears.table.join(
          c:raise()
       end,
       {description = "(un)maximize", group = "client"}
+   ),
+   -- client resizing
+   awful.key({modkey, "Control"}, "j",
+      function(c)
+         resize_client(client.focus, "up")
+      end,
+      {description = "resize up", group = "client"}
+   ),
+   awful.key({ modkey, "Control" }, "k",
+      function(c)
+         resize_client(client.focus, "down")
+      end,
+      {description = "resize down", group = "client"}
+   ),
+   awful.key({modkey, "Control"}, "h",
+      function(c)
+         resize_client(client.focus, "left")
+      end,
+      {description = "resize left", group = "client"}
+   ),
+   awful.key({modkey, "Control"}, "l",
+      function(c)
+         resize_client(client.focus, "right")
+      end,
+      {description = "resize right", group = "client"}
+   ),
+
+   -- Number of master clients
+   awful.key({modkey, altkey}, "h",
+      function()
+         awful.tag.incnmaster( 1, nil, true)
+      end,
+      {description = "increase the number of master clients", group = "layout"}
+   ),
+   awful.key({ modkey, altkey }, "l",
+      function()
+         awful.tag.incnmaster(-1, nil, true)
+      end,
+      {description = "decrease the number of master clients", group = "layout"}
+   ),
+
+   -- Number of columns
+   awful.key({modkey, altkey}, "k",
+      function()
+         awful.tag.incncol(1, nil, true)
+      end,
+      {description = "increase the number of columns", group = "layout"}
+   ),
+   awful.key({modkey, altkey}, "j",
+      function()
+         awful.tag.incncol(-1, nil, true)
+      end,
+      {description = "decrease the number of columns", group = "layout"}
    )
 )
 
@@ -578,7 +580,7 @@ keys.clientkeys = gears.table.join(
 local firefox_keys = require("components.firefox_keys")
 hotkeys_popup.add_hotkeys(firefox_keys)
 
--- Create the rule that we will use to match for the application.
+--
 for group_name, _ in pairs(firefox_keys) do
     hotkeys_popup.add_group_rules(group_name, {rule_any={ class = { "LibreWolf" } }})
 end

@@ -54,11 +54,12 @@ apps = {
    power_menu = "rofi -show p -modi p:~/.config/awesome/scripts/rofi-power-menu -theme power-menu", -- recommended: xfce4-power-manager
    terminal = "alacritty",
    editor = os.getenv("EDITOR") or "nvim",
+   emacs = "emacs",
    launcher = "rofi -show combi",
-   lock = "betterlockscreen -l dim",
+   lock = "light-locker-command -l",
    browser = "librewolf",
    screenshot = "spectacle",
-   filebrowser = "nautilus"
+   filebrowser = "ranger"
 }
 -- }}}
 
