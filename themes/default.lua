@@ -21,6 +21,7 @@ theme.bg_normal = "#c6e2ff"
 theme.bg_focus = "#4169e1"
 theme.bg_urgent = "#fce94f"
 theme.bg_minimize = "#bf95d4"
+theme.bg_popup = "#b3c1da"
 
 theme.fg_normal = "#000000"
 theme.fg_focus = "#ffffff"
@@ -74,10 +75,11 @@ theme.layout_spiral = layout_icons_path .. "spiral.png"
 theme.layout_dwindle = layout_icons_path .. "dwindle.png"
 
 -- NOTIFICATION
-theme.notification_margin = dpi(16)
-theme.notification_opacity = 1
-theme.notification_border_width = dpi(2)
-theme.notification_border_color = theme.tp
+-- theme.notification_margin = dpi(16)
+-- theme.notification_opacity = 1
+-- theme.notification_border_width = dpi(2)
+-- theme.notification_border_color = theme.tp
+theme.notification_max_width = dpi(300)
 
 return theme
 
