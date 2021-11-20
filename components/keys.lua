@@ -149,9 +149,9 @@ keys.globalkeys = gears.table.join(
    ),
    awful.key({modkey}, "e",
       function()
-         awful.spawn(apps.emacs)
+         awful.spawn(apps.editor)
       end,
-      {description = "open emacs", group = "launcher"}
+      {description = "open editor", group = "launcher"}
    ),
    awful.key({modkey}, "r",
       function()
