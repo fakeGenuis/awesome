@@ -43,6 +43,36 @@ lain.widget.net {
     end
 }
 
+-- volume
+local volume = lain.widget.alsa {
+        settings = function()
+            if volume_now.status == 'off' then
+                widget:set_markup("󰝟")
+            else
+                local vl = tonumber(volume_now.level)
+                local mark
+                if vl == 0 then
+                  mark = "󰖁"
+                elseif vl < 33 then
+                  mark = "󰕿"
+                elseif vl < 66 then
+                  mark = "󰖀"
+                else
+                  mark = "󰕾"
+                end
+                widget:set_markup(mark..vl)
+            end
+        end
+    }
+        volume.widget:buttons(gears.table.join(
+          awful.button({}, 4, function() -- scroll up
+              awful.spawn("amixer -D pulse sset Master 5%+", false)
+          end),
+          awful.button({}, 5, function() -- scroll down
+              awful.spawn("amixer -D pulse sset Master 5%-", false)
+          end)
+        ))
+
 -- system info widget
 local myinfoblock = mywidgets.block {
 
@@ -57,35 +87,7 @@ local myinfoblock = mywidgets.block {
     awful.widget.watch(
         'bash -c "pamac checkupdates | grep -E [0-9\\.]- | wc -l"', 3600),
 
-    -- volume
-    lain.widget.alsa {
-        settings = function()
-            if volume_now.status == 'off' then
-                widget:set_markup("󰝟")
-            else
-                local vl = tonumber(volume_now.level)
-                if vl == 0 then
-                    widget:set_markup("󰖁")
-                elseif vl < 33 then
-                    widget:set_markup("󰕿")
-                elseif vl < 66 then
-                    widget:set_markup("󰖀")
-                else
-                    widget:set_markup("󰕾")
-                end
-            end
-        end
-    },
-    lain.widget.alsa {
-        settings = function()
-            local vl = tonumber(volume_now.level)
-            if volume_now.status ~= 'on' or vl == 0 then
-                widget:set_markup("")
-            else
-                widget:set_markup(volume_now.level)
-            end
-        end
-    },
+    volume,
 
     -- cpu usage
     mywidgets.icon_text("󰻠"),
