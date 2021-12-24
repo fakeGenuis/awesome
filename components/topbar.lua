@@ -45,33 +45,31 @@ lain.widget.net {
 
 -- volume
 local volume = lain.widget.alsa {
-        settings = function()
-            if volume_now.status == 'off' then
-                widget:set_markup("󰝟")
+    settings = function()
+        if volume_now.status == 'off' then
+            widget:set_markup("󰝟")
+        else
+            local vl = tonumber(volume_now.level)
+            local mark
+            if vl == 0 then
+                mark = "󰖁"
+            elseif vl < 33 then
+                mark = "󰕿"
+            elseif vl < 66 then
+                mark = "󰖀"
             else
-                local vl = tonumber(volume_now.level)
-                local mark
-                if vl == 0 then
-                  mark = "󰖁"
-                elseif vl < 33 then
-                  mark = "󰕿"
-                elseif vl < 66 then
-                  mark = "󰖀"
-                else
-                  mark = "󰕾"
-                end
-                widget:set_markup(mark..vl)
+                mark = "󰕾"
             end
+            widget:set_markup(mark .. vl)
         end
-    }
-        volume.widget:buttons(gears.table.join(
-          awful.button({}, 4, function() -- scroll up
-              awful.spawn("amixer -D pulse sset Master 5%+", false)
-          end),
-          awful.button({}, 5, function() -- scroll down
-              awful.spawn("amixer -D pulse sset Master 5%-", false)
-          end)
-        ))
+    end
+}
+volume.widget:buttons(gears.table.join(awful.button({}, 4,
+                                                    function() -- scroll up
+    awful.spawn("amixer -D pulse sset Master 5%+", false)
+end), awful.button({}, 5, function() -- scroll down
+    awful.spawn("amixer -D pulse sset Master 5%-", false)
+end)))
 
 -- system info widget
 local myinfoblock = mywidgets.block {
