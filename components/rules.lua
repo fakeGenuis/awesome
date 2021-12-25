@@ -27,12 +27,12 @@ ruled.client.connect_signal("request::rules", function()
             instance = {},
             type = {"dialog", "Dialog"},
             class    = {
-                "Blueman-manager", "YesPlayMusic", "qv2ray"
+                "Blueman-manager", "YesPlayMusic"
             },
             -- Note that the name property shown in xprop might be set slightly after creation of the client
             -- and the name shown there might not match defined rules here.
             name    = {
-		    "OSD", "Preferences", "FeynArts Topology Editor", "Wolfram Mathematica 12.0"
+		    "OSD", "Preferences", "FeynArts Topology Editor"
             },
             role    = {
                 "AlarmWindow",    -- Thunderbird's calendar.
