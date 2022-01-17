@@ -107,11 +107,12 @@ local myinfoblock = mywidgets.block {
 
 screen.connect_signal("request::desktop_decoration", function(s)
     -- Each screen has its own tag table.
-    local names = {"󱁖", "󱃠", "󰅪", "󰭹", "󰒓", "󰑴", "󰊗"}
+    local names = {"1", "2", "3", "4", "5", "6", "7"}
     local l = awful.layout.suit
-    local layouts = {
-        l.max, l.max, l.tile, l.floating, l.max, l.tile, l.floating
-    }
+    local layouts = l.max
+    -- local layouts = {
+    --     l.max, l.max, l.tile, l.floating, l.max, l.tile, l.floating
+    -- }
     awful.tag(names, s, layouts)
 
     -- Create a promptbox for each screen
@@ -142,11 +143,16 @@ screen.connect_signal("request::desktop_decoration", function(s)
         screen = s,
         filter = awful.widget.taglist.filter.noempty,
         widget_template = mywidgets.wibox_cb(mywidgets.block {
-            id = "text_role",
-            align = "center",
-            valign = "center",
-            font = beautiful.iconfont,
-            widget = wibox.widget.textbox
+            {
+                id = "text_role",
+                align = "center",
+                valign = "center",
+                font = beautiful.iconfont,
+                widget = wibox.widget.textbox
+            },
+            left = dpi(4),
+            right = dpi(4),
+            widget = wibox.container.margin
         }),
         buttons = {
             awful.button({}, 1, function(t) t:view_only() end),
