@@ -38,7 +38,7 @@ theme.taglist_spacing = dpi(3)
 theme.tasklist_spacing = dpi(3)
 
 theme.useless_gap = dpi(4)
-theme.border_width = dpi(2)
+theme.border_width = dpi(0)
 theme.border_color_normal = theme.bg_normal
 theme.border_color_active = theme.bg_focus
 theme.border_color_marked = theme.bg_normal
