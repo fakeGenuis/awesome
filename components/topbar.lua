@@ -172,9 +172,9 @@ screen.connect_signal("request::desktop_decoration", function(s)
     }
 
     -- Create a tasklist widget
-    s.mytask_title = awful.widget.tasklist {
+    s.mytasklist = awful.widget.tasklist {
         screen = s,
-        filter = awful.widget.tasklist.filter.focused,
+        filter = awful.widget.tasklist.filter.currenttags,
         widget_template = mywidgets.wibox_cb {
             {
                 awful.widget.clienticon,
@@ -240,7 +240,12 @@ screen.connect_signal("request::desktop_decoration", function(s)
                 s.mytasklist_icons,
                 s.mypromptbox
             },
-            s.mytask_title, -- Middle widget
+            {
+              left = dpi(2),
+              right = dpi(4),
+              s.mytasklist, -- Middle widget
+              widget = wibox.container.margin
+            },
             { -- Right widgets
                 layout = wibox.layout.fixed.horizontal,
                 spacing = beautiful.spacing,
