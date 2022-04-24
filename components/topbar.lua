@@ -15,6 +15,7 @@ local naughty = require("naughty")
 local beautiful = require("beautiful")
 local dpi = beautiful.xresources.apply_dpi
 local mywidgets = require("mywidgets")
+local markup = lain.util.markup
 
 -- {{{ Wibar
 --
@@ -38,19 +39,24 @@ lain.widget.net {
     wifi_state = "on",
     eth_state = "on",
     settings = function()
+        local rec = net_now.received
+        local color = mywidgets.usage_color(rec, 1024 * 60, 4)
         net_up:set_markup(mywidgets.KMG(net_now.sent))
-        net_down:set_markup(mywidgets.KMG(net_now.received))
+        net_down:set_markup(markup.fontfg(beautiful.iconfont, color,
+                                          "󰁆" .. mywidgets.KMG(rec)))
     end
 }
 
 -- volume
 local volume = lain.widget.alsa {
     settings = function()
+        local vl = tonumber(volume_now.level)
+        local color = mywidgets.usage_color(vl)
+        local mark
         if volume_now.status == 'off' then
-            widget:set_markup("󰝟")
+            mark = "󰝟"
+            vl = ""
         else
-            local vl = tonumber(volume_now.level)
-            local mark
             if vl == 0 then
                 mark = "󰖁"
             elseif vl < 33 then
@@ -60,8 +66,8 @@ local volume = lain.widget.alsa {
             else
                 mark = "󰕾"
             end
-            widget:set_markup(mark .. vl)
         end
+        widget:set_markup(markup.fontfg(beautiful.iconfont, color, mark .. vl))
     end
 }
 volume.widget:buttons(gears.table.join(awful.button({}, 4,
@@ -75,27 +81,38 @@ end)))
 local myinfoblock = mywidgets.block {
 
     -- network
-    mywidgets.icon_text("󰁆"),
     net_down,
     -- mywidgets.icon_text("󰁞"),
     -- net_up,
 
     -- package upgradable
-    mywidgets.icon_text("󰚰"),
     awful.widget.watch(
-        'bash -c "pamac checkupdates | grep -E [0-9\\.]- | wc -l"', 3600),
+        'bash -c "pamac checkupdates | grep -E [0-9\\.]- | wc -l"', 3600,
+        function(widget, stdout)
+            local color = mywidgets.usage_color(stdout)
+            widget:set_markup(markup.fontfg(beautiful.iconfont, color,
+                                            "󰚰" .. stdout))
+        end),
 
     volume,
 
     -- cpu usage
-    mywidgets.icon_text("󰻠"),
-    lain.widget.cpu {settings = function() widget:set_markup(cpu_now.usage) end},
+    lain.widget.cpu {
+        settings = function()
+            local usage = cpu_now.usage
+            local color = mywidgets.usage_color(usage)
+            widget:set_markup(markup.fontfg(beautiful.iconfont, color,
+                                            "󰻠" .. usage))
+        end
+    },
 
     -- mem usage
-    mywidgets.icon_text("󰍛"),
     lain.widget.mem {
         settings = function()
-            widget:set_markup(string.format("%.0f", mem_now.perc))
+            local perc = mem_now.perc
+            local color = mywidgets.usage_color(perc)
+            widget:set_markup(markup.fontfg(beautiful.iconfont, color, "󰍛" ..
+                                                string.format("%.0f", perc)))
         end
     },
 
@@ -241,10 +258,10 @@ screen.connect_signal("request::desktop_decoration", function(s)
                 s.mypromptbox
             },
             {
-              left = dpi(2),
-              right = dpi(4),
-              s.mytasklist, -- Middle widget
-              widget = wibox.container.margin
+                left = dpi(2),
+                right = dpi(4),
+                s.mytasklist, -- Middle widget
+                widget = wibox.container.margin
             },
             { -- Right widgets
                 layout = wibox.layout.fixed.horizontal,

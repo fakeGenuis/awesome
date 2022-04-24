@@ -76,6 +76,23 @@ function mywidgets.update_fg(c, widget_fg)
     return markup.fg.color(beautiful.fg_normal, text)
 end
 
+function mywidgets.usage_color(usage, max_value, power)
+    local value = max_value or 100.0
+    local percentage = tonumber(usage) / value
+    if power then percentage = math.pow(percentage, 1 / power) end
+    local color
+    if percentage <= 0.25 then
+        color = beautiful.usage_healthy
+    elseif percentage <= 0.5 then
+        color = beautiful.usage_normal
+    elseif percentage <= 0.75 then
+        color = beautiful.usage_heavy
+    else
+        color = beautiful.usage_boom
+    end
+    return color
+end
+
 -- wrap a wibox with create and update callback function
 function mywidgets.wibox_cb(o)
     local o = o or {}
@@ -110,11 +127,12 @@ end
 function mywidgets.KMG(kbf)
     local unit = 'K'
     kbf = tonumber(kbf)
-    if kbf > 500.0 then
-        kbf = math.floor(kbf / 1024.0 + 0.5)
+    if kbf > 100.0 then
+        kbf = math.floor(10 * kbf / 1024.0 + 0.5)
         unit = 'M'
     end
-    return string.format("%.1f", kbf) .. unit
+    -- return string.format("%.1f", kbf / 10) .. unit
+    return string.format("%.1f", kbf / 10) .. unit
 end
 
 return mywidgets

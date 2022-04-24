@@ -28,6 +28,11 @@ theme.fg_focus = "#ffffff"
 theme.fg_urgent = "#ff0051"
 theme.fg_minimize = "#000000"
 
+theme.usage_healthy = "#228b22"
+theme.usage_normal = "#0000cd"
+theme.usage_heavy = "#ffa500"
+theme.usage_boom = "#ff0000"
+
 theme.wibar_bg = theme.tp
 theme.wibox_border_color = "#00000000"
 theme.bg_systray = theme.bg_minimize
