@@ -32,8 +32,10 @@ naughty.connect_signal("request::display_error", function(message, startup)
 end)
 -- }}}
 
+scripts_dir = gears.filesystem.get_configuration_dir() .. "/scripts/"
+
 -- {{{ Autostart
-awful.spawn.with_shell("~/.config/awesome/scripts/autostart.sh")
+awful.spawn.with_shell(scripts_dir .. "autostart.sh")
 -- }}}
 
 -- {{{ Variable definitions
@@ -48,13 +50,14 @@ end
 apps = {
     network_manager = "", -- recommended: nm-connection-editor
     power_manager = "", -- recommended: xfce4-power-manager
-    power_menu = "rofi -show p -modi p:~/.config/awesome/scripts/rofi-power-menu -theme power-menu", -- recommended: xfce4-power-manager
+    power_menu = "rofi -show p -modi p:" .. scripts_dir ..
+        "rofi-power-menu -theme power-menu", -- recommended: xfce4-power-manager
     terminal = "alacritty",
     editor = os.getenv("VISUAL") or os.getenv("EDITOR"),
     launcher = "rofi -show combi",
-    lock = "myi3lock",
+    lock = scripts_dir .. "i3lock.sh",
     browser = "librewolf",
-    screenshot = "spectacle",
+    screenshot = scripts_dir .. "screenshot.fish",
     filebrowser = "alacritty -e ranger"
 }
 -- }}}
