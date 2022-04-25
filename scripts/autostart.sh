@@ -20,6 +20,8 @@ xcape -e "Control_L=Escape"
 # set screen saver time
 xset s 910
 
+DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 # Run xidlehook
 if ! pgrep -f xidlehook ; then
   xidlehook \
@@ -36,7 +38,7 @@ if ! pgrep -f xidlehook ; then
       '' \
     `# Undim & lock after 10 more seconds` \
     --timer 10 \
-      'pgrep i3lock > /dev/null || myi3lock' \
+      'pgrep i3lock > /dev/null || ${DIR}/i3lock.sh' \
       '' \
     `# Finally, suspend an hour after it locks`
   #   --timer 3600 \

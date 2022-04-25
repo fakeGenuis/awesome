@@ -8,6 +8,7 @@ local ruled = require("ruled")
 -- Rules to apply to new clients.
 ruled.client.connect_signal("request::rules", function()
     -- All clients will match this rule.
+    -- local geo = awful.screen.focused().geometry
     ruled.client.append_rule {
         id = "global",
         rule = {},
@@ -16,7 +17,8 @@ ruled.client.connect_signal("request::rules", function()
             raise = true,
             screen = awful.screen.preferred,
             placement = awful.placement.no_overlap +
-                awful.placement.no_offscreen
+                awful.placement.no_offscreen,
+            titlebars_enabled = false
         }
     }
 
@@ -41,8 +43,7 @@ ruled.client.connect_signal("request::rules", function()
 
     ruled.client.append_rule {
         id = "screen capture",
-        rule = {class = "feh", name = "stdin"
-        },
+        rule = {class = "feh", name = "stdin"},
         properties = {
             floating = true,
             placement = awful.placement.under_mouse,
@@ -50,13 +51,19 @@ ruled.client.connect_signal("request::rules", function()
         }
     }
 
-    -- Add titlebars to normal clients and dialogs
     ruled.client.append_rule {
-        id = "titlebars",
-        rule_any = {type = {"normal"}},
-        properties = {titlebars_enabled = false}
+        id = "navigator",
+        rule_any = {class = {"Navigator", "librewolf"}},
+        properties = {
+            titlebars_enabled = false,
+            placement = awful.placement.centered
+            -- width = math.ceil(geo.width / 3),
+            -- height = math.ceil(geo.height / 8)
+        }
+        -- callback = function( c )
+        --   c:geometry( { width = math.ceil(geo.width/3) , height = math.ceil(geo.height/8) } )
+        --            end
     }
-
     -- Set Firefox to always map on the tag named "2" on screen 1.
     -- ruled.client.append_rule {
     --     rule       = { class = "Firefox"     },
