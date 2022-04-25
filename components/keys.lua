@@ -155,10 +155,10 @@ awful.key({modkey}, "b", function() awful.spawn(apps.browser) end,
 --   ),
 awful.key({modkey}, "F1", hotkeys_popup.show_help,
           {description = "show help", group = "awesome"}),
-awful.key({modkey, "Ctrl"}, "q", awesome.quit,
-          {description = "quit awesome", group = "awesome"}),
-awful.key({modkey, "Ctrl"}, "l", function() awful.spawn(apps.lock) end,
-          {description = "lock screen", group = "awesome"}),
+-- awful.key({modkey, "Ctrl"}, "q", awesome.quit,
+--           {description = "quit awesome", group = "awesome"}),
+-- awful.key({modkey, "Ctrl"}, "l", function() awful.spawn(apps.lock) end,
+--           {description = "lock screen", group = "awesome"}),
 -- awful.key({modkey}, "F4", function()
 --    awful.prompt.run({prompt = "Run Lua code: "},
 --    mypromptbox[mouse.screen].widget,
@@ -209,13 +209,13 @@ awful.key({}, "Print", function() awful.spawn(apps.screenshot, false) end,
 -- =========================================
 
 -- Reload Awesome
-awful.key({modkey, "Ctrl"}, "r", awesome.restart,
-          {description = "reload awesome", group = "awesome"}), -- Quit Awesome
+-- awful.key({modkey, "Ctrl"}, "r", awesome.restart,
+--           {description = "reload awesome", group = "awesome"}), -- Quit Awesome
 awful.key({modkey, "Shift"}, "q", function()
     -- emit signal to show the exit screen
     -- awesome.emit_signal("show_exit_screen")
     awful.spawn(apps.power_menu, false)
-end, {description = "toggle exit screen", group = "awesome"}),
+end, {description = "show exit screen", group = "awesome"}),
 
 -- awful.key({}, "XF86PowerOff",
 --    function()
@@ -342,11 +342,20 @@ awful.key({modkey}, "t",
           {description = "toggle ontop", group = "client"}),
 -- restore minimized client
 awful.key({modkey, "Shift"}, "n", function()
+    -- for _, cl in ipairs(mouse.screen.selected_tag:clients()) do
+    --     if cl.minimized then
+    --         cl.minimized = false
+    --         client.focus = cl
+    --         cl:raise()
+    --         break
+    --     end
+    -- end
     local c = awful.client.restore()
     -- Focus restored client
     if c then
-        client.focus = c
-        c:raise()
+        c:emit_signal("request::activate", "key.unminimize", {raise = true})
+        -- client.focus = c
+        -- c:raise()
     end
 end, {description = "restore minimized", group = "client"}),
 -- Move to edge or swap by direction
