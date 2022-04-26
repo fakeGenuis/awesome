@@ -20,8 +20,6 @@ xcape -e "Control_L=Escape"
 # set screen saver time
 xset s 910
 
-DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-
 # Run xidlehook
 if ! pgrep -f xidlehook ; then
   xidlehook \
@@ -34,11 +32,11 @@ if ! pgrep -f xidlehook ; then
     --timer 900 \
       `# xrandr --output "$PRIMARY_DISPLAY" --brightness .1` \
       `# xrandr --output "$PRIMARY_DISPLAY" --brightness 1` \
-      'pgrep i3lock > /dev/null || notify-send -u critical "xidlehook" "Screen is about to lock" -i Fish -a ""' \
+      'notify-send -u critical "xidlehook" "Screen is about to lock" -i xidlehook -a ""' \
       '' \
     `# Undim & lock after 10 more seconds` \
     --timer 10 \
-      'pgrep i3lock > /dev/null || ${DIR}/i3lock.sh' \
+      'betterlockscreen -l' \
       '' \
     `# Finally, suspend an hour after it locks`
   #   --timer 3600 \
