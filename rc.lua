@@ -18,6 +18,7 @@ local beautiful = require("beautiful")
 local naughty = require("naughty")
 -- Declarative object management
 local ruled = require("ruled")
+local menubar = require("menubar")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -71,6 +72,24 @@ tag.connect_signal("request::default_layouts", function()
     })
 end)
 -- }}}
+
+client.connect_signal("manage", function(c)
+    local icon = menubar.utils.lookup_icon(c.instance)
+    local lower_icon = menubar.utils.lookup_icon(c.instance:lower())
+
+    --Check if the icon exists
+    if icon ~= nil then
+        c.icon = gears.surface(icon)._native
+
+    --Check if the icon exists in the lowercase variety
+    elseif lower_icon ~= nil then
+        c.icon = gears.surface(lower_icon)._native
+
+    --Check if the client already has an icon. If not, give it a default.
+    elseif c.icon == nil then
+        c.icon = gears.surface(menubar.utils.lookup_icon("application-default-icon"))._native
+    end
+end)
 
 -- {{{ Wibar
 require("components.topbar")

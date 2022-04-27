@@ -12,7 +12,7 @@ local layout_icons_path = require("gears.filesystem").get_configuration_dir() ..
 local theme = {}
 theme.font = "Sarasa Gothic SC 14"
 theme.iconfont = "Material Design Icons 16"
-theme.icon_theme = "/usr/share/icons/Papirus"
+theme.icon_theme = "Papirus"
 theme.wallpaper = "~/Pictures/Wallpapers/www.acg.gy_66.jpg"
 
 theme.tp = "#00000000"
