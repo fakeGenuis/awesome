@@ -76,21 +76,36 @@ function mywidgets.update_fg(c, widget_fg)
     return markup.fg.color(beautiful.fg_normal, text)
 end
 
+function mywidgets.float_to_rgb(fl, max, sec)
+  -- prefer color order: #00ff00 -> #0000ff -> #ff0000
+  -- calculation of rgb:
+  --            {max, max-sec*fl, max-sec}
+  -- correspond color order:
+  --            (max-sec, max, max-sec)     green           fl == 0
+  --         -> (max-sec, max, max)         green + blue    fl == 0.25
+  --         -> (max-sec, max-sec, max)     blue            fl == 0.5
+  --         -> (max, max-sec, max)         blue + red      fl == 0.75
+  --         -> (max, max-sec, max-sec)     red             fl == 1
+  --
+  -- fl:        position of color band      (range 0 - 1)
+  -- max:       max of rgb hex value        (range 0 - 255)
+  -- ratio:     second hex value            (range 0 - 255)
+  local function sf(i) return (i < 16 and '0' or '')..string.format("%x", i) end
+  local max, sec = max or 255, sec or 255
+  local r, g, b
+  r = max - math.floor(sec*(fl <= 0.5 and 1 or (fl <= 0.75 and 4*(0.75-fl) or 0)))
+  g = max - math.floor(sec*(fl <= 0.25 and 0 or (fl <= 0.5 and 4*(fl-0.25) or 1)))
+  -- green is too light
+  g = math.floor(0.6*g)
+  b = max - math.floor(sec*(fl <= 0.25 and 4*(0.25-fl) or (fl <= 0.75 and 0 or 4*(fl-0.75))))
+  return "#"..sf(r)..sf(g)..sf(b)
+end
+
 function mywidgets.usage_color(usage, max_value, power)
     local value = max_value or 100.0
     local percentage = tonumber(usage) / value
     if power then percentage = math.pow(percentage, 1 / power) end
-    local color
-    if percentage <= 0.25 then
-        color = beautiful.usage_healthy
-    elseif percentage <= 0.5 then
-        color = beautiful.usage_normal
-    elseif percentage <= 0.75 then
-        color = beautiful.usage_heavy
-    else
-        color = beautiful.usage_boom
-    end
-    return color
+    return mywidgets.float_to_rgb(percentage)
 end
 
 -- wrap a wibox with create and update callback function

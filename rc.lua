@@ -67,12 +67,13 @@ apps = {
 -- Table of layouts to cover with awful.layout.inc, order matters.
 tag.connect_signal("request::default_layouts", function()
     awful.layout.append_default_layouts({
-        awful.layout.suit.max, awful.layout.suit.tile,
-        awful.layout.suit.floating
+        awful.layout.suit.max, awful.layout.suit.max.fullscreen,
+        awful.layout.suit.fair, awful.layout.suit.floating
     })
 end)
 -- }}}
 
+-- https://www.reddit.com/r/awesomewm/comments/bva8t2/comment/epn7rf1/?utm_source=share&utm_medium=web2x&context=3
 client.connect_signal("manage", function(c)
     local icon = menubar.utils.lookup_icon(c.instance)
     local lower_icon = menubar.utils.lookup_icon(c.instance:lower())
