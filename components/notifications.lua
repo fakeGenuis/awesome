@@ -23,7 +23,7 @@ local mywidgets = require("mywidgets")
 
 -- naughty.config.padding = dpi(7)
 -- naughty.config.spacing = dpi(7)
-naughty.config.icon_dirs = {"/usr/share/icons/Papirus"}
+naughty.config.icon_dirs = {"Papirus"}
 -- naughty.config.icon_formats = {"png", "svg", "jpg"}
 --
 naughty.config.defaults.ontop = true
@@ -145,7 +145,7 @@ naughty.connect_signal('request::display', function(n)
             strategy = "max",
             width = beautiful.notification_max_width,
             widget = wibox.container.constraint,
-            opacity = 1,
+            opacity = 0.7,
         }
     }
 end)

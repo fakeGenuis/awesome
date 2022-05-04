@@ -10,8 +10,41 @@ local beautiful = require("beautiful")
 local dpi = beautiful.xresources.apply_dpi
 local lain = require("lain")
 local markup = lain.util.markup
+local awful = require("awful")
 
 local mywidgets = {}
+
+function mywidgets.shape(c, w, h) gears.shape.rounded_rect(c, w, h, dpi(7)) end
+
+-- 16:9 floating windows geometry
+function mywidgets.geometry(fraction, placement)
+    local workarea = awful.screen.focused().workarea
+    local x, y, width, height
+    local left, up
+    left = placement == "up_left" or placement == "bottom_left"
+    up = placement == "up_left" or placement == "up_right"
+    if workarea.width * 9 > workarea.height * 16 then
+        height =
+            math.floor(workarea.height * fraction) - 2 * beautiful.useless_gap - 2 *
+                beautiful.border_width
+        width = math.floor(height * 16 / 9)
+        y = up and (workarea.y + 2 * beautiful.useless_gap) or
+          (workarea.y + math.floor(workarea.height*(1 - fraction)))
+        x = left and (workarea.x + 2 * beautiful.useless_gap) or
+                (workarea.x + workarea.width - 2 * beautiful.useless_gap - 2 *
+                    beautiful.border_width - width)
+    else
+        width = math.floor(workarea.width * fraction) - 2 * beautiful.useless_gap - 2 *
+                    beautiful.border_width
+        height = math.floor(width * 9 / 16)
+        x = left and (workarea.x + 2 * beautiful.useless_gap) or
+                (workarea.x + math.floor(workarea.width*(1 - fraction)))
+        y = up and (workarea.y + 2 * beautiful.useless_gap) or
+                (workarea.y + workarea.height - 2 * beautiful.useless_gap - 2 *
+                    beautiful.border_width - height)
+    end
+    return x, y, width, height
+end
 
 -- return a textbox widget of icon font
 function mywidgets.icon_text(markup)
@@ -44,9 +77,7 @@ function mywidgets.block(wdgt, extra)
         -- border_width = beautiful.border_width,
         -- border_color = beautiful.wibox_border_color,
         id = "background",
-        shape = function(c, w, h)
-            gears.shape.rounded_rect(c, w, h, dpi(7))
-        end,
+        shape = mywidgets.shape,
         widget = wibox.container.background
     }
     for k, v in pairs(extra) do w[k] = v end
@@ -77,28 +108,36 @@ function mywidgets.update_fg(c, widget_fg)
 end
 
 function mywidgets.float_to_rgb(fl, max, sec)
-  -- prefer color order: #00ff00 -> #0000ff -> #ff0000
-  -- calculation of rgb:
-  --            {max, max-sec*fl, max-sec}
-  -- correspond color order:
-  --            (max-sec, max, max-sec)     green           fl == 0
-  --         -> (max-sec, max, max)         green + blue    fl == 0.25
-  --         -> (max-sec, max-sec, max)     blue            fl == 0.5
-  --         -> (max, max-sec, max)         blue + red      fl == 0.75
-  --         -> (max, max-sec, max-sec)     red             fl == 1
-  --
-  -- fl:        position of color band      (range 0 - 1)
-  -- max:       max of rgb hex value        (range 0 - 255)
-  -- ratio:     second hex value            (range 0 - 255)
-  local function sf(i) return (i < 16 and '0' or '')..string.format("%x", i) end
-  local max, sec = max or 255, sec or 255
-  local r, g, b
-  r = max - math.floor(sec*(fl <= 0.5 and 1 or (fl <= 0.75 and 4*(0.75-fl) or 0)))
-  g = max - math.floor(sec*(fl <= 0.25 and 0 or (fl <= 0.5 and 4*(fl-0.25) or 1)))
-  -- green is too light
-  g = math.floor(0.6*g)
-  b = max - math.floor(sec*(fl <= 0.25 and 4*(0.25-fl) or (fl <= 0.75 and 0 or 4*(fl-0.75))))
-  return "#"..sf(r)..sf(g)..sf(b)
+    -- prefer color order: #00ff00 -> #0000ff -> #ff0000
+    -- calculation of rgb:
+    --            {max, max-sec*fl, max-sec}
+    -- correspond color order:
+    --            (max-sec, max, max-sec)     green           fl == 0
+    --         -> (max-sec, max, max)         green + blue    fl == 0.25
+    --         -> (max-sec, max-sec, max)     blue            fl == 0.5
+    --         -> (max, max-sec, max)         blue + red      fl == 0.75
+    --         -> (max, max-sec, max-sec)     red             fl == 1
+    --
+    -- fl:        position of color band      (range 0 - 1)
+    -- max:       max of rgb hex value        (range 0 - 255)
+    -- ratio:     second hex value            (range 0 - 255)
+    local function sf(i)
+        return (i < 16 and '0' or '') .. string.format("%x", i)
+    end
+    local max, sec = max or 255, sec or 255
+    local r, g, b
+    r = max -
+            math.floor(
+                sec * (fl <= 0.5 and 1 or (fl <= 0.75 and 4 * (0.75 - fl) or 0)))
+    g = max -
+            math.floor(
+                sec * (fl <= 0.25 and 0 or (fl <= 0.5 and 4 * (fl - 0.25) or 1)))
+    -- green is too light
+    g = math.floor(0.6 * g)
+    b = max - math.floor(sec *
+                             (fl <= 0.25 and 4 * (0.25 - fl) or
+                                 (fl <= 0.75 and 0 or 4 * (fl - 0.75))))
+    return "#" .. sf(r) .. sf(g) .. sf(b)
 end
 
 function mywidgets.usage_color(usage, max_value, power)

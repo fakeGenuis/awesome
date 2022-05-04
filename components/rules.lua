@@ -3,12 +3,14 @@
 -- ===================================================================
 local awful = require("awful")
 local ruled = require("ruled")
+local mywidgets = require("mywidgets")
+local beautiful = require("beautiful")
 
 -- {{{ Rules
 -- Rules to apply to new clients.
-ruled.client.connect_signal("request::rules", function()
+ruled.client.connect_signal("request::rules", function(c)
     -- All clients will match this rule.
-    -- local geo = awful.screen.focused().geometry
+    local geo = awful.screen.focused().geometry
     ruled.client.append_rule {
         id = "global",
         rule = {},
@@ -16,6 +18,7 @@ ruled.client.connect_signal("request::rules", function()
             focus = awful.client.focus.filter,
             raise = true,
             screen = awful.screen.preferred,
+            shape = mywidgets.shape,
             placement = awful.placement.no_overlap +
                 awful.placement.no_offscreen,
             titlebars_enabled = false
@@ -47,6 +50,7 @@ ruled.client.connect_signal("request::rules", function()
         properties = {
             floating = true,
             placement = awful.placement.under_mouse,
+            skip_taskbar = true,
             ontop = true
         }
     }
@@ -63,6 +67,28 @@ ruled.client.connect_signal("request::rules", function()
         -- callback = function( c )
         --   c:geometry( { width = math.ceil(geo.width/3) , height = math.ceil(geo.height/8) } )
         --            end
+    }
+
+    -- can be memory comsume
+    -- TODO change following to properties and change by connect signal
+    local fx, fy, fwidth, fheight = mywidgets.geometry(0.5, "bottom_left")
+
+    ruled.client.append_rule {
+        id = "Play video in float window",
+        rule_any = {name = {"Picture-in-Picture", "Picture in picture"}},
+        properties = {
+            floating = true,
+            placement = awful.placement.bottom_right,
+            skip_taskbar = true,
+            sticky = true,
+            x = fx,
+            y = fy,
+            width = fwidth,
+            height = fheight,
+            opacity = 0.85,
+            shape = mywidgets.shape,
+            ontop = true
+        }
     }
     -- Set Firefox to always map on the tag named "2" on screen 1.
     -- ruled.client.append_rule {
