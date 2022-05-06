@@ -11,6 +11,9 @@ local layout_icons_path = require("gears.filesystem").get_configuration_dir() ..
 -- BASICS
 local theme = {}
 theme.font = "Sarasa Gothic SC 14"
+theme.title_font = "Sarasa Gothic SC Semi-Bold 14"
+theme.message_font = "Source Serif Pro 14"
+theme.lowlevel_font = "Sarasa UI SC Light 11"
 theme.iconfont = "Material Design Icons 16"
 theme.icon_theme = "Papirus"
 theme.wallpaper = "~/Pictures/Wallpapers/www.acg.gy_66.jpg"
@@ -21,7 +24,6 @@ theme.bg_normal = "#c6e2ff"
 theme.bg_focus = "#4169e1"
 theme.bg_urgent = "#fce94f"
 theme.bg_minimize = "#bf95d4"
-theme.bg_popup = "#b3c1da"
 
 theme.fg_normal = "#000000"
 theme.fg_focus = "#ffffff"
@@ -79,6 +81,7 @@ theme.layout_dwindle = layout_icons_path .. "dwindle.png"
 -- theme.notification_opacity = 1
 -- theme.notification_border_width = dpi(2)
 -- theme.notification_border_color = theme.tp
+theme.notification_spacing = 2*theme.useless_gap
 theme.notification_max_width = dpi(300)
 
 return theme
