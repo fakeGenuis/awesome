@@ -75,20 +75,24 @@ end)
 
 -- https://www.reddit.com/r/awesomewm/comments/bva8t2/comment/epn7rf1/?utm_source=share&utm_medium=web2x&context=3
 client.connect_signal("manage", function(c)
-    local icon = menubar.utils.lookup_icon(c.instance)
-    local lower_icon = menubar.utils.lookup_icon(c.instance:lower())
+    local icon, lower_icon
 
-    --Check if the icon exists
+    if c.instance then
+        icon = menubar.utils.lookup_icon(c.instance)
+        lower_icon = menubar.utils.lookup_icon(c.instance:lower())
+    end
+
+    -- Check if the icon exists
     if icon ~= nil then
         c.icon = gears.surface(icon)._native
 
-    --Check if the icon exists in the lowercase variety
+        -- Check if the icon exists in the lowercase variety
     elseif lower_icon ~= nil then
         c.icon = gears.surface(lower_icon)._native
 
-    --Check if the client already has an icon. If not, give it a default.
+        -- Check if the client already has an icon. If not, give it a default.
     elseif c.icon == nil then
-        c.icon = gears.surface(menubar.utils.lookup_icon("application-default-icon"))._native
+        c.icon = gears.surface(menubar.utils.lookup_icon("unknown"))._native
     end
 end)
 
@@ -148,14 +152,15 @@ ruled.notification.connect_signal('request::rules', function()
     -- All notifications will match this rule.
     ruled.notification.append_rule {
         rule = {},
-        properties = {screen = awful.screen.preferred, implicit_timeout = 5}
+        properties = { screen = awful.screen.preferred, implicit_timeout = 5 }
     }
 end)
 
 naughty.notification {
     title = 'Welcome',
     message = 'Awesome WM is started',
-    icon = beautiful.awesome_icon,
+    icon = "Diana-Circle",
+    app_name = "Awesome",
     urgency = 'normal'
 }
 -- }}}

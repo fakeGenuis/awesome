@@ -11,7 +11,6 @@ local wibox = require("wibox")
 local awful = require("awful")
 local gears = require("gears")
 local lain = require("lain")
-local naughty = require("naughty")
 local beautiful = require("beautiful")
 local dpi = beautiful.xresources.apply_dpi
 local mywidgets = require("mywidgets")
@@ -140,8 +139,8 @@ screen.connect_signal("request::desktop_decoration", function(s)
     s.mylayoutbox = mywidgets.block {
         {
             format = "%H:%M",
-            forced_height = beautiful.topbar_height - dpi(2),
-            forced_width = beautiful.topbar_height - dpi(2),
+            forced_height = beautiful.topbar_height - beautiful.margin_spacing,
+            forced_width = beautiful.topbar_height - beautiful.margin_spacing,
             widget = awful.widget.layoutbox
         },
         valign = 'center',
@@ -159,18 +158,10 @@ screen.connect_signal("request::desktop_decoration", function(s)
     s.mytaglist = awful.widget.taglist {
         screen = s,
         filter = awful.widget.taglist.filter.noempty,
-        widget_template = mywidgets.wibox_cb(mywidgets.block {
-            {
-                id = "text_role",
-                align = "center",
-                valign = "center",
-                font = beautiful.iconfont,
-                widget = wibox.widget.textbox
-            },
-            left = dpi(4),
-            right = dpi(4),
-            widget = wibox.container.margin
-        }),
+        widget_template = mywidgets.wibox_cb(mywidgets.block(
+                                                 mywidgets.textbox {
+                id = "text_role"
+            }, {forced_width = beautiful.topbar_height})),
         buttons = {
             awful.button({}, 1, function(t) t:view_only() end),
             awful.button({}, 3, awful.tag.viewtoggle),
@@ -195,12 +186,10 @@ screen.connect_signal("request::desktop_decoration", function(s)
         widget_template = mywidgets.wibox_cb {
             {
                 awful.widget.clienticon,
-                mywidgets.block {
+                mywidgets.block(mywidgets.textbox {
                     id = "text_role",
-                    align = "center",
-                    valign = "center",
-                    widget = wibox.widget.textbox
-                },
+                    font = beautiful.font
+                }),
                 spacing = beautiful.spacing,
                 layout = wibox.layout.fixed.horizontal
             },
@@ -210,16 +199,14 @@ screen.connect_signal("request::desktop_decoration", function(s)
         buttons = {
             awful.button({}, 1, function(c)
                 c:activate{context = "tasklist", action = "toggle_minimization"}
+            end), awful.button({}, 3, function()
+                awful.menu.client_list {theme = {width = 270}}
             end)
-            -- awful.button({}, 3, function()
-            --     awful.menu.client_list {theme = {width = 270}}
-            -- end),
         }
     }
 
     -- systray widget
     s.mysystray = mywidgets.block({
-
         {
             screen = s or screen.primary,
             base_size = beautiful.topbar_height,
@@ -227,13 +214,17 @@ screen.connect_signal("request::desktop_decoration", function(s)
             opacity = 0,
             widget = wibox.widget.systray
         },
+        -- to hide rectangle systray corner
         left = dpi(4),
         right = dpi(4),
         widget = wibox.container.margin
-    }, {bg = beautiful.bg_minimize})
+    }, {
+        -- cover the unsetable wibox.widget.systray bg
+        bg = beautiful.bg_minimize
+    })
 
     -- Create the wibox
-    s.mywibox = awful.wibar({
+    s.mywibox = awful.wibar {
         type = 'dock',
         position = "top",
         height = beautiful.topbar_height,
@@ -241,7 +232,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
         margins = {top = beautiful.spacing, bottom = 0},
         opacity = 1,
         screen = s
-    })
+    }
 
     -- s.mywibox:struts{top = dpi(25)}
 
@@ -258,8 +249,8 @@ screen.connect_signal("request::desktop_decoration", function(s)
                 s.mypromptbox
             },
             {
-                left = dpi(2),
-                right = dpi(4),
+                left = beautiful.margin_spacing,
+                right = beautiful.margin_spacing,
                 s.mytasklist, -- Middle widget
                 widget = wibox.container.margin
             },

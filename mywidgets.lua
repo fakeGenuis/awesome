@@ -24,30 +24,29 @@ function mywidgets.geometry(fraction, placement)
     left = placement == "up_left" or placement == "bottom_left"
     up = placement == "up_left" or placement == "up_right"
     if workarea.width * 9 > workarea.height * 16 then
-        height =
-            math.floor(workarea.height * fraction) - 2 * beautiful.useless_gap - 2 *
-                beautiful.border_width
+        height = math.floor(workarea.height * fraction) - 2 *
+            beautiful.useless_gap - 2 * beautiful.border_width
         width = math.floor(height * 16 / 9)
         y = up and (workarea.y + 2 * beautiful.useless_gap) or
-          (workarea.y + math.floor(workarea.height*(1 - fraction)))
+            (workarea.y + math.floor(workarea.height * (1 - fraction)))
         x = left and (workarea.x + 2 * beautiful.useless_gap) or
-                (workarea.x + workarea.width - 2 * beautiful.useless_gap - 2 *
-                    beautiful.border_width - width)
+            (workarea.x + workarea.width - 2 * beautiful.useless_gap - 2 *
+                beautiful.border_width - width)
     else
-        width = math.floor(workarea.width * fraction) - 2 * beautiful.useless_gap - 2 *
-                    beautiful.border_width
+        width = math.floor(workarea.width * fraction) - 2 *
+            beautiful.useless_gap - 2 * beautiful.border_width
         height = math.floor(width * 9 / 16)
         x = left and (workarea.x + 2 * beautiful.useless_gap) or
-                (workarea.x + math.floor(workarea.width*(1 - fraction)))
+            (workarea.x + math.floor(workarea.width * (1 - fraction)))
         y = up and (workarea.y + 2 * beautiful.useless_gap) or
-                (workarea.y + workarea.height - 2 * beautiful.useless_gap - 2 *
-                    beautiful.border_width - height)
+            (workarea.y + workarea.height - 2 * beautiful.useless_gap - 2 *
+                beautiful.border_width - height)
     end
     return x, y, width, height
 end
 
 -- return a textbox widget of icon font
-function mywidgets.icon_text(markup)
+function mywidgets.textbox(extra)
     local w = {
         align = "center",
         valign = "center",
@@ -55,7 +54,7 @@ function mywidgets.icon_text(markup)
         font = beautiful.iconfont,
         widget = wibox.widget.textbox
     }
-    if markup then w.markup = markup end
+    for k, v in pairs(extra) do w[k] = v end
     return w
 end
 
@@ -65,23 +64,80 @@ function mywidgets.block(wdgt, extra)
     local w = {
         {
             wdgt,
-            -- left and right margin: make up backgound shape round
-            left = dpi(2),
-            right = dpi(2),
-            -- top and bottom margin: make up border round
-            -- top = dpi(2),
-            -- bottom = dpi(2),
+            left = beautiful.margin_spacing,
+            right = beautiful.margin_spacing,
             widget = wibox.container.margin
         },
         bg = beautiful.bg_normal,
-        -- border_width = beautiful.border_width,
-        -- border_color = beautiful.wibox_border_color,
         id = "background",
         shape = mywidgets.shape,
         widget = wibox.container.background
     }
     for k, v in pairs(extra) do w[k] = v end
     return w
+end
+
+-- wrap a wibox with create and update callback function
+function mywidgets.wibox_cb(o)
+    local o = o or {}
+    function o:create_callback(c, index, objects)
+        local widget_text = self:get_children_by_id("text")[1]
+        local widget_bg = self:get_children_by_id("background")[1]
+
+        if widget_bg then widget_bg.bg = mywidgets.update_bg(c) end
+        if widget_text then
+            widget_text.markup = mywidgets.update_fg(c, widget_text)
+        end
+    end
+
+    function o:update_callback(c, index, objects)
+        local widget_text = self:get_children_by_id("text")[1]
+        local widget_bg = self:get_children_by_id("background")[1]
+
+        if widget_bg then widget_bg.bg = mywidgets.update_bg(c) end
+        if widget_text then
+            widget_text.markup = mywidgets.update_fg(c, widget_text)
+        end
+    end
+
+    return o
+end
+
+-- TODO how to connect to action selected signal
+function mywidgets.clickable(wgt)
+    local wgt = wibox.widget { wgt, widget = wibox.container.place }
+    local old_cursor, old_wibox
+
+    wgt:connect_signal("mouse::enter", function(c)
+        local text = c:get_children_by_id("text_role")[1]
+        local bg = c:get_children_by_id("background")[1]
+        if text then
+            text:set_markup(markup.fg.color(beautiful.fg_focus,
+                mywidgets.mfmt_clear(text.markup)))
+        end
+        if bg then
+            bg:set_bg(beautiful.bg_focus)
+        end
+        local wb = mouse.current_wibox
+        old_cursor, old_wibox = wb.cursor, wb
+        wb.cursor = "hand2"
+    end)
+
+    wgt:connect_signal("mouse::leave", function(c)
+        local text = c:get_children_by_id("text_role")[1]
+        local bg = c:get_children_by_id("background")[1]
+        if text then
+            text:set_markup(markup.fg.color(beautiful.fg_focus,
+                mywidgets.mfmt_clear(text.markup)))
+        end
+        if bg then bg:set_bg(beautiful.bg_button) end
+        if old_wibox then
+            old_wibox.cursor = old_cursor
+            old_wibox = nil
+        end
+    end)
+
+    return wgt
 end
 
 -- return widget background depends on client or tag status
@@ -124,52 +180,29 @@ function mywidgets.float_to_rgb(fl, max, sec)
     local function sf(i)
         return (i < 16 and '0' or '') .. string.format("%x", i)
     end
+
     local max, sec = max or 255, sec or 255
     local r, g, b
     r = max -
-            math.floor(
-                sec * (fl <= 0.5 and 1 or (fl <= 0.75 and 4 * (0.75 - fl) or 0)))
+        math.floor(
+            sec * (fl <= 0.5 and 1 or (fl <= 0.75 and 4 * (0.75 - fl) or 0)))
     g = max -
-            math.floor(
-                sec * (fl <= 0.25 and 0 or (fl <= 0.5 and 4 * (fl - 0.25) or 1)))
+        math.floor(
+            sec * (fl <= 0.25 and 0 or (fl <= 0.5 and 4 * (fl - 0.25) or 1)))
     -- green is too light
     g = math.floor(0.6 * g)
     b = max - math.floor(sec *
-                             (fl <= 0.25 and 4 * (0.25 - fl) or
-                                 (fl <= 0.75 and 0 or 4 * (fl - 0.75))))
+        (fl <= 0.25 and 4 * (0.25 - fl) or
+            (fl <= 0.75 and 0 or 4 * (fl - 0.75))))
     return "#" .. sf(r) .. sf(g) .. sf(b)
 end
 
 function mywidgets.usage_color(usage, max_value, power)
     local value = max_value or 100.0
     local percentage = tonumber(usage) / value
+    if percentage > 1 then percentage = 1 end
     if power then percentage = math.pow(percentage, 1 / power) end
     return mywidgets.float_to_rgb(percentage)
-end
-
--- wrap a wibox with create and update callback function
-function mywidgets.wibox_cb(o)
-    local o = o or {}
-    function o:create_callback(c, index, objects)
-        local widget_text = self:get_children_by_id("text")[1]
-        local widget_bg = self:get_children_by_id("background")[1]
-
-        if widget_bg then widget_bg.bg = mywidgets.update_bg(c) end
-        if widget_text then
-            widget_text.markup = mywidgets.update_fg(c, widget_text)
-        end
-    end
-
-    function o:update_callback(c, index, objects)
-        local widget_text = self:get_children_by_id("text")[1]
-        local widget_bg = self:get_children_by_id("background")[1]
-
-        if widget_bg then widget_bg.bg = mywidgets.update_bg(c) end
-        if widget_text then
-            widget_text.markup = mywidgets.update_fg(c, widget_text)
-        end
-    end
-    return o
 end
 
 -- clear Pango markup format
