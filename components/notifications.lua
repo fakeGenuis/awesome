@@ -18,11 +18,13 @@ local naughty = require("naughty")
 local beautiful = require("beautiful")
 local dpi = beautiful.xresources.apply_dpi
 local menubar = require("menubar")
-local mywidgets = require("mywidgets")
+local mw = require("mywidgets")
 local markup = require("lain").util.markup
 
 -- naughty.config.padding = 2*beautiful.useless_gap
-naughty.config.icon_dirs = {"/usr/share/icons/Papirus/", "~/.local/share/icons/"}
+naughty.config.icon_dirs = {
+    "/usr/share/icons/Papirus/", "~/.local/share/icons/"
+}
 -- naughty.config.icon_formats = {"png", "svg", "jpg"}
 --
 naughty.config.defaults.ontop = true
@@ -30,19 +32,19 @@ naughty.config.defaults.icon_size = dpi(32)
 naughty.config.defaults.timeout = 7
 --
 -- naughty.config.presets.normal = {
---     fg = beautiful.fg_focus,
---     bg = beautiful.bg_focus
+--   fg = beautiful.fg_focus,
+--   bg = beautiful.bg_focus
 -- }
---
+
 -- naughty.config.presets.low = {
---     fg = beautiful.fg_normal,
---     bg = beautiful.bg_normal
+--   fg = beautiful.fg_normal,
+--   bg = beautiful.bg_normal
 -- }
---
+
 -- naughty.config.presets.critical = {
---     fg = beautiful.fg_urgent,
---     bg = beautiful.bg_urgent,
---     timeout = 0
+--   fg = beautiful.fg_urgent,
+--   bg = beautiful.bg_urgent,
+--   timeout = 0
 -- }
 
 -- notification icon
@@ -63,8 +65,8 @@ naughty.connect_signal('request::display', function(n)
         app_icon = n.image
     end
 
-    n.title = markup.font(beautiful.title_font, n.title)
-    n.message = markup.font(beautiful.message_font, n.message)
+    n.title = markup.bold(n.title)
+    n.message = markup.font(beautiful.small_font, n.message)
 
     local app_icon_box = nil
     if app_icon then
@@ -77,10 +79,12 @@ naughty.connect_signal('request::display', function(n)
         }
     end
 
-    local app_name = mywidgets.icon_text(n.app_name or "System Notification")
-    app_name.font = beautiful.lowlevel_font
+    local app_name = mw.textbox {
+        markup = n.app_name ~= "" and n.app_name or "System Notification"
+    }
+    app_name.font = beautiful.small_font
 
-    -- local dismiss_button = mywidgets.block {mywidgets.icon_text("󰅙")}
+    -- local dismiss_button = mw.block {mw.icon_text("󰅙")}
     -- dismiss_button:connect_signal("button::press", function(_, _, _, button)
     --     if button == 1 then n:destroy(nil, 1) end
     -- end)
@@ -94,25 +98,35 @@ naughty.connect_signal('request::display', function(n)
         layout = wibox.layout.align.horizontal
     }
 
-    local text_widget = mywidgets.icon_text()
-    text_widget.id = "text_role"
-    text_widget.font = beautiful.font
-
     local action_list = wibox.widget {
         notification = n,
         base_layout = wibox.widget {
             spacing = beautiful.spacing,
-            layout = wibox.layout.fixed.horizontal
+            layout = wibox.layout.flex.horizontal
         },
-        widget_template = mywidgets.block (text_widget),
+        widget_template = {
+            {
+                mw.block(mw.textbox {id = "text_role", font = beautiful.font},
+                         {id = "background", bg = beautiful.bg_button}),
+                top = beautiful.margin_spacing,
+                bottom = beautiful.margin_spacing,
+                widget = wibox.container.margin
+            },
+
+            widget = mw.clickable
+        },
         style = {
-            bg_normal = beautiful.bg_normal,
-            bg_selected = beautiful.bg_focus
+            underline_normal = false,
+            underline_selected = true,
+            fg_normal = beautiful.fg_focus,
+            bg_normal = beautiful.bg_button
+            -- bg_selected        = beautiful.bg_focus,
+            -- fg_selected        = beautiful.fg_focus
         },
         widget = naughty.list.actions
     }
 
-    local notify_box = mywidgets.block({
+    local notify_box = mw.block({
         app_name_and_icon,
         {
             {
@@ -130,7 +144,7 @@ naughty.connect_signal('request::display', function(n)
                 spacing = beautiful.spacing,
                 layout = wibox.layout.fixed.vertical
             },
-            spacing = beautiful.spacing,
+            spacing = 2 * beautiful.spacing,
             layout = wibox.layout.fixed.horizontal
         },
         action_list,
@@ -141,8 +155,10 @@ naughty.connect_signal('request::display', function(n)
         notification = n,
         type = 'notification',
         hide_on_right_click = true,
+        maximum_width = dpi(350),
+        minimum_width = dpi(200),
         placement = awful.placement.top_right,
-        shape = mywidgets.shape,
+        shape = mw.shape,
         widget_template = notify_box
     }
 end)

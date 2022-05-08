@@ -6,36 +6,37 @@
 local beautiful = require("beautiful")
 local dpi = require("beautiful.xresources").apply_dpi
 local layout_icons_path = require("gears.filesystem").get_configuration_dir() ..
-                              "icons/layout/"
+    "icons/layout/"
 
 -- BASICS
 local theme = {}
 theme.font = "Sarasa Gothic SC 14"
-theme.title_font = "Sarasa Gothic SC Semi-Bold 14"
-theme.message_font = "Source Serif Pro 14"
-theme.lowlevel_font = "Sarasa UI SC Light 11"
+theme.bold_font = "Sarasa Gothic SC Semi-Bold 14"
+theme.small_font = "Sarasa UI SC 11"
 theme.iconfont = "Material Design Icons 16"
 theme.icon_theme = "Papirus"
 theme.wallpaper = "~/Pictures/Wallpapers/www.acg.gy_66.jpg"
 
 theme.tp = "#00000000"
--- theme.bg_normal      = "#87cefa"
-theme.bg_normal = "#c6e2ff"
-theme.bg_focus = "#4169e1"
+theme.bg_normal      = "#cae1ff"
+theme.bg_focus = "#4876ff"
 theme.bg_urgent = "#fce94f"
-theme.bg_minimize = "#bf95d4"
+theme.bg_minimize = "#9f79ee"
+theme.bg_button = "#63b8ff"
 
 theme.fg_normal = "#000000"
 theme.fg_focus = "#ffffff"
 theme.fg_urgent = "#ff0051"
-theme.fg_minimize = "#000000"
+theme.fg_minimize = theme.fg_focus
 
 theme.wibar_bg = theme.tp
-theme.wibox_border_color = "#00000000"
+theme.wibox_border_color = theme.tp
 theme.bg_systray = theme.bg_minimize
+
+theme.systray_icon_spacing = dpi(1)
 theme.topbar_height = dpi(23)
 theme.spacing = dpi(3)
-theme.systray_icon_spacing = dpi(1)
+theme.margin_spacing = dpi(2)
 theme.taglist_spacing = dpi(3)
 theme.tasklist_spacing = dpi(3)
 
@@ -81,8 +82,7 @@ theme.layout_dwindle = layout_icons_path .. "dwindle.png"
 -- theme.notification_opacity = 1
 -- theme.notification_border_width = dpi(2)
 -- theme.notification_border_color = theme.tp
-theme.notification_spacing = 2*theme.useless_gap
-theme.notification_max_width = dpi(300)
+theme.notification_spacing = 2 * theme.useless_gap
 
 return theme
 
