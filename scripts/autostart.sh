@@ -15,7 +15,7 @@ run qv2ray
 fcitx5 -rd
 pidof nextcloud || nextcloud &
 emacsclient -e "1" || emacs --daemon &
-xcape -e "Control_L=Escape"
+run xcape -e "Control_L=Escape"
 
 # set screen saver time
 xset s 910

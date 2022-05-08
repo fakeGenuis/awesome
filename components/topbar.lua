@@ -249,8 +249,8 @@ screen.connect_signal("request::desktop_decoration", function(s)
                 s.mypromptbox
             },
             {
-                left = beautiful.margin_spacing,
-                right = beautiful.margin_spacing,
+                left = beautiful.spacing,
+                right = beautiful.spacing,
                 s.mytasklist, -- Middle widget
                 widget = wibox.container.margin
             },

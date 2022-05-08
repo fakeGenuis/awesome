@@ -82,17 +82,23 @@ client.connect_signal("manage", function(c)
         lower_icon = menubar.utils.lookup_icon(c.instance:lower())
     end
 
+    local new_icon
+
     -- Check if the icon exists
     if icon ~= nil then
-        c.icon = gears.surface(icon)._native
+        new_icon = gears.surface(icon)
 
         -- Check if the icon exists in the lowercase variety
     elseif lower_icon ~= nil then
-        c.icon = gears.surface(lower_icon)._native
+        new_icon = gears.surface(lower_icon)
 
         -- Check if the client already has an icon. If not, give it a default.
     elseif c.icon == nil then
-        c.icon = gears.surface(menubar.utils.lookup_icon("unknown"))._native
+        new_icon = gears.surface(menubar.utils.lookup_icon("unknown"))
+    end
+
+    if new_icon then
+        c.icon = new_icon._native
     end
 end)
 
