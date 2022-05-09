@@ -103,21 +103,21 @@ function mywidgets.wibox_cb(o)
     return o
 end
 
--- TODO how to connect to action selected signal
 function mywidgets.clickable(wgt)
-    local wgt = wibox.widget { wgt, widget = wibox.container.place }
+    local wgt = wibox.widget { wgt,
+        id = "background",
+        bg = beautiful.bg_button,
+        shape = mywidgets.shape,
+        widget = wibox.container.background }
     local old_cursor, old_wibox
 
     wgt:connect_signal("mouse::enter", function(c)
         local text = c:get_children_by_id("text_role")[1]
-        local bg = c:get_children_by_id("background")[1]
         if text then
             text:set_markup(markup.fg.color(beautiful.fg_focus,
                 mywidgets.mfmt_clear(text.markup)))
         end
-        if bg then
-            bg:set_bg(beautiful.bg_focus)
-        end
+        wgt:set_bg(beautiful.bg_focus)
         local wb = mouse.current_wibox
         old_cursor, old_wibox = wb.cursor, wb
         wb.cursor = "hand2"
@@ -125,12 +125,11 @@ function mywidgets.clickable(wgt)
 
     wgt:connect_signal("mouse::leave", function(c)
         local text = c:get_children_by_id("text_role")[1]
-        local bg = c:get_children_by_id("background")[1]
         if text then
             text:set_markup(markup.fg.color(beautiful.fg_focus,
                 mywidgets.mfmt_clear(text.markup)))
         end
-        if bg then bg:set_bg(beautiful.bg_button) end
+        wgt:set_bg(beautiful.bg_button)
         if old_wibox then
             old_wibox.cursor = old_cursor
             old_wibox = nil

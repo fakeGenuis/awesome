@@ -52,7 +52,7 @@ naughty.connect_signal('request::icon', function(n, context, hints)
     if context ~= 'app_icon' then return end
 
     local path = menubar.utils.lookup_icon(hints.app_icon) or
-                     menubar.utils.lookup_icon(hints.app_icon:lower())
+        menubar.utils.lookup_icon(hints.app_icon:lower())
 
     if path then n.icon = path end
 end)
@@ -84,16 +84,10 @@ naughty.connect_signal('request::display', function(n)
     }
     app_name.font = beautiful.small_font
 
-    -- local dismiss_button = mw.block {mw.icon_text("󰅙")}
-    -- dismiss_button:connect_signal("button::press", function(_, _, _, button)
-    --     if button == 1 then n:destroy(nil, 1) end
-    -- end)
-
-    local app_name_and_icon = wibox.widget {
-        nil,
-        app_name,
+    local notify_top = wibox.widget {
         app_icon_box,
-        -- dismiss_button,
+        app_name,
+        mw.textbox { markup = os.date("%H:%M"), font = beautiful.small_font },
         expand = "inside",
         layout = wibox.layout.align.horizontal
     }
@@ -102,32 +96,30 @@ naughty.connect_signal('request::display', function(n)
         notification = n,
         base_layout = wibox.widget {
             spacing = beautiful.spacing,
-            layout = wibox.layout.flex.horizontal
+            layout = wibox.layout.fixed.horizontal
         },
         widget_template = {
             {
-                mw.block(mw.textbox {id = "text_role", font = beautiful.font},
-                         {id = "background", bg = beautiful.bg_button}),
-                top = beautiful.margin_spacing,
-                bottom = beautiful.margin_spacing,
+                mw.textbox { id = "text_role", font = beautiful.font },
+                left = beautiful.margin_spacing,
+                right = beautiful.margin_spacing,
                 widget = wibox.container.margin
             },
-
             widget = mw.clickable
         },
         style = {
             underline_normal = false,
             underline_selected = true,
             fg_normal = beautiful.fg_focus,
-            bg_normal = beautiful.bg_button
+            -- bg_normal = beautiful.bg_button
             -- bg_selected        = beautiful.bg_focus,
             -- fg_selected        = beautiful.fg_focus
         },
         widget = naughty.list.actions
     }
 
-    local notify_box = mw.block({
-        app_name_and_icon,
+    local notify_box = {
+        notify_top,
         {
             {
                 {
@@ -147,9 +139,13 @@ naughty.connect_signal('request::display', function(n)
             spacing = 2 * beautiful.spacing,
             layout = wibox.layout.fixed.horizontal
         },
-        action_list,
+        {
+            action_list,
+            widget = wibox.container.place
+        },
+        spacing = beautiful.spacing,
         layout = wibox.layout.fixed.vertical
-    })
+    }
 
     naughty.layout.box {
         notification = n,
@@ -159,6 +155,11 @@ naughty.connect_signal('request::display', function(n)
         minimum_width = dpi(200),
         placement = awful.placement.top_right,
         shape = mw.shape,
-        widget_template = notify_box
+        widget_template = mw.block {
+            notify_box,
+            top = beautiful.margin_spacing,
+            bottom = beautiful.margin_spacing,
+            widget = wibox.container.margin
+        }
     }
 end)
