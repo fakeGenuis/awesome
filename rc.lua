@@ -67,8 +67,9 @@ apps = {
 -- Table of layouts to cover with awful.layout.inc, order matters.
 tag.connect_signal("request::default_layouts", function()
     awful.layout.append_default_layouts({
-        awful.layout.suit.max, awful.layout.suit.max.fullscreen,
+        awful.layout.suit.max,
         awful.layout.suit.fair, awful.layout.suit.floating
+, awful.layout.suit.max.fullscreen
     })
 end)
 -- }}}
