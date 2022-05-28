@@ -6,6 +6,7 @@ function run {
   fi
 }
 
+run xsettingsd -c ~/.config/xsettingsd/xsettingsd.conf
 run /usr/lib/polkit-kde-authentication-agent-1
 run picom --experimental-backends
 run redshift-gtk

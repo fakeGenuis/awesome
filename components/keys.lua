@@ -147,6 +147,8 @@ awful.key({modkey}, "r", function() awful.spawn(apps.filebrowser) end,
           {description = "open file browser", group = "launcher"}),
 awful.key({modkey}, "b", function() awful.spawn(apps.browser) end,
           {description = "open browser", group = "launcher"}),
+awful.key({modkey}, "d", function() awful.spawn(apps.dark_toggle) end,
+          {description = "toggle dark/light gtk theme", group = "awesome"}),
 --   awful.key({ modkey }, "p",
 --      function()
 --         menubar.show()

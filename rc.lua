@@ -57,9 +57,10 @@ apps = {
     terminal = "alacritty",
     editor = os.getenv("VISUAL") or os.getenv("EDITOR"),
     launcher = "rofi -show combi",
-    browser = "librewolf",
+    browser = "librewolf -p work",
     screenshot = scripts_dir .. "screenshot.fish",
-    filebrowser = "alacritty -e ranger"
+    filebrowser = "alacritty -e ranger",
+    dark_toggle = scripts_dir .. "switcher.fish"
 }
 -- }}}
 
