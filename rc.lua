@@ -69,7 +69,7 @@ tag.connect_signal("request::default_layouts", function()
     awful.layout.append_default_layouts({
         awful.layout.suit.max,
         awful.layout.suit.fair, awful.layout.suit.floating
-, awful.layout.suit.max.fullscreen
+        , awful.layout.suit.max.fullscreen
     })
 end)
 -- }}}
@@ -105,31 +105,6 @@ end)
 
 -- {{{ Wibar
 require("components.topbar")
--- only wallpaper remain when windows fullscreen
--- with transparency
-client.connect_signal("property::fullscreen", function(c)
-    local s = awful.screen.focused()
-    local t = s.selected_tag
-    if c.class == 'Emacs' or c.class == 'emacs' then
-        if c.fullscreen then
-            s.mywibox.visible = false
-            for _, c1 in ipairs(t:clients()) do
-                if c1 ~= client.focus and not c1.minimized then
-                    c1.minimized = true
-                    c1.visible_mark = true
-                end
-            end
-        else
-            s.mywibox.visible = true
-            for _, c1 in ipairs(t:clients()) do
-                if c1.visible_mark then
-                    c1.minimized = false
-                    c1.visible_mark = false
-                end
-            end
-        end
-    end
-end)
 -- }}}
 
 -- {{{ Key and Mouse bindings
