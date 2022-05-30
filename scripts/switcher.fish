@@ -9,5 +9,5 @@ else
 end
 
 sed -i 's/'(string join / $search_and_replace)'/g' ~/.config/xsettingsd/xsettingsd.conf
-notify-send -u normal "Awesome" "Change to $search_and_replace[2] GTK theme." -i ASoul-Diana -a awesome
+notify-send -u normal "Awesome" "Switch to $search_and_replace[2] GTK theme." -i ASoul-Diana -a awesome
 killall -HUP xsettingsd
