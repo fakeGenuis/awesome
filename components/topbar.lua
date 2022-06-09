@@ -16,7 +16,7 @@ local dpi = beautiful.xresources.apply_dpi
 local mywidgets = require("mywidgets")
 local markup = lain.util.markup
 
-local pulse = require("widgets.pulse")
+local pipewire = require("widgets.pipewire")
 
 -- {{{ Wibar
 --
@@ -49,7 +49,7 @@ lain.widget.net {
 }
 
 -- volume
-local volume = pulse {
+local volume = pipewire {
   settings = function()
     local vl = tonumber(volume_now.left)
     local color = mywidgets.usage_color(vl)
