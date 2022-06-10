@@ -198,7 +198,7 @@ end
 
 function mywidgets.usage_color(usage, max_value, power)
     local value = max_value or 100.0
-    local percentage = tonumber(usage or 0) / value
+    local percentage = ((type(usage) == number) and usage or tonumber(usage or 0)) / value
     if percentage > 1 then percentage = 1 end
     if power then percentage = math.pow(percentage, 1 / power) end
     return mywidgets.float_to_rgb(percentage)

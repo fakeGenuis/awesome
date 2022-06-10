@@ -7,16 +7,16 @@
 -- Initialization
 -- ===================================================================
 -- Widget and layout library
-local wibox = require("wibox")
-local awful = require("awful")
-local gears = require("gears")
-local lain = require("lain")
+local wibox     = require("wibox")
+local awful     = require("awful")
+local gears     = require("gears")
+local lain      = require("lain")
 local beautiful = require("beautiful")
-local dpi = beautiful.xresources.apply_dpi
+local bluetooth = require("widgets.bluetooth")
+local dpi       = beautiful.xresources.apply_dpi
 local mywidgets = require("mywidgets")
-local markup = lain.util.markup
-
-local pipewire = require("widgets.pipewire")
+local markup    = lain.util.markup
+local pipewire  = require("widgets.pipewire")
 
 -- {{{ Wibar
 --
@@ -81,6 +81,16 @@ end)))
 -- system info widget
 local myinfoblock = mywidgets.block {
 
+  bluetooth {
+    settings = function()
+      local color = mywidgets.usage_color(100 - tonumber(battery_now.battery))
+      widget:set_markup(markup.fontfg(beautiful.iconfont, color,
+        battery_now.icon))
+    end
+  },
+
+  volume,
+
   -- network
   net_down,
   -- mywidgets.icon_text("󰁞"),
@@ -94,8 +104,6 @@ local myinfoblock = mywidgets.block {
       widget:set_markup(markup.fontfg(beautiful.iconfont, color,
         "󰚰" .. stdout))
     end),
-
-  volume,
 
   -- cpu usage
   lain.widget.cpu {
