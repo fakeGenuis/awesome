@@ -30,26 +30,10 @@ local mytextclock = mywidgets.block {
   widget = wibox.widget.textclock
 }
 
--- Network info
-local net_up = wibox.widget.textbox();
-local net_down = wibox.widget.textbox();
-
--- update textbox markup
-lain.widget.net {
-  wifi_state = "on",
-  eth_state = "on",
-  settings = function()
-    local rec = net_now.received
-    local color = mywidgets.usage_color(rec, 1024 * 60, 4)
-    net_up:set_markup(mywidgets.KMG(net_now.sent))
-    net_down:set_markup(markup.fontfg(beautiful.iconfont, color,
-      "󰁆" .. mywidgets.KMG(rec)))
-  end
-}
-
 -- system info widget
 local myinfoblock = mywidgets.block {
 
+  -- Bluetooth device battery (if pluged in)
   bluetooth {
     settings = function()
       local color = mywidgets.usage_color(100 - battery_now.battery)
@@ -58,12 +42,19 @@ local myinfoblock = mywidgets.block {
     end
   },
 
-  -- network
-  net_down,
-  -- mywidgets.icon_text("󰁞"),
-  -- net_up,
+  -- Network info
+  lain.widget.net {
+    wifi_state = "on",
+    eth_state = "on",
+    settings = function()
+      local rec = net_now.received
+      local color = mywidgets.usage_color(rec, 1024 * 60, 4)
+      widget:set_markup(markup.fontfg(beautiful.iconfont, color,
+        "󰁆" .. mywidgets.KMG(rec)))
+    end
+  },
 
-  -- package upgradable
+  -- Package upgradable
   awful.widget.watch(
     'bash -c "pamac checkupdates | grep -E [0-9\\.]- | wc -l"', 3600,
     function(widget, stdout)
