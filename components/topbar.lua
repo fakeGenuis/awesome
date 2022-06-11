@@ -9,7 +9,6 @@
 -- Widget and layout library
 local wibox     = require("wibox")
 local awful     = require("awful")
-local gears     = require("gears")
 local lain      = require("lain")
 local beautiful = require("beautiful")
 local bluetooth = require("widgets.bluetooth")
@@ -47,36 +46,6 @@ lain.widget.net {
       "󰁆" .. mywidgets.KMG(rec)))
   end
 }
-
--- volume
-local volume = pipewire {
-  settings = function()
-    local vl = tonumber(volume_now.left)
-    local color = mywidgets.usage_color(vl)
-    local mark
-    if volume_now.muted == 'yes' then
-      mark = "󰝟"
-      vl = ""
-    else
-      if vl == 0 then
-        mark = "󰖁"
-      elseif vl < 33 then
-        mark = "󰕿"
-      elseif vl < 66 then
-        mark = "󰖀"
-      else
-        mark = "󰕾"
-      end
-    end
-    widget:set_markup(markup.fontfg(beautiful.iconfont, color, mark .. vl))
-  end
-}
-volume.widget:buttons(gears.table.join(awful.button({}, 4,
-  function() -- scroll up
-    awful.spawn("pactl set-sink-volume @DEFAULT_SINK@ +3%", false)
-  end), awful.button({}, 5, function() -- scroll down
-  awful.spawn("pactl set-sink-volume @DEFAULT_SINK@ -3%", false)
-end)))
 
 -- system info widget
 local myinfoblock = mywidgets.block {
@@ -123,7 +92,14 @@ local myinfoblock = mywidgets.block {
     end
   },
 
-  volume,
+  -- volume
+  pipewire {
+    settings = function()
+      local vl = volume_now.left
+      local color = mywidgets.usage_color(vl)
+      widget:set_markup(markup.fontfg(beautiful.iconfont, color, icon(vl) .. vl))
+    end
+  },
 
   -- lain.widget.temp({
   --     settings = function() widget:set_markup("󰈸" .. coretemp_now) end
