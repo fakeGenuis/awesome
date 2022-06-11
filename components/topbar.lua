@@ -83,13 +83,11 @@ local myinfoblock = mywidgets.block {
 
   bluetooth {
     settings = function()
-      local color = mywidgets.usage_color(100 - tonumber(battery_now.battery))
+      local color = mywidgets.usage_color(100 - battery_now.battery)
       widget:set_markup(markup.fontfg(beautiful.iconfont, color,
         battery_now.icon))
     end
   },
-
-  volume,
 
   -- network
   net_down,
@@ -124,6 +122,8 @@ local myinfoblock = mywidgets.block {
         string.format("%.0f", perc)))
     end
   },
+
+  volume,
 
   -- lain.widget.temp({
   --     settings = function() widget:set_markup("󰈸" .. coretemp_now) end

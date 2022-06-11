@@ -34,7 +34,7 @@ local function factory(args)
             string.format("upower -i %s", battery_now.device_path) }, function(s)
             battery_now.model = string.match(s, "model: +(%S+)") or "N/A"
             battery_now.charged = string.match(s, "power supply: +(%S+)") or "N/A"
-            battery_now.battery = string.match(s, "percentage: +(%d+)%%") or "N/A"
+            battery_now.battery = tonumber(string.match(s, "percentage: +(%d+)%%")) or 0
             battery_now.icon = bluetooth.icon(battery_now.battery) or "N/A"
 
             widget = bluetooth.widget
@@ -43,12 +43,11 @@ local function factory(args)
     end
 
     function bluetooth.icon(battery)
-        local battery_perc = tonumber(battery)
-        local icons = beautiful.bluetooth_battery_icons or { "󰥇", "󰤾", "󰤿", "󰥀", "󰥁", "󰥂", "󰥃", "󰥄",
-            "󰥅", "󰥆", "󰥈" }
+        local icons = beautiful.bluetooth_battery_icons or
+            {"󱃍", "󰤾", "󰤿", "󰥀", "󰥁", "󰥂", "󰥃", "󰥄", "󰥅", "󰥆", "󰥈" }
 
-        local idx = math.floor(battery_perc * (#icons - 1) / 100) + 1
-        return icons[idx]
+        local idx = math.ceil(battery * (#icons - 1) / 100) + 1
+        return (battery_now.model == "N/A") and "" or icons[idx]
     end
 
     helpers.newtimer("bluetooth", timeout, bluetooth.update)
