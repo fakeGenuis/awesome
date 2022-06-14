@@ -160,6 +160,10 @@ screen.connect_signal("request::desktop_decoration", function(s)
   s.mytasklist = awful.widget.tasklist {
     screen = s,
     filter = awful.widget.tasklist.filter.currenttags,
+    layout = wibox.widget {
+      spacing = beautiful.spacing,
+      layout = wibox.layout.fixed.horizontal
+    },
     widget_template = mywidgets.wibox_cb {
       {
         awful.widget.clienticon,
@@ -217,7 +221,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
   s.mywibox:setup {
     {
       layout = wibox.layout.align.horizontal,
-      -- expand = 'none',
+      expand = 'inside',
       { -- Left widgets
         layout = wibox.layout.fixed.horizontal,
         spacing = beautiful.spacing,
@@ -225,11 +229,14 @@ screen.connect_signal("request::desktop_decoration", function(s)
         s.mytasklist_icons,
         s.mypromptbox
       },
-      {
-        left = beautiful.spacing,
-        right = beautiful.spacing,
-        s.mytasklist, -- Middle widget
-        widget = wibox.container.margin
+      { -- Middle widget
+        {
+          left = beautiful.spacing,
+          right = beautiful.spacing,
+          s.mytasklist,
+          widget = wibox.container.margin
+        },
+        widget = wibox.container.place
       },
       { -- Right widgets
         layout = wibox.layout.fixed.horizontal,
