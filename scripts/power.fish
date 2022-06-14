@@ -18,7 +18,8 @@ switch $ask
     case lock
         betterlockscreen -l
     case logout
-        loginctl terminate-session $XDG_SESSION_ID
+        # loginctl terminate-session $XDG_SESSION_ID
+        awesome-client "awesome.quit()"
     case reload
         awesome-client "awesome.restart()"
 end

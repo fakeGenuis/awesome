@@ -30,6 +30,23 @@ local mytextclock = mywidgets.block {
   widget = wibox.widget.textclock
 }
 
+-- extra netdown textbox
+local mynetdown = wibox.widget.textbox()
+
+-- update netdown markup
+-- see https://github.com/lcpz/lain/wiki/net#usage-examples
+-- and https://github.com/lcpz/lain/issues/464
+lain.widget.net {
+  wifi_state = "on",
+  eth_state = "on",
+  settings = function()
+    local rec = net_now.received
+    local color = mywidgets.usage_color(rec, 1024 * 60, 4)
+    mynetdown:set_markup(markup.fontfg(beautiful.iconfont, color,
+      "󰁆" .. mywidgets.KMG(rec)))
+  end
+}
+
 -- system info widget
 local myinfoblock = mywidgets.block {
 
@@ -43,16 +60,7 @@ local myinfoblock = mywidgets.block {
   },
 
   -- Network info
-  lain.widget.net {
-    wifi_state = "on",
-    eth_state = "on",
-    settings = function()
-      local rec = net_now.received
-      local color = mywidgets.usage_color(rec, 1024 * 60, 4)
-      widget:set_markup(markup.fontfg(beautiful.iconfont, color,
-        "󰁆" .. mywidgets.KMG(rec)))
-    end
-  },
+  mynetdown,
 
   -- Package upgradable
   awful.widget.watch(
