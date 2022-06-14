@@ -17,7 +17,7 @@ local string    = string
 local function factory(args)
     args = args or {}
 
-    local bluetooth = { widget = args.widget or wibox.widget.textbox(), device = "N/A" }
+    local bluetooth = { widget = args.widget or wibox.widget.textbox() }
     local timeout   = args.timeout or 5
     local settings  = args.settings or function() end
 
@@ -44,7 +44,7 @@ local function factory(args)
 
     function bluetooth.icon(battery)
         local icons = beautiful.bluetooth_battery_icons or
-            {"󱃍", "󰤾", "󰤿", "󰥀", "󰥁", "󰥂", "󰥃", "󰥄", "󰥅", "󰥆", "󰥈" }
+            { "󱃍", "󰤾", "󰤿", "󰥀", "󰥁", "󰥂", "󰥃", "󰥄", "󰥅", "󰥆", "󰥈" }
 
         local idx = math.ceil(battery * (#icons - 1) / 100) + 1
         return (battery_now.model == "N/A") and "" or icons[idx]

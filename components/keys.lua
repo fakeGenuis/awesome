@@ -179,7 +179,8 @@ keys.globalkeys = gears.table.join(-- =========================================
         { description = "+10%", group = "awesome" }),
     awful.key({}, "XF86MonBrightnessDown",
         function() awful.spawn("xbacklight -dec 10", false) end,
-        { description = "-10%", group = "awesome" }), -- ALSA volume control
+        { description = "-10%", group = "awesome" }),
+    -- Pipewire-pulsa volume control
     awful.key({}, "XF86AudioRaiseVolume", function()
         awful.spawn("pactl set-sink-volume @DEFAULT_SINK@ +3%", false)
         awesome.emit_signal("volume_change")

@@ -11,18 +11,18 @@ local layout_icons_path = require("gears.filesystem").get_configuration_dir() ..
 -- BASICS
 local theme = {}
 theme.font = "Sarasa Gothic SC 14"
-theme.bold_font = "Sarasa Gothic SC Semi-Bold 14"
-theme.small_font = "Sarasa UI SC 11"
+theme.bold_font = "Sarasa Gothic SC Semi-Bold 15"
+theme.small_font = "Sarasa UI SC 13"
 theme.iconfont = "Material Design Icons 16"
 theme.icon_theme = "Papirus"
 theme.wallpaper = "~/Pictures/Wallpapers/www.acg.gy_66.jpg"
 
-theme.tp = "#00000000"
-theme.bg_normal      = "#cae1ff"
-theme.bg_focus = "#4876ff"
-theme.bg_urgent = "#fce94f"
+theme.tp          = "#00000000"
+theme.bg_normal   = "#cae1ff"
+theme.bg_focus    = "#4876ff"
+theme.bg_urgent   = "#fce94f"
 theme.bg_minimize = "#9f79ee"
-theme.bg_button = "#63b8ff"
+theme.bg_button   = "#63b8ff"
 
 theme.fg_normal = "#000000"
 theme.fg_focus = "#ffffff"

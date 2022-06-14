@@ -9,10 +9,7 @@ local helpers   = require("lain.helpers")
 local shell     = require("awful.util").shell
 local wibox     = require("wibox")
 local beautiful = require("beautiful")
-local awful     = require("awful")
-local gears     = require("gears")
 local string    = string
-local type      = type
 
 -- pipewire volume
 -- lain.widget.pipewire
@@ -20,7 +17,7 @@ local type      = type
 local function factory(args)
     args = args or {}
 
-    local pipewire = { widget = args.widget or wibox.widget.textbox(), device = "N/A" }
+    local pipewire = { widget = args.widget or wibox.widget.textbox() }
     local timeout  = args.timeout or 5
     local settings = args.settings or function() end
 

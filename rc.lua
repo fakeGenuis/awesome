@@ -142,7 +142,7 @@ end)
 naughty.notification {
     title = 'Welcome',
     message = 'Awesome WM is started',
-    icon = "Diana-Circle",
+    app_icon = "Diana-Circle",
     app_name = "Awesome",
     urgency = 'normal'
 }
