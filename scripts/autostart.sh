@@ -7,7 +7,7 @@ function run {
 }
 
 run xsettingsd -c ~/.config/xsettingsd/xsettingsd.conf
-run /usr/lib/polkit-kde-authentication-agent-1
+run /usr/bin/lxqt-policykit-agent
 run picom --experimental-backends
 run redshift-gtk
 run kdeconnect-indicator
