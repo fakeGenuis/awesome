@@ -59,7 +59,7 @@ apps = {
     launcher = "rofi -show combi",
     browser = "librewolf -p work",
     screenshot = scripts_dir .. "screenshot.fish",
-    filebrowser = "emacsclient -nc -e '(dirvish)'",
+    filebrowser = "alacritty -e ranger",
     dark_toggle = scripts_dir .. "switcher.fish"
 }
 -- }}}
