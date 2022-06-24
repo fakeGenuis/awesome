@@ -143,6 +143,8 @@ keys.globalkeys = gears.table.join(-- =========================================
         { description = "open application launcher", group = "launcher" }),
     awful.key({ modkey }, "e", function() awful.spawn(apps.editor) end,
         { description = "open editor", group = "launcher" }),
+    awful.key({ modkey, "Shift" }, "e", function() awful.spawn(apps.emacs_everywhere) end,
+        { description = "edit in emacs", group = "launcher" }),
     awful.key({ modkey }, "r", function() awful.spawn(apps.filebrowser) end,
         { description = "open file browser", group = "launcher" }),
     awful.key({ modkey }, "b", function() awful.spawn(apps.browser) end,

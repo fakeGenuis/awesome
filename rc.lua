@@ -56,6 +56,7 @@ apps = {
     power_menu = scripts_dir .. "power.fish",
     terminal = "alacritty",
     editor = os.getenv("VISUAL") or os.getenv("EDITOR"),
+    emacs_everywhere = "emacsclient --eval \"(emacs-everywhere)\"",
     launcher = "rofi -show combi",
     browser = "librewolf -p work",
     screenshot = scripts_dir .. "screenshot.fish",
