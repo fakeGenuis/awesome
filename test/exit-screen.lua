@@ -34,7 +34,12 @@ local actions = {
     lock = {
         name = "lock",
         icon_name = "lock-screen",
-        command = "betterlockscreen -l"
+        command = function(self)
+            -- stop key grabber first for betterlockscreen (i3lock) to work
+            -- otherwise: `i3lock: Cannot grab pointer/keyboard`
+            self:stop()
+            awful.spawn("betterlockscreen -l")
+        end,
     },
     logout = {
         name = "logout",
@@ -186,6 +191,8 @@ local exit_screen_grabber = awful.keygrabber {
         awesome.emit_signal('module::exit_screen:hide')
     end,
     keybindings = exit_keys,
+    -- stop_key triggered before keybindings work
+    -- so one cannot put keys in keybindings to stop_keys
     stop_key = cancel_action.keys
 }
 
