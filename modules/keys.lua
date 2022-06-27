@@ -1,21 +1,20 @@
 -- ===================================================================
 -- Initialization
 -- ===================================================================
-local awful = require("awful")
-local gears = require("gears")
-local naughty = require("naughty")
-local beautiful = require("beautiful")
--- local lain = require("lain")
-local dpi = beautiful.xresources.apply_dpi
-
--- Define mod keys
-local modkey = "Mod4"
-local altkey = "Mod1"
+local awful         = require("awful")
+local gears         = require("gears")
+local naughty       = require("naughty")
+local beautiful     = require("beautiful")
+local dpi           = beautiful.xresources.apply_dpi
 -- hotkeys pop up
 local hotkeys_popup = require("awful.hotkeys_popup.widget")
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
-local pop_keys = require("awful.hotkeys_popup.keys")
+local pop_keys      = require("awful.hotkeys_popup.keys")
+
+-- Define mod keys
+local modkey = "Mod4"
+local altkey = "Mod1"
 pop_keys.tmux.add_rules_for_terminal({
     rule_any = { name = { "tmux" }, instance = { "tmux" } }
 })
@@ -418,7 +417,7 @@ keys.clientkeys = gears.table.join(-- Focus client by direction (jk keys)
         { description = "decrease the number of columns", group = "layout" }))
 
 -- Load firefox keyboard shortcuts
-local firefox_keys = require("components.firefox_keys")
+local firefox_keys = require("modules.firefox_keys")
 hotkeys_popup.add_hotkeys(firefox_keys)
 
 --

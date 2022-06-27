@@ -47,7 +47,7 @@ for s = 1, screen.count() do
     gears.wallpaper.maximized(beautiful.wallpaper, s, true)
 end
 
--- define default apps (global variable so other components can access it)
+-- define default apps (global variable so other modules can access it)
 apps = {
     network_manager = "", -- recommended: nm-connection-editor
     power_manager = "", -- recommended: xfce4-power-manager
@@ -106,16 +106,16 @@ client.connect_signal("manage", function(c)
 end)
 
 -- {{{ Wibar
-require("components.topbar")
+require("modules.topbar")
 -- }}}
 
 -- {{{ Rules
 -- Rules to apply to new clients.
-require("components.rules")
+require("modules.rules")
 -- }}}
 
 -- {{{ Notifications
-require("components.notifications")
+require("modules.notifications")
 
 ruled.notification.connect_signal('request::rules', function()
     -- All notifications will match this rule.
@@ -135,7 +135,7 @@ naughty.notification {
 -- }}}
 
 -- {{{ Key and Mouse bindings
-local keys = require("components.keys")
+local keys = require("modules.keys")
 -- awful.keyboard.append_global_keybindings(keys.globalkeys)
 -- General Awesome keys and buttons
 root.keys(keys.globalkeys)
@@ -148,5 +148,5 @@ client.connect_signal("request::default_keybindings", function()
     awful.keyboard.append_client_keybindings(keys.clientkeys)
 end)
 
-require("test.exit-screen")
+require("modules.exit-screen")
 -- }}}
