@@ -109,21 +109,6 @@ end)
 require("components.topbar")
 -- }}}
 
--- {{{ Key and Mouse bindings
-local keys = require("components.keys")
--- awful.keyboard.append_global_keybindings(keys.globalkeys)
--- General Awesome keys and buttons
-root.keys(keys.globalkeys)
-root.buttons(keys.desktopbuttons)
--- client related keys and buttons
-client.connect_signal("request::default_mousebindings", function()
-    awful.mouse.append_client_mousebindings(keys.clientmouse)
-end)
-client.connect_signal("request::default_keybindings", function()
-    awful.keyboard.append_client_keybindings(keys.clientkeys)
-end)
--- }}}
-
 -- {{{ Rules
 -- Rules to apply to new clients.
 require("components.rules")
@@ -147,4 +132,21 @@ naughty.notification {
     app_name = "Awesome",
     urgency = 'normal'
 }
+-- }}}
+
+-- {{{ Key and Mouse bindings
+local keys = require("components.keys")
+-- awful.keyboard.append_global_keybindings(keys.globalkeys)
+-- General Awesome keys and buttons
+root.keys(keys.globalkeys)
+root.buttons(keys.desktopbuttons)
+-- client related keys and buttons
+client.connect_signal("request::default_mousebindings", function()
+    awful.mouse.append_client_mousebindings(keys.clientmouse)
+end)
+client.connect_signal("request::default_keybindings", function()
+    awful.keyboard.append_client_keybindings(keys.clientkeys)
+end)
+
+require("test.exit-screen")
 -- }}}

@@ -3,7 +3,6 @@
 --   | |   | |_| | |  _|   | |\/| | |  _|
 --   | |   |  _  | | |___  | |  | | | |___
 --   |_|   |_| |_| |_____| |_|  |_| |_____|
-local beautiful = require("beautiful")
 local dpi = require("beautiful.xresources").apply_dpi
 local layout_icons_path = require("gears.filesystem").get_configuration_dir() ..
     "icons/layout/"
@@ -14,10 +13,12 @@ theme.font = "Sarasa Gothic SC 14"
 theme.bold_font = "Sarasa Gothic SC Semi-Bold 14"
 theme.small_font = "Sarasa UI SC 12"
 theme.iconfont = "Material Design Icons 16"
+-- specific a monospace font for representing key
+theme.key_font = "mononoki Nerd Font Mono 16"
 theme.icon_theme = "Papirus"
 theme.wallpaper = "~/Pictures/Wallpapers/www.acg.gy_66.jpg"
 
-theme.tp          = "#00000000"
+theme.transparen  = "#00000000"
 theme.bg_normal   = "#cae1ff"
 theme.bg_focus    = "#4876ff"
 theme.bg_urgent   = "#fce94f"
@@ -29,8 +30,8 @@ theme.fg_focus = "#ffffff"
 theme.fg_urgent = "#ff0051"
 theme.fg_minimize = theme.fg_focus
 
-theme.wibar_bg = theme.tp
-theme.wibox_border_color = theme.tp
+theme.wibar_bg = theme.transparen
+theme.wibox_border_color = theme.transparen
 theme.bg_systray = theme.bg_minimize
 
 theme.systray_icon_spacing = dpi(1)

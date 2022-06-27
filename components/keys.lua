@@ -143,7 +143,8 @@ keys.globalkeys = gears.table.join(-- =========================================
         { description = "open application launcher", group = "launcher" }),
     awful.key({ modkey }, "e", function() awful.spawn(apps.editor) end,
         { description = "open editor", group = "launcher" }),
-    awful.key({ modkey, "Shift" }, "e", function() awful.spawn(apps.emacs_everywhere) end,
+    awful.key({ modkey, "Shift" }, "e",
+        function() awful.spawn(apps.emacs_everywhere) end,
         { description = "edit in emacs", group = "launcher" }),
     awful.key({ modkey }, "r", function() awful.spawn(apps.filebrowser) end,
         { description = "open file browser", group = "launcher" }),
@@ -221,6 +222,10 @@ keys.globalkeys = gears.table.join(-- =========================================
         -- awesome.emit_signal("show_exit_screen")
         awful.spawn(apps.power_menu, false)
     end, { description = "show exit screen", group = "awesome" }),
+    awful.key({ modkey, "Shift" }, "z", function()
+        -- emit signal to show the exit screen
+        awesome.emit_signal("module::exit_screen:show")
+    end, { description = "alter show exit screen", group = "awesome" }),
 
     -- awful.key({}, "XF86PowerOff",
     --    function()
