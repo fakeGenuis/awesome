@@ -71,7 +71,7 @@ end
 local create_exit_screen = function(s)
     s.exit_screen = wibox {
         bg        = beautiful.transparen,
-        fg        = beautiful.fg_normal,
+        fg        = beautiful.fg_focus,
         ontop     = true,
         opacity   = 0.75,
         placement = awful.placement.center,

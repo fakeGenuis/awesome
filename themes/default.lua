@@ -12,7 +12,7 @@ local theme = {}
 theme.font = "Sarasa Gothic SC 14"
 theme.bold_font = "Sarasa Gothic SC Semi-Bold 14"
 theme.small_font = "Sarasa UI SC 12"
-theme.iconfont = "Material Design Icons 16"
+theme.iconfont = "Material Design Icons 14"
 -- specific a monospace font for representing key
 theme.key_font = "mononoki Nerd Font Mono 16"
 theme.icon_theme = "Papirus"

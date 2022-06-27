@@ -38,7 +38,7 @@ function images.image_desc_box(act, args)
     }
 
     local desc_box = mywidgets.block(
-        mywidgets.textbox { markup = act.name },
+        mywidgets.textbox { markup = act.name, font = beautiful.key_font },
         { bg = beautiful.bg_button }
     )
 
