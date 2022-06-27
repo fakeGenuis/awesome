@@ -218,13 +218,8 @@ keys.globalkeys = gears.table.join(-- =========================================
     --           {description = "reload awesome", group = "awesome"}), -- Quit Awesome
     awful.key({ modkey, "Shift" }, "q", function()
         -- emit signal to show the exit screen
-        -- awesome.emit_signal("show_exit_screen")
-        awful.spawn(apps.power_menu, false)
-    end, { description = "show exit screen", group = "awesome" }),
-    awful.key({ modkey, "Shift" }, "z", function()
-        -- emit signal to show the exit screen
         awesome.emit_signal("module::exit_screen:show")
-    end, { description = "alter show exit screen", group = "awesome" }),
+    end, { description = "show exit screen", group = "awesome" }),
 
     -- awful.key({}, "XF86PowerOff",
     --    function()

@@ -1,4 +1,5 @@
 #!/usr/bin/env fish
+# should be abandoned cause there is modules/exit-screen.lua
 
 set icon_path "$HOME/.local/share/icons/hicolor/128x128/apps/"
 set icon_name zenity
