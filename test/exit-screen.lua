@@ -13,12 +13,8 @@ local wibox        = require("wibox")
 
 local actions = {
     reload = {
-        -- display name of action
         name = "reload",
-        -- from <a href="https://www.flaticon.com/free-icons/reload" title="reload icons">Reload icons created by syafii5758 - Flaticon</a>
-        -- can be a name string or relative path to awesome config or system obselute path
         icon_name = "reload",
-        -- command when action
         command = awesome.restart
     },
     sleep = {

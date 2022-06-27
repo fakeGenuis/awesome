@@ -1,0 +1,4 @@
+#+title: Attribution
+
+- cancel :: <a href="https://www.flaticon.com/free-icons/cancel" title="cancel icons">Cancel icons created by PureSolution - Flaticon</a>
+- reload :: <a href="https://www.flaticon.com/free-icons/reload" title="reload icons">Reload icons created by Andy Horvath - Flaticon</a>
