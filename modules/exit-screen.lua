@@ -12,18 +12,15 @@ local actions = { -- index table to preserve order
         name      = "reload",
         icon_name = "reload",
         command   = awesome.restart
-    },
-    {
+    }, {
         name      = "suspend",
         icon_name = "suspend",
         command   = "systemctl suspend"
-    },
-    {
+    }, {
         name      = "reboot",
         icon_name = "reboot",
         command   = "systemctl reboot"
-    },
-    {
+    }, {
         name      = "lock",
         icon_name = "lock-screen",
         command   = function(self)
@@ -32,13 +29,11 @@ local actions = { -- index table to preserve order
             self:stop()
             awful.spawn("betterlockscreen -l")
         end,
-    },
-    {
+    }, {
         name      = "logout",
         icon_name = "log-out",
         command   = awesome.quit
-    },
-    {
+    }, {
         name      = "shutdown",
         icon_name = "shut-down",
         command   = "systemctl poweroff"
@@ -95,14 +90,13 @@ local create_exit_screen = function(s)
     local profile_box = images.image_desc_box(profile_action, { image_size = dpi(96) })
     local cancel_box = images.image_desc_box(cancel_action, { prefix = "system-" })
 
-    s.exit_screen:setup {
-        {
-            layout = wibox.layout.fixed.vertical,
-            spacing = dpi(64),
-            profile_box,
-            action_boxs,
-            cancel_box
-        }, widget = wibox.container.place }
+    s.exit_screen:setup { {
+        layout = wibox.layout.fixed.vertical,
+        spacing = dpi(64),
+        profile_box,
+        action_boxs,
+        cancel_box
+    }, widget = wibox.container.place }
 end
 
 local exit_keys = {}

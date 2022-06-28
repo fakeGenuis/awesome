@@ -27,6 +27,7 @@ end
 function images.image_desc_box(act, args)
     local image_size = args.image_size or dpi(64)
     local prefix = args.prefix or ""
+    local layout = args.layout or wibox.layout.fixed.vertical
 
     local image_box = wibox.widget {
         -- clip_shape    = gears.shape.circle,
@@ -54,7 +55,7 @@ function images.image_desc_box(act, args)
             widget = wibox.container.place
         },
         spacing = 2 * beautiful.spacing,
-        layout = wibox.layout.fixed.vertical
+        layout = layout
     }
 
     return box
