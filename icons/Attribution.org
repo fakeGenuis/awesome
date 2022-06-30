@@ -2,3 +2,6 @@
 
 - cancel :: <a href="https://www.flaticon.com/free-icons/cancel" title="cancel icons">Cancel icons created by PureSolution - Flaticon</a>
 - reload :: <a href="https://www.flaticon.com/free-icons/reload" title="reload icons">Reload icons created by Andy Horvath - Flaticon</a>
+- pin :: <a href="https://www.flaticon.com/free-icons/reminder" title="reminder icons">Reminder icons created by Freepik - Flaticon</a>
+- clipboard :: <a href="https://www.flaticon.com/free-icons/files-and-folders" title="files and folders icons">Files and folders icons created by Smashicons - Flaticon</a>
+- gallery :: <a href="https://www.flaticon.com/free-icons/gallery" title="gallery icons">Gallery icons created by Freepik - Flaticon</a>

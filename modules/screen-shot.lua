@@ -30,7 +30,7 @@ local actions = {
             argu = " | feh --no-screen-clip -"
         }, {
             name = "file",
-            icon_name = "media-image",
+            icon_name = "gallery",
             callback = function(exec_command)
                 helpers.async({ "bash", "-c", "echo $(date +%F_%T).png" }, function(s)
                     local image_path = beautiful.screenshot_dir .. s
@@ -47,7 +47,7 @@ local actions = {
             end
         }, {
             name = "clipboard",
-            icon_name = "xclipboard",
+            icon_name = "clipboard",
             argu = " | xclip -selection clipboard -t image/png",
             callback = function(exec_command)
                 helpers.async({ shell, "-c", exec_command }, function(_)
@@ -85,6 +85,7 @@ screenshot.popup = awful.popup {
         bottom = beautiful.margin_spacing,
         { layout = wibox.layout.fixed.vertical,
             spacing = beautiful.spacing,
+            mywidgets.block(mywidgets.textbox { markup = "Screen-shot Tool" }),
             screenshot.target,
             screenshot.output,
         },
@@ -103,7 +104,7 @@ for _, act in ipairs(actions.output) do
 end
 
 screenshot.grabber = awful.keygrabber {
-    timeout = 7,
+    timeout = beautiful.timeout,
     stop_event = 'press',
     -- stop_key triggered before keybindings work
     -- so one cannot put keys in keybindings to stop_keys

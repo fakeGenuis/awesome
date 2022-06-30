@@ -30,11 +30,13 @@ theme.bg_button   = "#63b8ff"
 
 theme.fg_normal = "#000000"
 theme.fg_focus  = "#ffffff"
-theme.fg_urgent = "#ff1493"
+theme.fg_urgent = "#ee0000"
 
 theme.wibar_bg           = theme.transparen
 theme.wibox_border_color = theme.transparen
 theme.bg_systray         = theme.bg_minimize
+
+theme.timeout = 15
 
 theme.systray_icon_spacing = dpi(1)
 theme.spacing              = dpi(3)
