@@ -205,9 +205,10 @@ keys.globalkeys = gears.table.join(-- =========================================
         function() awful.spawn("playerctl play-pause", false) end,
         { description = "play/pause music", group = "awesome" }),
 
-    -- Screenshot on prtscn using scrot
-    awful.key({}, "Print", function() awful.spawn(apps.screenshot, false) end,
-        { description = "screenshot", group = "awesome" }),
+    awful.key({}, "Print", function()
+        -- awful.spawn(apps.screenshot, false)
+        awesome.emit_signal('module::screenshot:show')
+    end, { description = "screenshot", group = "awesome" }),
 
     -- =========================================
     -- RELOAD / QUIT AWESOME

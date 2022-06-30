@@ -150,3 +150,5 @@ end)
 
 require("modules.exit-screen")
 -- }}}
+
+require("modules.screen-shot")
