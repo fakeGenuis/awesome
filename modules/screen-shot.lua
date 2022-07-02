@@ -31,6 +31,7 @@ local actions = {
         }, {
             name = "file",
             icon_name = "gallery",
+            argu = " ",
             callback = function(exec_command)
                 helpers.async({ "bash", "-c", "echo $(date +%F_%T).png" }, function(s)
                     local image_path = beautiful.screenshot_dir .. s

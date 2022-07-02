@@ -59,9 +59,9 @@ naughty.config.defaults.timeout = 7
 
 naughty.connect_signal('request::display', function(n)
     local app_icon = nil
-    if n.app_icon and n.app_icon ~= '' then
+    if n.app_icon then
         app_icon = get_icon(n.app_icon) or get_icon(n.app_icon:lower())
-    elseif n.app_name and n.app_name ~= '' then
+    elseif n.app_name then
         app_icon = get_icon(n.app_name) or get_icon(n.app_name:lower())
     end
 
@@ -80,14 +80,16 @@ naughty.connect_signal('request::display', function(n)
     end
 
     local app_name = mw.textbox {
-        markup = n.app_name ~= "" and n.app_name or "System Notification"
+        markup = n.app_name or "System Notification"
     }
     app_name.font = beautiful.small_font
 
+
+    n.date = os.date("%H:%M")
     local notify_top = wibox.widget {
         app_icon_box,
         app_name,
-        mw.textbox { markup = os.date("%H:%M"), font = beautiful.small_font },
+        mw.textbox { markup = n.date, font = beautiful.small_font },
         expand = "inside",
         layout = wibox.layout.align.horizontal
     }
