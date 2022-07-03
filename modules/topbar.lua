@@ -214,16 +214,22 @@ screen.connect_signal("request::desktop_decoration", function(s)
 
     -- Create the wibox
     s.mywibox = awful.wibar {
-        type = 'dock',
+        stretch  = true,
+        type     = 'dock',
         position = "top",
-        height = beautiful.topbar_height,
-        width = s.geometry.width - 2 * beautiful.spacing,
-        margins = { top = beautiful.spacing, bottom = 0 },
-        opacity = 1,
-        screen = s
+        height   = beautiful.topbar_height,
+        -- width   = s.geometry.width - 2 * beautiful.spacing,
+        margins  = {
+            top    = beautiful.spacing,
+            bottom = 0,
+            left   = beautiful.spacing,
+            right  = beautiful.spacing
+        },
+        opacity  = 1,
+        screen   = s
     }
 
-    -- s.mywibox:struts{top = dpi(25)}
+    s.mywibox:struts { top = beautiful.topbar_height + beautiful.spacing }
 
     -- Add widgets to the wibox
     s.mywibox:setup {
