@@ -21,6 +21,7 @@ local menubar   = require("menubar")
 local get_icon  = menubar.utils.lookup_icon
 local mw        = require("helpers.mywidgets")
 local markup    = require("lain").util.markup
+local images    = require("helpers.images")
 
 -- naughty.config.padding = 2*beautiful.useless_gap
 naughty.config.icon_dirs = {
@@ -57,7 +58,7 @@ naughty.config.defaults.timeout = 7
 --   if path then n.icon = path end
 -- end)
 
-naughty.connect_signal('request::display', function(n)
+local function notify_box(n)
     local app_icon = nil
     if n.app_icon then
         app_icon = get_icon(n.app_icon) or get_icon(n.app_icon:lower())
@@ -65,30 +66,22 @@ naughty.connect_signal('request::display', function(n)
         app_icon = get_icon(n.app_name) or get_icon(n.app_name:lower())
     end
 
-    n.title = markup.font(beautiful.bold_font, n.title)
-    n.message = markup.font(beautiful.small_font, n.message)
+    local app_icon_box = app_icon and wibox.widget {
+        image = app_icon,
+        resize = true,
+        forced_height = beautiful.topbar_height,
+        forced_width = beautiful.topbar_height,
+        widget = wibox.widget.imagebox
+    } or nil
 
-    local app_icon_box = nil
-    if app_icon then
-        app_icon_box = wibox.widget {
-            image = app_icon,
-            resize = true,
-            forced_height = beautiful.topbar_height,
-            forced_width = beautiful.topbar_height,
-            widget = wibox.widget.imagebox
-        }
-    end
-
-    local app_name = mw.textbox {
-        markup = n.app_name or "System Notification"
+    local app_name_box = mw.textbox {
+        markup = n.app_name or "System Notification",
+        font = beautiful.small_font
     }
-    app_name.font = beautiful.small_font
 
-
-    n.date = os.date("%H:%M")
     local notify_top = wibox.widget {
         app_icon_box,
-        app_name,
+        app_name_box,
         mw.textbox { markup = n.date, font = beautiful.small_font },
         expand = "inside",
         layout = wibox.layout.align.horizontal
@@ -120,7 +113,7 @@ naughty.connect_signal('request::display', function(n)
         widget = naughty.list.actions
     }
 
-    local notify_box = {
+    local box = {
         notify_top,
         {
             {
@@ -149,6 +142,15 @@ naughty.connect_signal('request::display', function(n)
         layout = wibox.layout.fixed.vertical
     }
 
+    return box
+end
+
+naughty.connect_signal('request::display', function(n)
+
+    n.date = os.date("%H:%M")
+    n.title = markup.font(beautiful.bold_font, n.title)
+    n.message = markup.font(beautiful.small_font, n.message)
+
     naughty.layout.box {
         notification = n,
         type = 'notification',
@@ -158,10 +160,61 @@ naughty.connect_signal('request::display', function(n)
         placement = awful.placement.top_right,
         shape = mw.shape,
         widget_template = mw.block {
-            notify_box,
-            top = beautiful.margin_spacing,
-            bottom = beautiful.margin_spacing,
+            notify_box(n),
+            -- top = beautiful.margin_spacing,
+            -- bottom = beautiful.margin_spacing,
+            margins = beautiful.margin_spacing,
             widget = wibox.container.margin
         }
     }
+end)
+
+local notif_wb = wibox {
+    widget  = {},
+    ontop   = true,
+    visible = false,
+    type    = 'splash',
+    width   = dpi(300),
+    height  = dpi(500),
+    x       = (awful.screen.focused().geometry.width - dpi(300)) / 2,
+    y       = beautiful.topbar_height + beautiful.margin_spacing +
+        2 * beautiful.useless_gap,
+    shape   = mw.shape,
+    bg      = beautiful.transparen
+}
+
+notif_wb:setup {
+    {
+        nil,
+        {
+            {
+                widget = naughty.list.notifications,
+                filter = naughty.list.notifications.filter.all,
+                widget_template = {
+                    widget = wibox.container.margin,
+                    margins = beautiful.margin_spacing,
+                    create_callback = function(self, n, _, _)
+                        self:set_widget(mw.block(
+                            notify_box(n)
+                        ))
+                    end
+                }
+            },
+            layout = wibox.layout.fixed.vertical
+        },
+        {
+            images.image_desc_box({ name = "clean", icon_name = "sweeping" },
+                { layout = wibox.layout.fixed.horizontal,
+                    image_size = beautiful.icon_size }),
+            halign = 'right',
+            widget = wibox.container.place
+        },
+        layout = wibox.layout.align.vertical
+    },
+    margins = beautiful.margin_spacing,
+    widget = wibox.container.margin
+}
+
+awesome.connect_signal("module::notification:toggle", function()
+    notif_wb.visible = not notif_wb.visible
 end)

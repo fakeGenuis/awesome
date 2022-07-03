@@ -48,12 +48,7 @@ function images.image_desc_box(act, args)
     local box = wibox.widget {
         { image_box, widget = wibox.container.place },
         {
-            {
-                desc_box,
-                left = beautiful.margin_spacing,
-                right = beautiful.margin_spacing,
-                widget = wibox.container.margin
-            },
+            desc_box,
             widget = wibox.container.place
         },
         spacing = beautiful.spacing,
