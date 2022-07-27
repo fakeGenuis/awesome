@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 function run {
-  if ! pgrep -f $1; then
-    $@&
+  if ! pgrep -f "$1" && which "$1"; then
+    "$@"&
   fi
 }
 
@@ -13,10 +13,11 @@ run redshift-gtk
 run kdeconnect-indicator
 run blueman-applet
 run qv2ray
+run xcape -e "Control_L=Escape;Super_R=space;Shift_L=BackSpace;Meta_R=Return"
+
 fcitx5 -rd
 pidof nextcloud || nextcloud &
 emacsclient -e "1" &>/dev/null || env LC_CTYPE='zh_CN.UTF-8' emacs --daemon &
-run xcape -e "Control_L=Escape"
 
 # set screen saver time
 xset s 910
