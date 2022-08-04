@@ -2,7 +2,7 @@
 
 function run {
   if ! pgrep -f "$1" && which "$1"; then
-    "$@"&
+    "$@" &
   fi
 }
 
@@ -13,7 +13,7 @@ run redshift-gtk
 run kdeconnect-indicator
 run blueman-applet
 run qv2ray
-run xcape -e "Control_L=Escape;Super_R=space;Shift_L=BackSpace;Meta_R=Return"
+run xcape -e "Control_L=Escape;Super_R=Return;Alt_R=BackSpace"
 
 fcitx5 -rd
 pidof nextcloud || nextcloud &
@@ -23,7 +23,7 @@ emacsclient -e "1" &>/dev/null || env LC_CTYPE='zh_CN.UTF-8' emacs --daemon &
 xset s 910
 
 # Run xidlehook
-if ! pgrep -f xidlehook ; then
+if ! pgrep -f xidlehook; then
   xidlehook \
     --detect-sleep \
     `# Don't lock when there's a fullscreen application` \
@@ -32,14 +32,14 @@ if ! pgrep -f xidlehook ; then
     `# --not-when-audio` \
     `# Dim the screen after 60 seconds, undim if user becomes active` \
     --timer 900 \
-      `# xrandr --output "$PRIMARY_DISPLAY" --brightness .1` \
-      `# xrandr --output "$PRIMARY_DISPLAY" --brightness 1` \
-      'notify-send -u critical "xidlehook" "Screen is about to lock" -i xidlehook -a ""' \
-      '' \
+    `# xrandr --output "$PRIMARY_DISPLAY" --brightness .1` \
+    `# xrandr --output "$PRIMARY_DISPLAY" --brightness 1` \
+    'notify-send -u critical "xidlehook" "Screen is about to lock" -i xidlehook -a ""' \
+    '' \
     `# Undim & lock after 10 more seconds` \
     --timer 10 \
-      'betterlockscreen -l' \
-      '' \
+    'betterlockscreen -l' \
+    '' \
     `# Finally, suspend an hour after it locks`
   #   --timer 3600 \
   #     'systemctl suspend' \
