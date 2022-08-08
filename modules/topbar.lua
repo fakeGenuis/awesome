@@ -170,19 +170,16 @@ screen.connect_signal("request::desktop_decoration", function(s)
         filter = awful.widget.tasklist.filter.currenttags,
         layout = wibox.widget {
             spacing = beautiful.spacing,
-            layout = wibox.layout.fixed.horizontal
+            layout = wibox.layout.ratio.horizontal
         },
         widget_template = mywidgets.wibox_cb {
-            {
-                awful.widget.clienticon,
-                mywidgets.block(mywidgets.textbox {
-                    id = "text_role",
-                    font = beautiful.font
-                }),
-                spacing = beautiful.spacing,
-                layout = wibox.layout.fixed.horizontal
-            },
-            widget = wibox.container.place
+            awful.widget.clienticon,
+            mywidgets.block(mywidgets.textbox {
+                id = "text_role",
+                font = beautiful.font
+            }),
+            spacing = beautiful.spacing,
+            layout = wibox.layout.fixed.horizontal
         },
 
         buttons = {

@@ -30,7 +30,8 @@ ruled.client.connect_signal("request::rules", function(c)
         rule_any = {
             instance = {},
             type = { "dialog", "Dialog" },
-            class = { "Blueman-manager", "YesPlayMusic" },
+            class = { "Blueman-manager", "yesplaymusic", "netease-cloud-music",
+                "telegram-desktop" },
             -- Note that the name property shown in xprop might be set slightly after creation of the client
             -- and the name shown there might not match defined rules here.
             name = { "OSD", "Preferences", "FeynArts Topology Editor" },
@@ -70,14 +71,15 @@ ruled.client.connect_signal("request::rules", function(c)
 
     -- can be memory comsume
     -- TODO change following to properties and change by connect signal
-    local fx, fy, fwidth, fheight = mywidgets.geometry(0.5, "bottom_left")
+    local fx, fy, fwidth, fheight = mywidgets.geometry(0.4, "bottom_left")
 
     ruled.client.append_rule {
         id = "Play video in float window",
-        rule_any = { name = { "Picture-in-Picture", "Picture in picture" } },
+        rule_any = { name = { "Picture-in-Picture", "Picture in picture",
+            "Free Download Manager" } },
         properties = {
             floating = true,
-            placement = awful.placement.bottom_right,
+            placement = awful.placement.bottom_left,
             skip_taskbar = true,
             sticky = true,
             x = fx,
