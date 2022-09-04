@@ -33,18 +33,20 @@ local actions = {
             icon_name = "gallery",
             argu = " ",
             callback = function(exec_command)
-                helpers.async({ "bash", "-c", "echo $(date +%F_%T).png" }, function(s)
-                    local image_path = beautiful.screenshot_dir .. s
-                    local exec_command = exec_command .. image_path
+                helpers.async({ "bash", "-c",
+                    "echo $(date +%F_)$(echo $RANDOM | md5sum | head -c 8).png" },
+                    function(s)
+                        local image_path = beautiful.screenshot_dir .. s
+                        local exec_command = exec_command .. image_path
 
-                    helpers.async({ shell, "-c", exec_command }, function(_)
-                        naughty.notify {
-                            title = "Screenshot",
-                            message = "saved to " .. image_path,
-                            app_icon = "Diana-Circle"
-                        }
+                        helpers.async({ shell, "-c", exec_command }, function(_)
+                            naughty.notify {
+                                title = "Screenshot",
+                                message = "saved to " .. image_path,
+                                app_icon = "Diana-Circle"
+                            }
+                        end)
                     end)
-                end)
             end
         }, {
             name = "clipboard",
