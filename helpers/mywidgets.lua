@@ -51,7 +51,7 @@ function mywidgets.textbox(extra)
         align = "center",
         valign = "center",
         id = "text",
-        font = beautiful.iconfont,
+        font = beautiful.icon_font,
         widget = wibox.widget.textbox
     }
     for k, v in pairs(extra) do w[k] = v end
@@ -198,7 +198,8 @@ end
 
 function mywidgets.usage_color(usage, max_value, power)
     local value = max_value or 100.0
-    local percentage = ((type(usage) == number) and usage or tonumber(usage or 0)) / value
+    local percentage = ((type(usage) == number) and usage or tonumber(usage or 0)) /
+        value
     if percentage > 1 then percentage = 1 end
     if power then percentage = math.pow(percentage, 1 / power) end
     return mywidgets.float_to_rgb(percentage)

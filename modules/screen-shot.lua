@@ -36,7 +36,7 @@ local actions = {
                 helpers.async({ "bash", "-c",
                     "echo $(date +%F_)$(echo $RANDOM | md5sum | head -c 8).png" },
                     function(s)
-                        local image_path = beautiful.screenshot_dir .. s
+                        local image_path = beautiful.screenshots_dir .. s
                         local exec_command = exec_command .. image_path
 
                         helpers.async({ shell, "-c", exec_command }, function(_)

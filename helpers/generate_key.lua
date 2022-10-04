@@ -22,7 +22,7 @@ local function generate_key(action, existed, args)
     action.modifiers = action.modifiers or args.modifiers or { "Mod1" }
     -- wrap key string with a format
     local wrapper = args.wrapper or function(key)
-        return markup.underline(markup.fg.color(beautiful.fg_urgent,
+        return markup.underline(markup.fg.color(beautiful.bg_urgent,
             string.format("%s", key)))
     end
     local key = nil

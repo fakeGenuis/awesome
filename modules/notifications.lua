@@ -76,13 +76,13 @@ local function notify_box(n)
 
     local app_name_box = mw.textbox {
         markup = n.app_name or "System Notification",
-        font = beautiful.small_font
+        font = beautiful.light_font
     }
 
     local notify_top = wibox.widget {
         app_icon_box,
         app_name_box,
-        mw.textbox { markup = n.date, font = beautiful.small_font },
+        mw.textbox { markup = n.date, font = beautiful.light_font },
         expand = "inside",
         layout = wibox.layout.align.horizontal
     }
@@ -149,7 +149,7 @@ naughty.connect_signal('request::display', function(n)
 
     n.date = os.date("%H:%M")
     n.title = markup.font(beautiful.bold_font, n.title)
-    n.message = markup.font(beautiful.small_font, n.message)
+    n.message = markup.font(beautiful.light_font, n.message)
 
     naughty.layout.box {
         notification = n,

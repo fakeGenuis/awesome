@@ -42,7 +42,7 @@ lain.widget.net {
     settings = function()
         local rec = net_now.received
         local color = mywidgets.usage_color(rec, 1024 * 60, 4)
-        mynetdown:set_markup(markup.fontfg(beautiful.iconfont, color,
+        mynetdown:set_markup(markup.fontfg(beautiful.icon_font, color,
             "󰁆" .. mywidgets.KMG(rec)))
     end
 }
@@ -54,7 +54,7 @@ local myinfoblock = mywidgets.block {
     bluetooth {
         settings = function()
             local color = mywidgets.usage_color(100 - battery_now.battery)
-            widget:set_markup(markup.fontfg(beautiful.iconfont, color,
+            widget:set_markup(markup.fontfg(beautiful.icon_font, color,
                 battery_now.icon))
         end
     },
@@ -67,7 +67,7 @@ local myinfoblock = mywidgets.block {
         'bash -c "pamac checkupdates | grep -E [0-9\\.]- | wc -l"', 3600,
         function(widget, stdout)
             local color = mywidgets.usage_color(stdout)
-            widget:set_markup(markup.fontfg(beautiful.iconfont, color,
+            widget:set_markup(markup.fontfg(beautiful.icon_font, color,
                 "󰚰" .. stdout))
         end),
 
@@ -76,7 +76,7 @@ local myinfoblock = mywidgets.block {
         settings = function()
             local usage = cpu_now.usage
             local color = mywidgets.usage_color(usage)
-            widget:set_markup(markup.fontfg(beautiful.iconfont, color,
+            widget:set_markup(markup.fontfg(beautiful.icon_font, color,
                 "󰻠" .. usage))
         end
     },
@@ -86,7 +86,7 @@ local myinfoblock = mywidgets.block {
         settings = function()
             local perc = mem_now.perc
             local color = mywidgets.usage_color(perc)
-            widget:set_markup(markup.fontfg(beautiful.iconfont, color, "󰍛" ..
+            widget:set_markup(markup.fontfg(beautiful.icon_font, color, "󰍛" ..
                 string.format("%.0f", perc)))
         end
     },
@@ -96,7 +96,7 @@ local myinfoblock = mywidgets.block {
         settings = function()
             local vl = volume_now.left
             local color = mywidgets.usage_color(vl)
-            widget:set_markup(markup.fontfg(beautiful.iconfont, color, icon(vl) .. vl))
+            widget:set_markup(markup.fontfg(beautiful.icon_font, color, icon(vl) .. vl))
         end
     },
 

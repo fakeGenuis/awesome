@@ -41,7 +41,7 @@ function images.image_desc_box(act, args)
     } or nil
 
     local desc_box = mywidgets.block(
-        mywidgets.textbox { markup = act.name, font = beautiful.key_font },
+        mywidgets.textbox { markup = act.name, font = beautiful.mono_font },
         { bg = beautiful.bg_button, fg = beautiful.fg_focus }
     )
 
