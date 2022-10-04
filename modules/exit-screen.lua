@@ -32,7 +32,10 @@ local actions = { -- index table to preserve order
     }, {
         name      = "logout",
         icon_name = "log-out",
-        command   = awesome.quit
+        command   = function(self)
+            self:stop()
+            awesome.quit()
+        end
     }, {
         name      = "shutdown",
         icon_name = "shut-down",
@@ -47,7 +50,7 @@ local profile_action = {
 
 
 local existed = {}
--- update actions by add act.key and update act.name
+-- update actions by add act.key and act.name
 for _, act in ipairs(actions) do
     generate_key(act, existed, { modifiers = {} })
 end
@@ -63,8 +66,6 @@ local create_exit_screen = function(s)
         widget    = {},
         height    = s.geometry.height,
         width     = s.geometry.width,
-        -- x         = s.geometry.x,
-        -- y         = s.geometry.y
     }
 
     local action_boxs = wibox.layout.fixed.horizontal()
