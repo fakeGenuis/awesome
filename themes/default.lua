@@ -38,20 +38,16 @@ theme.border_color_normal = theme.bg_normal
 theme.border_color_active = theme.bg_focus
 theme.border_color_marked = theme.bg_normal
 
-theme.taglist_fg_focus    = theme.fg_focus
-theme.taglist_bg_focus    = theme.bg_focus
-theme.taglist_fg_occupied = theme.fg_normal
-theme.taglist_bg_occupied = theme.bg_normal
-
 -- Distances
 for k, v in pairs(theme_conf.distances) do theme[k] = dpi(v) end
 
 -- Distances in awesome themelib
-theme.margin_spacing = theme.margin
+theme.margin_spacing       = theme.margin
 theme.systray_icon_spacing = theme.spacing_alt
 theme.notification_spacing = 2 * theme.useless_gap
 -- Custom distances
-theme.topbar_height = theme.icon_size
+theme.topbar_height        = theme.icon_size
+
 -- Tasklist clients title prefixes
 for k, v in pairs(theme_conf.tasklist_prefixs) do theme["tasklist_" .. k] = v end
 

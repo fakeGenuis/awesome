@@ -24,6 +24,11 @@ icon_size                   = 23
 useless_gap                 = 4
 border_width                = 0
 
+[widgets]
+wibar_ontop = true
+wibar_opacity = 1
+wibar_stretch = true
+
 [others]
 icon_theme                  = "Papirus"
 wallpaper                   = "~/Pictures/Wallpapers/www.acg.gy_66.jpg"
