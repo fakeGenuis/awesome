@@ -42,7 +42,7 @@ function images.image_desc_box(act, args)
 
     local desc_box = mywidgets.block(
         mywidgets.textbox { markup = act.name, font = beautiful.mono_font },
-        { bg = beautiful.bg_button, fg = beautiful.fg_focus }
+        { bg = beautiful.bg_button, fg = beautiful.fg_button }
     )
 
     local box = wibox.widget {

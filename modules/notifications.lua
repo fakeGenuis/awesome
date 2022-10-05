@@ -99,10 +99,6 @@ local function notify_box(n)
         style = {
             underline_normal = false,
             underline_selected = true,
-            fg_normal = beautiful.fg_focus,
-            -- bg_normal = beautiful.bg_button
-            -- bg_selected        = beautiful.bg_focus,
-            -- fg_selected        = beautiful.fg_focus
         },
         widget = naughty.list.actions
     }

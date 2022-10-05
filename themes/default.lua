@@ -9,6 +9,8 @@ local layout_icons_path = conf_dir .. "icons/layout/"
 local toml = require("toml")
 local _, theme_conf = pcall(toml.decode, io.open(
     conf_dir .. "themes/default.toml", "rb"):read "*a")
+local _, colors = pcall(toml.decode, io.open(
+    os.getenv("HOME") .. "/.cache/wal/colors.toml", "rb"):read "*a")
 
 -- Fonts, colors and others
 local theme = {}
@@ -21,18 +23,19 @@ theme.hotkeys_font             = theme.mono_font
 theme.hotkeys_description_font = theme.font_alt
 
 -- Colors in awesome themelib
-theme.bg_normal   = theme_conf.colors.background
-theme.bg_focus    = theme_conf.colors.selected
-theme.bg_urgent   = theme_conf.colors.urgent
-theme.bg_minimize = theme_conf.colors.active
-theme.fg_normal   = theme_conf.colors.foreground
-theme.fg_focus    = theme_conf.colors.foreground_alt
-theme.fg_urgent   = theme_conf.colors.foreground_alt
+theme.bg_normal   = colors.background
+theme.bg_focus    = colors.selected
+theme.bg_urgent   = colors.urgent
+theme.bg_minimize = colors.active
+theme.bg_button   = colors.background_alt
+theme.fg_normal   = colors.foreground
+theme.fg_focus    = colors.background
+theme.fg_urgent   = colors.background
+theme.fg_button   = colors.foreground
 
 theme.wibar_bg           = theme.transparen
 theme.wibox_border_color = theme.transparen
 theme.bg_systray         = theme.bg_minimize
-theme.bg_button          = theme_conf.colors.background_alt
 
 theme.border_color_normal = theme.bg_normal
 theme.border_color_active = theme.bg_focus

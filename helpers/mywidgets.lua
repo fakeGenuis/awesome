@@ -126,7 +126,7 @@ function mywidgets.clickable(wgt)
     wgt:connect_signal("mouse::leave", function(c)
         local text = c:get_children_by_id("text_role")[1]
         if text then
-            text:set_markup(markup.fg.color(beautiful.fg_focus,
+            text:set_markup(markup.fg.color(beautiful.fg_button,
                 mywidgets.mfmt_clear(text.markup)))
         end
         wgt:set_bg(beautiful.bg_button)
