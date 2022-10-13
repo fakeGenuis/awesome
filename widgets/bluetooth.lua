@@ -1,10 +1,3 @@
---[[
-
-     Licensed under GNU General Public License v2
-      * (c) 2016, Luca CPZ
-
---]]
-
 local helpers   = require("lain.helpers")
 local shell     = require("awful.util").shell
 local wibox     = require("wibox")
@@ -26,9 +19,10 @@ local function factory(args)
 
     function bluetooth.update()
         helpers.async({ shell, "-c",
-            string.format("upower -e | grep %s | head -1", bluetooth.devicetype) }, function(s)
-            battery_now.device_path = s or "N/A"
-        end)
+            string.format("upower -e | grep %s | head -1", bluetooth.devicetype) },
+            function(s)
+                battery_now.device_path = s or "N/A"
+            end)
 
         helpers.async({ shell, "-c",
             string.format("upower -i %s", battery_now.device_path) }, function(s)
@@ -44,7 +38,8 @@ local function factory(args)
 
     function bluetooth.icon(battery)
         local icons = beautiful.bluetooth_battery_icons or
-            { "󱃍", "󰤾", "󰤿", "󰥀", "󰥁", "󰥂", "󰥃", "󰥄", "󰥅", "󰥆", "󰥈" }
+            { "󱃍", "󰤾", "󰤿", "󰥀", "󰥁", "󰥂", "󰥃", "󰥄", "󰥅", "󰥆",
+                "󰥈" }
 
         local idx = math.ceil(battery * (#icons - 1) / 100) + 1
         return (battery_now.model == "N/A") and "" or icons[idx]

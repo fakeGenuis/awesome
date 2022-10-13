@@ -30,25 +30,21 @@ local function factory(args)
         helpers.async({ shell, "-c",
             string.format("pactl get-default-%s", pipewire.devicetype) }, function(s)
             volume_now.device = s or "N/A"
+        end)
 
-            helpers.async({ shell, "-c",
-                string.format("pactl list %ss", pipewire.devicetype) }, function(ss)
-                local idx = 1
-                local sub_ss
+        helpers.async({ shell, "-c",
+            string.format("pactl get-%s-mute @DEFAULT_%s@", pipewire.devicetype,
+                string.upper(pipewire.devicetype)) },
+            function(s)
+                volume_now.muted = string.match(s, "Mute: (%S+)") or "N/A"
+            end)
 
-                while idx do
-                    local next_pos = ss:find("Sink #%d+", idx + 1)
-                    sub_ss = ss:sub(idx, next_pos or -1)
-                    idx = next_pos
-                    if sub_ss:find(volume_now.device) then
-                        break
-                    end
-                end
-
-                volume_now.muted = string.match(sub_ss, "Mute: (%S+)") or "N/A"
-
+        helpers.async({ shell, "-c",
+            string.format("pactl get-%s-volume @DEFAULT_%s@", pipewire.devicetype,
+                string.upper(pipewire.devicetype)) },
+            function(t)
                 volume_now.channel = {}
-                for v in string.gmatch(sub_ss, ":.-(%d+)%%") do
+                for v in string.gmatch(t, ":.-(%d+)%%") do
                     volume_now.channel[#volume_now.channel + 1] = tonumber(v) or 0
                 end
 
@@ -59,34 +55,12 @@ local function factory(args)
                 icon = pipewire.icon
                 settings()
             end)
-        end)
-
-        -- helpers.async({ shell, "-c",
-        --     string.format("pactl get-%s-mute @DEFAULT_%s@", pipewire.devicetype, string.upper(pipewire.devicetype)) },
-        --     function(s)
-        --         volume_now.muted = string.match(s, "Mute: (%S+)") or "N/A"
-        --     end)
-
-        -- helpers.async({ shell, "-c",
-        --     string.format("pactl get-%s-volume @DEFAULT_%s@", pipewire.devicetype, string.upper(pipewire.devicetype)) },
-        --     function(t)
-        --         volume_now.channel = {}
-        --         for v in string.gmatch(t, ":.-(%d+)%%") do
-        --             volume_now.channel[#volume_now.channel + 1] = tonumber(v)
-        --         end
-
-        --         volume_now.left  = volume_now.channel[1]
-        --         volume_now.right = volume_now.channel[2]
-
-        --         widget = pipewire.widget
-        --         icon = pipewire.icon
-        --         settings()
-        --     end)
     end
 
     function pipewire.icon(volume)
         local icons = beautiful.pipewire_icons or {
-            "󰖁", "󰕿", "󰖀", "󰕾" }
+            "󰖁", "󰕿", "󰖀", "󰕾"
+        }
 
         local idx = math.ceil(volume * (#icons - 1) / 100) + 1
         return (volume_now.muted == "yes") and "󰝟" or icons[idx]
