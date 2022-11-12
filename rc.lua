@@ -48,20 +48,14 @@ for s = 1, screen.count() do
 end
 
 -- define default apps (global variable so other modules can access it)
-apps = {
-    network_manager = "", -- recommended: nm-connection-editor
-    power_manager = "", -- recommended: xfce4-power-manager
-    -- power_menu = "rofi -show p -modi p:" .. scripts_dir ..
-    --     "rofi-power-menu -theme power-menu", -- recommended: xfce4-power-manager
-    power_menu = scripts_dir .. "power.fish",
+APPS = {
     terminal = "alacritty",
     editor = os.getenv("VISUAL") or os.getenv("EDITOR"),
     emacs_everywhere = "emacsclient --eval \"(emacs-everywhere)\"",
     launcher = "rofi -show combi",
-    browser = "librewolf -p work",
-    screenshot = scripts_dir .. "screenshot.fish",
+    browser = "librewolf",
     filebrowser = "alacritty -e ranger",
-    dark_toggle = scripts_dir .. "switcher.fish"
+    theme_selector = scripts_dir .. "theme-selector.sh"
 }
 -- }}}
 
@@ -125,9 +119,15 @@ ruled.notification.connect_signal('request::rules', function()
     }
 end)
 
+CUR_THEME = "default"
+local wal_file = io.open(os.getenv("HOME") .. "/.cache/wal/current_theme", "rb")
+if wal_file ~= nil then
+    CUR_THEME = wal_file:read "a"
+end
+
 naughty.notification {
     title = 'Welcome',
-    message = 'Awesome WM is started',
+    message = string.format('Awesome WM is started\n<b>Colors</b>: <u>%s</u>', CUR_THEME),
     app_icon = "Diana-Circle",
     app_name = "Awesome",
     urgency = 'normal'

@@ -135,22 +135,22 @@ keys.globalkeys = gears.table.join(-- =========================================
 -- SPAWN APPLICATION KEY BINDINGS
 -- =========================================
 -- Spawn terminal
-    awful.key({ modkey }, "Return", function() awful.spawn(apps.terminal) end,
+    awful.key({ modkey }, "Return", function() awful.spawn(APPS.terminal) end,
         { description = "open a terminal", group = "launcher" }),
     -- launch rofi
-    awful.key({ modkey }, "a", function() awful.spawn(apps.launcher) end,
+    awful.key({ modkey }, "a", function() awful.spawn(APPS.launcher) end,
         { description = "open application launcher", group = "launcher" }),
-    awful.key({ modkey }, "e", function() awful.spawn(apps.editor) end,
+    awful.key({ modkey }, "e", function() awful.spawn(APPS.editor) end,
         { description = "open editor", group = "launcher" }),
     awful.key({ modkey, "Shift" }, "e",
-        function() awful.spawn(apps.emacs_everywhere) end,
+        function() awful.spawn(APPS.emacs_everywhere) end,
         { description = "edit in emacs", group = "launcher" }),
-    awful.key({ modkey }, "r", function() awful.spawn(apps.filebrowser) end,
+    awful.key({ modkey }, "r", function() awful.spawn(APPS.filebrowser) end,
         { description = "open file browser", group = "launcher" }),
-    awful.key({ modkey }, "b", function() awful.spawn(apps.browser) end,
+    awful.key({ modkey }, "b", function() awful.spawn(APPS.browser) end,
         { description = "open browser", group = "launcher" }),
-    awful.key({ modkey }, "d", function() awful.spawn(apps.dark_toggle) end,
-        { description = "toggle dark/light gtk theme", group = "awesome" }),
+    awful.key({ modkey }, "s", function() awful.spawn(APPS.theme_selector) end,
+        { description = "switch color themes from <u>wal</u>", group = "awesome" }),
     --   awful.key({ modkey }, "p",
     --      function()
     --         menubar.show()
