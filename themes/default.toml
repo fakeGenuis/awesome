@@ -1,19 +1,19 @@
 [colors]
 active                      = "#9f79ee"
+selected                    = "#4876ff"
+urgent                      = "#ee0000"
 background                  = "#cae1ff"
 background_alt              = "#63b8ff"
 foreground                  = "#000000"
 foreground_alt              = "#ffffff"
-selected                    = "#4876ff"
-urgent                      = "#ee0000"
 
 [fonts]
 font                        = "Sarasa UI SC 14"
 font_alt                    = "Comic Shanns 13"
-bold_font                   = "Open Sans Semi-Bold 14"
+bold_font                   = "Sarasa UI SC Semi-Bold 14"
 light_font                  = "Sarasa UI SC 12"
 icon_font                   = "Material Design Icons 14"
-mono_font                   = "mononokiLiga Nerd Font Mono 16"
+mono_font                   = "mononokiLiga Nerd Font Mono 14"
 
 [distances]
 # theme[key]                = dpi(value)
@@ -25,13 +25,13 @@ useless_gap                 = 4
 border_width                = 0
 
 [widgets]
-wibar_ontop = true
-wibar_opacity = 1
-wibar_stretch = true
+wibar_ontop                 = true
+wibar_opacity               = 1
+wibar_stretch               = true
 
 [others]
 icon_theme                  = "Papirus"
-wallpaper                   = "~/Pictures/Wallpapers/www.acg.gy_66.jpg"
+wallpaper                   = "~/Pictures/Wallpapers/current"
 screenshots_dir             = "~/Pictures/Screenshots/"
 transparen                  = "#00000000"
 

@@ -2,15 +2,22 @@
 -- |_   _| || | __|  \/  | __|
 --   | | | __ | _|| |\/| | _|
 --   |_| |_||_|___|_|  |_|___|
-local dpi = require("beautiful.xresources").apply_dpi
-local conf_dir = require("gears.filesystem").get_configuration_dir()
+local dpi               = require("beautiful.xresources").apply_dpi
+local conf_dir          = require("gears.filesystem").get_configuration_dir()
 local layout_icons_path = conf_dir .. "icons/layout/"
 -- `luarocks install toml`
-local toml = require("toml")
-local _, theme_conf = pcall(toml.decode, io.open(
+local toml              = require("toml")
+local _, theme_conf     = pcall(toml.decode, io.open(
     conf_dir .. "themes/default.toml", "rb"):read "*a")
-local _, colors = pcall(toml.decode, io.open(
-    os.getenv("HOME") .. "/.cache/wal/colors.toml", "rb"):read "*a")
+
+-- get colors, fallback to presets in =default.toml=
+local colors_file = io.open(os.getenv('HOME') .. '/.cache/wal/colors.toml', 'rb')
+local colors
+if colors_file ~= nil then
+    _, colors = pcall(toml.decode, colors_file:read '*a')
+else
+    colors = theme_conf.colors
+end
 
 -- Fonts, colors and others
 local theme = {}
@@ -18,11 +25,11 @@ for _, conf in pairs({ "fonts", "others" }) do
     for k, v in pairs(theme_conf[conf]) do theme[k] = v end
 end
 
--- Fonts in awesome themelib
-theme.hotkeys_font             = theme.mono_font
+-- Fonts in awesome predefined
+theme.hotkeys_font = theme.mono_font
 theme.hotkeys_description_font = theme.font_alt
 
--- Colors in awesome themelib
+-- Colors in awesome predefined
 theme.bg_normal   = colors.background
 theme.bg_focus    = colors.selected
 theme.bg_urgent   = colors.urgent
@@ -37,15 +44,16 @@ theme.wibar_bg           = theme.transparen
 theme.wibox_border_color = theme.transparen
 theme.bg_systray         = theme.bg_minimize
 
-theme.border_color_normal = theme.bg_normal
-theme.border_color_active = theme.bg_focus
-theme.border_color_marked = theme.bg_normal
+-- theme.border_color_normal = theme.bg_normal
+-- theme.border_color_active = theme.bg_focus
+-- theme.border_color_marked = theme.bg_normal
 
 -- Distances
 for k, v in pairs(theme_conf.distances) do theme[k] = dpi(v) end
 
--- Distances in awesome themelib
+-- Distances in awesome predefined
 theme.margin_spacing       = theme.margin
+theme.taglist_spacing      = theme.margin
 theme.systray_icon_spacing = theme.spacing_alt
 theme.notification_spacing = 2 * theme.useless_gap
 -- Custom distances
