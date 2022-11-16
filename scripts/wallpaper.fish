@@ -1,11 +1,16 @@
 #!/usr/bin/env fish
 
-# `crontab -e`
-# `*/5 * * * * ~/.config/awesome/scripts/wallpaper.fish`
+# =crontab -e=
+# =*/5 * * * * DISPLAY=:0 ~/.config/awesome/scripts/wallpaper.fish=
 
+# =LIKE_DIR= is the fallback dir for wallpaper
 set LIKE_DIR ~/Pictures/Wallpapers
 set WALLPAPER_DIR ~/Wallpapers/current
-set CURRENT_WALLPAPER (realpath ~/Wallpapers/current/current)
+if not test -d "$WALLPAPER_DIR"
+    set WALLPAPER_DIR "$LIKE_DIR"
+end
+
+set CURRENT_WALLPAPER (realpath "$WALLPAPER_DIR"/current)
 
 function dislike
     if test -n "$CURRENT_WALLPAPER" -a -f "$CURRENT_WALLPAPER"
