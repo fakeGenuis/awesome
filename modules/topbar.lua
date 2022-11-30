@@ -64,7 +64,7 @@ local myinfoblock = mywidgets.block {
 
     -- Package upgradable
     awful.widget.watch(
-        'bash -c "pamac checkupdates | grep -E [0-9\\.]- | wc -l"', 3600,
+        'bash -c "{ checkupdates & paru -Qua; } | wc -l"', 3600,
         function(widget, stdout)
             local color = mywidgets.usage_color(stdout)
             widget:set_markup(markup.fontfg(beautiful.icon_font, color,
