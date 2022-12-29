@@ -8,7 +8,7 @@ function run {
 
 run xsettingsd -c ~/.cache/xsettingsd/xsettingsd.conf
 run /usr/bin/lxqt-policykit-agent
-run picom --experimental-backends
+run picom
 run redshift-gtk
 run kdeconnect-indicator
 run blueman-applet
