@@ -26,6 +26,8 @@ emacsclient -e "1" &>/dev/null || env LC_CTYPE='zh_CN.UTF-8' emacs --daemon &
 # set screen saver time
 xset s 910
 
+# set current screen out
+_OUT=$(xrandr | grep " connected" | cut -d' ' -f1)
 # Run xidlehook
 run xidlehook \
   --detect-sleep \
@@ -36,12 +38,11 @@ run xidlehook \
   `# Dim the screen after 60 seconds, undim if user becomes active` \
   --timer 900 \
   `# xrandr --output "$PRIMARY_DISPLAY" --brightness .1` \
-  `# xrandr --output "$PRIMARY_DISPLAY" --brightness 1` \
-  'notify-send -u critical "xidlehook" "Screen is about to lock" -i xidlehook -a ""' \
-  '' \
+  'for i in $(seq 1 50); do sleep 0.02 && xrandr --output '"$_OUT"' --brightness $(echo "1 - 0.01*$i" | bc); done' \
+  'xrandr --output '"$_OUT"' --brightness 1' \
   `# Undim & lock after 10 more seconds` \
   --timer 10 \
-  'betterlockscreen -l' \
+  'xrandr --output '"$_OUT"' --brightness 1 && betterlockscreen -l' \
   '' \
   `# Finally, suspend an hour after it locks`
 #   --timer 3600 \
