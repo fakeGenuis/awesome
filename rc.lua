@@ -49,12 +49,13 @@ end
 
 -- define default apps (global variable so other modules can access it)
 APPS = {
-    terminal = "alacritty",
+    terminal =
+    "emacsclient -e \"(progn (setq-local default-directory gnus-home-directory) (+vterm/here t))\" -c",
     editor = os.getenv("VISUAL") or os.getenv("EDITOR"),
     emacs_everywhere = "emacsclient --eval \"(emacs-everywhere)\"",
     launcher = "rofi -show combi",
     browser = "librewolf",
-    filebrowser = "alacritty -e ranger",
+    filebrowser = "emacsclient -c -e \"(dirvish)\"",
     theme_selector = scripts_dir .. "theme-selector.sh"
 }
 -- }}}
