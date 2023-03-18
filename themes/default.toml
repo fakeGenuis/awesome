@@ -31,16 +31,16 @@ wibar_stretch               = true
 
 [others]
 icon_theme                  = "Papirus"
-wallpaper                   = "~/Pictures/Wallpapers/current"
+# wallpaper                   = "~/Wallpapers/current/current"
 screenshots_dir             = "~/Pictures/Screenshots/"
 transparen                  = "#00000000"
 updates_command             = 'bash -c "{ checkupdates & paru -Qua; } | wc -l"'
 
 [tasklist_prefixs]
 # theme["tasklist_" .. key] = value
-floating                    = " "
+floating                    = "󰀝 "
 maximized                   = "󰊓 "
-ontop                       = " "
-above                       = " "
-below                       = " "
+ontop                       = "󰐃 "
+above                       = "󰳢 "
+below                       = "󰁈 "
 minimized                   = "󰊔 "

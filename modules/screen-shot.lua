@@ -17,9 +17,8 @@ local actions = {
             argu = "-s "
         }, {
             name = "screen",
-            -- space make no sense in shell script,
-            -- but will be treated as true
-            -- argu and sth. return argu
+            -- space make no sense in shell script, but will be treated as true argu and
+            -- sth. return argu
             argu = " "
         }
     },

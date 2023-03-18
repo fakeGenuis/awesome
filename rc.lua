@@ -1,9 +1,10 @@
---     _     __        __  _____   ____     ___    __  __   _____
---    / \    \ \      / / | ____| / ___|   / _ \  |  \/  | | ____|
---   / _ \    \ \ /\ / /  |  _|   \___ \  | | | | | |\/| | |  _|
---  / ___ \    \ V  V /   | |___   ___) | | |_| | | |  | | | |___
--- /_/   \_\    \_/\_/    |_____| |____/   \___/  |_|  |_| |_____|
+--     ___        _______ ____   ___  __  __ _____
+--    / \ \      / / ____/ ___| / _ \|  \/  | ____|
+--   / _ \ \ /\ / /|  _| \___ \| | | | |\/| |  _|
+--  / ___ \ V  V / | |___ ___) | |_| | |  | | |___
+-- /_/   \_\_/\_/  |_____|____/ \___/|_|  |_|_____|
 -- awesome_mode: api-level=4:screen=on
+
 -- If LuaRocks is installed, make sure that packages installed through it are
 -- found (e.g. lgi). If LuaRocks is not installed, do nothing.
 pcall(require, "luarocks.loader")
@@ -33,19 +34,20 @@ naughty.connect_signal("request::display_error", function(message, startup)
 end)
 -- }}}
 
-scripts_dir = gears.filesystem.get_configuration_dir() .. "scripts/"
+SCRIPTS_DIR = gears.filesystem.get_configuration_dir() .. "scripts/"
 
 -- {{{ Autostart
-awful.spawn.with_shell(scripts_dir .. "autostart.sh")
+awful.spawn.with_shell(SCRIPTS_DIR .. "autostart.sh")
 -- }}}
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
 beautiful.init(gears.filesystem.get_configuration_dir() .. "/themes/default.lua")
 -- Wallpaper at awesome start
-for s = 1, screen.count() do
-    gears.wallpaper.maximized(beautiful.wallpaper, s, true)
-end
+awful.spawn.with_shell(SCRIPTS_DIR .. "wallpaper.sh -r")
+-- for s = 1, screen.count() do
+--     gears.wallpaper.maximized(beautiful.wallpaper, s, true)
+-- end
 
 -- define default apps (global variable so other modules can access it)
 APPS = {
@@ -56,7 +58,7 @@ APPS = {
     launcher = "rofi -show combi",
     browser = "librewolf",
     filebrowser = "emacsclient -c -e \"(dirvish)\"",
-    theme_selector = scripts_dir .. "theme-selector.sh"
+    theme_selector = SCRIPTS_DIR .. "theme-selector.sh"
 }
 -- }}}
 
@@ -66,7 +68,7 @@ tag.connect_signal("request::default_layouts", function()
     awful.layout.append_default_layouts({
         awful.layout.suit.max,
         awful.layout.suit.fair, awful.layout.suit.floating
-        , awful.layout.suit.max.fullscreen
+    , awful.layout.suit.max.fullscreen
     })
 end)
 -- }}}
