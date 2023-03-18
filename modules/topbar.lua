@@ -43,12 +43,12 @@ lain.widget.net {
         local rec = net_now.received
         local color = mywidgets.usage_color(rec, 1024 * 60, 4)
         mynetdown:set_markup(markup.fontfg(beautiful.icon_font, color,
-            "󰁆" .. mywidgets.KMG(rec)))
+            "󰇚" .. mywidgets.KMG(rec)))
     end
 }
 
 -- system info widget
-local myinfoblock = mywidgets.block {
+local myinfoblock = mywidgets.block({
 
     -- Bluetooth device battery (if pluged in)
     bluetooth {
@@ -64,7 +64,7 @@ local myinfoblock = mywidgets.block {
 
     -- Package upgradable
     awful.widget.watch(
-        'bash -c "{ checkupdates & paru -Qua; } | wc -l"', 3600,
+        beautiful.updates_command, 3600,
         function(widget, stdout)
             local color = mywidgets.usage_color(stdout)
             widget:set_markup(markup.fontfg(beautiful.icon_font, color,
@@ -104,7 +104,7 @@ local myinfoblock = mywidgets.block {
     --     settings = function() widget:set_markup("󰈸" .. coretemp_now) end
     -- }),
     layout = wibox.layout.fixed.horizontal
-}
+}, { bg = beautiful.fg_normal })
 
 screen.connect_signal("request::desktop_decoration", function(s)
     -- Each screen has its own tag table.

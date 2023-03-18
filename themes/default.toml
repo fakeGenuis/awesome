@@ -34,6 +34,7 @@ icon_theme                  = "Papirus"
 wallpaper                   = "~/Pictures/Wallpapers/current"
 screenshots_dir             = "~/Pictures/Screenshots/"
 transparen                  = "#00000000"
+updates_command             = 'bash -c "{ checkupdates & paru -Qua; } | wc -l"'
 
 [tasklist_prefixs]
 # theme["tasklist_" .. key] = value
