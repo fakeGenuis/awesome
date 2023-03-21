@@ -8,19 +8,34 @@ local images       = require("helpers.images")
 local naughty      = require("naughty")
 local helpers      = require('lain.helpers')
 
-local command = "maim -b 3 -u "
+local command      = "maim -b 3 -u "
 
-local actions = {
+-- random string, see https://gist.github.com/haggen/2fd643ea9a261fea2094
+local charset      = {}
+do -- [0-9a-zA-Z]
+    for c = 48, 57 do table.insert(charset, string.char(c)) end
+    for c = 65, 90 do table.insert(charset, string.char(c)) end
+    for c = 97, 122 do table.insert(charset, string.char(c)) end
+end
+
+local function randomString(length)
+    if not length or length <= 0 then return '' end
+    math.randomseed(os.time())
+    return randomString(length - 1) .. charset[math.random(1, #charset)]
+end
+
+local actions    = {
     target = {
         {
             name = "select",
             argu = "-s "
         }, {
-            name = "screen",
-            -- space make no sense in shell script, but will be treated as true argu and
-            -- sth. return argu
-            argu = " "
-        }
+        name = "screen",
+        -- space make no sense in shell script, but will be treated as true argu and
+        -- sth. return argu
+        -- set delay to avoid tools itself appears in screen-shot
+        argu = "-d 0.5 "
+    }
     },
     output = {
         {
@@ -28,50 +43,55 @@ local actions = {
             icon_name = "pin",
             argu = " | feh --no-screen-clip -"
         }, {
-            name = "file",
-            icon_name = "gallery",
-            argu = " ",
-            callback = function(exec_command)
-                helpers.async({ "bash", "-c",
-                    "echo $(date +%F_)$(echo $RANDOM | md5sum | head -c 8).png" },
-                    function(s)
-                        local image_path = beautiful.screenshots_dir .. s
-                        local exec_command = exec_command .. image_path
+        name = "file",
+        icon_name = "gallery",
+        argu = " ",
+        callback = function(exec_command)
+            local image_name = string.format("%s_%s.png", os.date("%y-%m-%d"),
+                randomString(8))
+            local image_path = beautiful.screenshots_dir .. image_name
+            local new_command = exec_command .. image_path
 
-                        helpers.async({ shell, "-c", exec_command }, function(_)
-                            naughty.notify {
-                                title = "Screenshot",
-                                message = "saved to " .. image_path,
-                                app_icon = "Diana-Circle"
-                            }
-                        end)
-                    end)
-            end
-        }, {
-            name = "clipboard",
-            icon_name = "clipboard",
-            argu = " | xclip -selection clipboard -t image/png",
-            callback = function(exec_command)
-                helpers.async({ shell, "-c", exec_command }, function(_)
-                    naughty.notify {
-                        title = "Screenshot",
-                        message = "copied to clipboard",
-                        app_icon = "Diana-Circle"
-                    }
-                end)
-            end
-        }
+            helpers.async({ shell, "-c", new_command }, function(_)
+                naughty.notify {
+                    title = "Screenshot",
+                    message = "saved to " .. image_path,
+                    app_icon = "Diana-Circle"
+                }
+            end)
+        end
+    }, {
+        name = "clipboard",
+        icon_name = "clipboard",
+        argu = " ",
+        callback = function(exec_command)
+            local image_path = "/tmp/" .. randomString(8) .. ".png"
+            helpers.async({ shell, "-c", exec_command, "> " .. image_path }, function(_)
+                -- nothing can do here, process will not terminated until something
+                -- else send to clipboard.
+                awful.spawn.with_shell(
+                    "xclip -selection clipboard -t image/png " .. image_path)
+                awful.spawn.with_shell("rm " .. image_path)
+                naughty.notify {
+                    title = "Screenshot",
+                    message = "copied to clipboard",
+                    app_icon = "Diana-Circle"
+                }
+            end)
+        end
+    }
     }
 }
 
-local existed = {}
-local key_map = {}
+local existed    = {}
+local key_map    = {}
 local screenshot = {}
 
 -- generate key in `actions`
 -- add key box to layout widgets
 for k, v in pairs(actions) do
     screenshot[k] = wibox.layout.fixed.horizontal()
+    screenshot[k].spacing = beautiful.spacing
     for _, act in ipairs(v) do
         generate_key(act, existed, { modifiers = {} })
         key_map[act.key] = act
@@ -83,9 +103,9 @@ end
 screenshot.popup = awful.popup {
     widget = {
         widget = wibox.container.margin,
-        top = beautiful.margin_spacing,
-        bottom = beautiful.margin_spacing,
-        { layout = wibox.layout.fixed.vertical,
+        margins = beautiful.margin_spacing,
+        {
+            layout = wibox.layout.fixed.vertical,
             spacing = beautiful.spacing,
             mywidgets.block(mywidgets.textbox { markup = "Screen-shot Tool" }),
             screenshot.target,
