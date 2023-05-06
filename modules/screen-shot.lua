@@ -53,11 +53,7 @@ local actions    = {
             local new_command = exec_command .. image_path
 
             helpers.async({ shell, "-c", new_command }, function(_)
-                naughty.notify {
-                    title = "Screenshot",
-                    message = "saved to " .. image_path,
-                    app_icon = "Diana-Circle"
-                }
+                awesome.emit_signal('module::screenshot:done', image_path)
             end)
         end
     }, {
@@ -72,11 +68,7 @@ local actions    = {
                 awful.spawn.with_shell(
                     "xclip -selection clipboard -t image/png " .. image_path)
                 awful.spawn.with_shell("rm " .. image_path)
-                naughty.notify {
-                    title = "Screenshot",
-                    message = "copied to clipboard",
-                    app_icon = "Diana-Circle"
-                }
+                awesome.emit_signal('module::screenshot:done', "clipboard")
             end)
         end
     }
@@ -162,4 +154,9 @@ end)
 
 awesome.connect_signal('module::screenshot:hide', function()
     screenshot.popup.visible = false
+end)
+
+awesome.connect_signal('module::screenshot:done', function(path)
+    awful.spawn { "notify-send", "Screenshot", "saved to " .. path, "-a", "Awesome",
+        "--icon=Diana-Circle", "--hint=STRING:sound-name:screen-capture" }
 end)
