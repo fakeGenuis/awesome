@@ -6,26 +6,31 @@
 -- ===================================================================
 -- Initialization
 -- ===================================================================
-local awful     = require("awful")
-local wibox     = require("wibox")
-local naughty   = require("naughty")
-local beautiful = require("beautiful")
-local dpi       = beautiful.xresources.apply_dpi
-local menubar   = require("menubar")
-local get_icon  = menubar.utils.lookup_icon
-local mw        = require("helpers.mywidgets")
-local markup    = require("lain").util.markup
-local images    = require("helpers.images")
+local awful                       = require("awful")
+local wibox                       = require("wibox")
+local naughty                     = require("naughty")
+local beautiful                   = require("beautiful")
+local dpi                         = beautiful.xresources.apply_dpi
+local menubar                     = require("menubar")
+local get_icon                    = menubar.utils.lookup_icon
+local mw                          = require("helpers.mywidgets")
+local markup                      = require("lain").util.markup
+local images                      = require("helpers.images")
+local gfs                         = require("gears.filesystem")
 
 -- naughty.config.padding = 2*beautiful.useless_gap
-naughty.config.icon_dirs = {
+naughty.config.icon_dirs          = {
     "/usr/share/icons/Papirus/", "~/.local/share/icons/"
 }
 -- naughty.config.icon_formats = {"png", "svg", "jpg"}
+naughty.config.sound_dirs         = {
+    "/usr/share/sounds/freedesktop/stereo/"
+}
+naughty.config.sound_formats      = { "oga" }
 --
-naughty.config.defaults.ontop = true
+naughty.config.defaults.ontop     = true
 naughty.config.defaults.icon_size = dpi(32)
-naughty.config.defaults.timeout = 7
+naughty.config.defaults.timeout   = 7
 --
 -- naughty.config.presets.normal = {
 --   fg = beautiful.fg_focus,
@@ -135,11 +140,30 @@ local function notify_box(n)
     return box
 end
 
-naughty.connect_signal('request::display', function(n)
+function naughty.config.notify_callback(args)
+    local sound_name = (args.freedesktop_hints and args.freedesktop_hints["sound-name"]) or
+        "message"
+    local sound_file = args.freedesktop_hints and args.freedesktop_hints["sound-file"] or
+        nil
+    if not sound_file then
+        for _, dir in pairs(naughty.config.sound_dirs) do
+            for _, ext in pairs(naughty.config.sound_formats) do
+                sound_file = dir .. sound_name .. "." .. ext
+                if gfs.file_readable(sound_file) then
+                    break
+                end
+            end
+        end
+    end
+    awful.spawn { "paplay", sound_file }
+    return args
+end
 
+naughty.connect_signal('request::display', function(n)
     n.date = os.date("%H:%M")
     n.title = markup.font(beautiful.bold_font, n.title)
-    n.message = markup.font(beautiful.light_font, n.message)
+    n.message = markup.font(beautiful.light_font,
+        n.message)
 
     naughty.layout.box {
         notification = n,
@@ -194,8 +218,10 @@ notif_wb:setup {
         },
         {
             images.image_desc_box({ name = "clean", icon_name = "sweeping" },
-                { layout = wibox.layout.fixed.horizontal,
-                    image_size = beautiful.icon_size }),
+                {
+                    layout = wibox.layout.fixed.horizontal,
+                    image_size = beautiful.icon_size
+                }),
             halign = 'right',
             widget = wibox.container.place
         },
