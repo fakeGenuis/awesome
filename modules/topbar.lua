@@ -7,15 +7,15 @@
 -- Initialization
 -- ===================================================================
 -- Widget and layout library
-local wibox     = require("wibox")
-local awful     = require("awful")
-local lain      = require("lain")
-local beautiful = require("beautiful")
-local bluetooth = require("widgets.bluetooth")
-local dpi       = beautiful.xresources.apply_dpi
-local mywidgets = require("helpers.mywidgets")
-local markup    = lain.util.markup
-local pipewire  = require("widgets.pipewire")
+local wibox       = require("wibox")
+local awful       = require("awful")
+local lain        = require("lain")
+local beautiful   = require("beautiful")
+local bluetooth   = require("widgets.bluetooth")
+local dpi         = beautiful.xresources.apply_dpi
+local mywidgets   = require("helpers.mywidgets")
+local markup      = lain.util.markup
+local pipewire    = require("widgets.pipewire")
 
 -- {{{ Wibar
 --
@@ -31,7 +31,7 @@ local mytextclock = mywidgets.block {
 }
 
 -- extra netdown textbox
-local mynetdown = wibox.widget.textbox()
+local mynetdown   = wibox.widget.textbox()
 
 -- update netdown markup
 -- see https://github.com/lcpz/lain/wiki/net#usage-examples
@@ -49,7 +49,6 @@ lain.widget.net {
 
 -- system info widget
 local myinfoblock = mywidgets.block({
-
     -- Bluetooth device battery (if pluged in)
     bluetooth {
         settings = function()
@@ -80,6 +79,15 @@ local myinfoblock = mywidgets.block({
                 "󰻠" .. usage))
         end
     },
+
+    -- CPU package temperature
+    awful.widget.watch(
+        beautiful.temp_command, 3,
+        function(widget, stdout)
+            local color = mywidgets.usage_color(stdout)
+            widget:set_markup(markup.fontfg(beautiful.icon_font, color,
+                "󰔏" .. stdout))
+        end),
 
     -- mem usage
     lain.widget.mem {
@@ -153,8 +161,8 @@ screen.connect_signal("request::desktop_decoration", function(s)
             awful.button({ modkey }, 1, function(t)
                 if client.focus then client.focus:move_to_tag(t) end
             end), awful.button({ modkey }, 3, function(t)
-                if client.focus then client.focus:toggle_tag(t) end
-            end),
+            if client.focus then client.focus:toggle_tag(t) end
+        end),
             awful.button({}, 4, function(t)
                 awful.tag.viewprev(t.screen)
             end),
@@ -186,8 +194,8 @@ screen.connect_signal("request::desktop_decoration", function(s)
             awful.button({}, 1, function(c)
                 c:activate { context = "tasklist", action = "toggle_minimization" }
             end), awful.button({}, 3, function()
-                awful.menu.client_list { theme = { width = 270 } }
-            end)
+            awful.menu.client_list { theme = { width = 270 } }
+        end)
         }
     }
 
@@ -231,14 +239,16 @@ screen.connect_signal("request::desktop_decoration", function(s)
         {
             layout = wibox.layout.align.horizontal,
             expand = 'inside',
-            { -- Left widgets
+            {
+                -- Left widgets
                 layout = wibox.layout.fixed.horizontal,
                 spacing = beautiful.spacing,
                 s.mytaglist,
                 s.mytasklist_icons,
                 s.mypromptbox
             },
-            { -- Middle widget
+            {
+                -- Middle widget
                 {
                     left = beautiful.spacing,
                     right = beautiful.spacing,
@@ -247,7 +257,8 @@ screen.connect_signal("request::desktop_decoration", function(s)
                 },
                 widget = wibox.container.place
             },
-            { -- Right widgets
+            {
+                -- Right widgets
                 layout = wibox.layout.fixed.horizontal,
                 spacing = beautiful.spacing,
                 mytextclock,
