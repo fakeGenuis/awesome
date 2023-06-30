@@ -213,9 +213,9 @@ end
 -- return network rate in K, M and G
 function mywidgets.KMG(kbf)
     local unit = 'K'
-    kbf = tonumber(kbf)
-    if kbf > 100.0 then
-        kbf = math.floor(10 * kbf / 1024.0 + 0.5)
+    kbf = tonumber(10 * kbf)
+    if kbf > 5120.0 then
+        kbf = math.floor(kbf / 1024.0 + 0.5)
         unit = 'M'
     end
     -- return string.format("%.1f", kbf / 10) .. unit
