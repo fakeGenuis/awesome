@@ -102,7 +102,7 @@ local myinfoblock = mywidgets.block({
     -- volume
     pipewire {
         settings = function()
-            local vl = volume_now.left
+            local vl = volume_now.left or 0
             local color = mywidgets.usage_color(vl)
             widget:set_markup(markup.fontfg(beautiful.icon_font, color, icon(vl) .. vl))
         end

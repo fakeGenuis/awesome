@@ -62,7 +62,7 @@ local function factory(args)
             "󰖁", "󰕿", "󰖀", "󰕾"
         }
 
-        local idx = math.ceil(volume * (#icons - 1) / 100) + 1
+        local idx = volume and math.ceil(volume * (#icons - 1) / 100) + 1 or 1
         return (volume_now.muted == "yes") and "󰝟" or icons[idx]
     end
 
