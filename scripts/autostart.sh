@@ -23,7 +23,7 @@ pidof redshift || redshift &
 emacsclient -e "1" &>/dev/null || env LC_CTYPE='zh_CN.UTF-8' emacs --daemon &
 
 # set screen saver time
-xset s 910
+xset s 920
 
 # set current screen out
 _OUT=$(xrandr | grep " connected" | cut -d' ' -f1 | head -1)
@@ -33,14 +33,14 @@ run xidlehook \
   `# Don't lock when there's a fullscreen application` \
   --not-when-fullscreen \
   `# Don't lock when there's audio playing` \
-  `# --not-when-audio` \
+  --not-when-audio \
   `# Dim the screen after 60 seconds, undim if user becomes active` \
   --timer 900 \
   `# xrandr --output "$PRIMARY_DISPLAY" --brightness .1` \
   'pkill -9 redshift; for i in $(seq 1 50); do sleep 0.02 && xrandr --output '"$_OUT"' --brightness $(echo "1 - 0.01*$i" | bc); done' \
   'xrandr --output '"$_OUT"' --brightness 1 & redshift' \
   `# Undim & lock after 10 more seconds` \
-  --timer 20 \
+  --timer 10 \
   'xrandr --output '"$_OUT"' --brightness 1; redshift& betterlockscreen -l' \
   '' \
   `# Finally, suspend an hour after it locks`

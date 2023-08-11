@@ -9,7 +9,6 @@ local mywidgets = require("helpers.mywidgets")
 -- Rules to apply to new clients.
 ruled.client.connect_signal("request::rules", function(c)
     -- All clients will match this rule.
-    local geo = awful.screen.focused().geometry
     ruled.client.append_rule {
         id = "global",
         rule = {},
@@ -30,15 +29,13 @@ ruled.client.connect_signal("request::rules", function(c)
         rule_any = {
             instance = {},
             type = { "dialog", "Dialog" },
-            class = { "Blueman-manager", "yesplaymusic", "netease-cloud-music",
-                "telegram-desktop" },
+            class = { "Blueman-manager", "TelegramDesktop",
+                "com.xunlei.download", "scrcpy", "r3play" },
             -- Note that the name property shown in xprop might be set slightly after creation of the client
             -- and the name shown there might not match defined rules here.
-            name = { "OSD", "Preferences", "FeynArts Topology Editor" },
+            name = { "OSD", "Preferences" },
             role = {
-                "AlarmWindow", -- Thunderbird's calendar.
-                "ConfigManager", -- Thunderbird's about:config.
-                "pop-up" -- e.g. Google Chrome's (detached) Developer Tools.
+                "pop-up"         -- e.g. Google Chrome's (detached) Developer Tools.
             }
         },
         properties = { floating = true, placement = awful.placement.centered }
@@ -71,22 +68,23 @@ ruled.client.connect_signal("request::rules", function(c)
 
     -- can be memory comsume
     -- TODO change following to properties and change by connect signal
-    local fx, fy, fwidth, fheight = mywidgets.geometry(0.4, "bottom_left")
+    local fx, fy, fwidth, fheight = mywidgets.geometry(0.3, "bottom_left")
 
     ruled.client.append_rule {
         id = "Play video in float window",
-        rule_any = { name = { "Picture-in-Picture", "Picture in picture",
-            "Free Download Manager" } },
+        rule_any = {
+            name = { "Picture-in-Picture", "Picture in picture" }
+        },
         properties = {
             floating = true,
-            placement = awful.placement.bottom_left,
+            placement = awful.placement.bottom_right,
             skip_taskbar = true,
             sticky = true,
             x = fx,
             y = fy,
             width = fwidth,
             height = fheight,
-            opacity = 0.85,
+            opacity = 0.75,
             shape = mywidgets.shape,
             ontop = true
         }
