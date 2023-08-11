@@ -8,14 +8,13 @@ function run {
 
 run xsettingsd -c ~/.cache/xsettingsd/xsettingsd.conf
 run /usr/bin/lxqt-policykit-agent
-run picom
-run kdeconnect-indicator
 run blueman-applet
 run qv2ray
 # if one use =via= ...
 run xcape -e "Control_L=Escape"
 
-fcitx5 -rd
+fcitx5 -rd &>/dev/null
+pidof picom || picom -b
 pidof nextcloud || nextcloud &
 pidof redshift || redshift &
 
