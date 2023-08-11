@@ -52,7 +52,7 @@ awful.spawn.with_shell(SCRIPTS_DIR .. "wallpaper.sh -r")
 -- define default apps (global variable so other modules can access it)
 APPS = {
     terminal =
-    "emacsclient -e \"(progn (setq-local default-directory gnus-home-directory) (+vterm/here t))\" -c",
+    "emacsclient -e \"(+vterm/here t)\" -c",
     editor = os.getenv("VISUAL") or os.getenv("EDITOR"),
     emacs_everywhere = "emacsclient --eval \"(emacs-everywhere)\"",
     launcher = "rofi -show combi",
