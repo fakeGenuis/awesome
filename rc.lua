@@ -52,12 +52,12 @@ awful.spawn.with_shell(SCRIPTS_DIR .. "wallpaper.sh -r")
 -- define default apps (global variable so other modules can access it)
 APPS = {
     terminal =
-    "emacsclient -e \"(+vterm/here t)\" -c",
+    "emacsclient -e \"(+vterm/here t)\" -nc",
     editor = os.getenv("VISUAL") or os.getenv("EDITOR"),
     emacs_everywhere = "emacsclient --eval \"(emacs-everywhere)\"",
     launcher = "rofi -show combi",
     browser = "librewolf",
-    filebrowser = "emacsclient -c -e \"(dirvish)\"",
+    filebrowser = "emacsclient -nc -e \"(dirvish)\"",
     theme_selector = SCRIPTS_DIR .. "theme-selector.sh"
 }
 -- }}}
