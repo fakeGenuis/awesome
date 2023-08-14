@@ -63,7 +63,7 @@ local myinfoblock = mywidgets.block({
 
     -- Package upgradable
     awful.widget.watch(
-        beautiful.updates_command, 3600,
+        beautiful.updates_command, 600,
         function(widget, stdout)
             local color = mywidgets.usage_color(stdout)
             widget:set_markup(markup.fontfg(beautiful.icon_font, color,

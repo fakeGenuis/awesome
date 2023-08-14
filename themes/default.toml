@@ -34,7 +34,8 @@ icon_theme                  = "Papirus"
 # wallpaper                   = "~/Wallpapers/current/current"
 screenshots_dir             = "~/Pictures/Screenshots/"
 transparen                  = "#00000000"
-updates_command             = 'bash -c "{ checkupdates & paru -Qua; } | wc -l"'
+# see systemd service in `~/.config/systemd/user/upgradables.service`
+updates_command             = 'bash -c "cat ~/.cache/systemd/upgradablePackages | wc -l"'
 temp_command                = "bash -c \"sensors | awk '/Tctl/ {print substr($2, 2, length($2) - 5)}'\""
 
 [tasklist_prefixs]
