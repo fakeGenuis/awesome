@@ -4,7 +4,7 @@
 # =*/5 * * * * DISPLAY=:0 ~/.config/awesome/scripts/wallpaper.sh -n=
 
 CACHE_DIR=~/.cache/wallpaper
-FAVORITE_DIR=~/Pictures/FavoriteWallpapers
+FAVORITE_DIR=~/Pictures/Wallpapers/Favorite
 
 [ -d $CACHE_DIR ] || mkdir -p $CACHE_DIR
 [ -d $FAVORITE_DIR ] || mkdir -p $FAVORITE_DIR
