@@ -9,7 +9,7 @@ foreground_alt              = "#ffffff"
 
 [fonts]
 font                        = "Sarasa Gothic SC 14"
-font_alt                    = "Comic Shanns 13"
+font_alt                    = "ComicShannsMono Nerd Font 13"
 bold_font                   = "Sarasa Gothic SC Semi-Bold 14"
 light_font                  = "Sarasa Gothic SC 12"
 icon_font                   = "Material Design Icons 14"
