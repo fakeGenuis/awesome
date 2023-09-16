@@ -28,7 +28,7 @@ get_themes() {
 # TODO loop preview theme like =rofi-theme-selector=
 # MESG="""<b>Alt-a</b> to accept the new theme"""
 
-theme=$(get_themes | rofi -dmenu -kb-custom-1 "Alt-a" -p "Theme:")
+theme=$(get_themes | rofi -dmenu -kb-custom-1 "Alt-a" -theme-str 'textbox-prompt-colon {str: "󰔎"; padding: 0.2em 0.4em;}' -theme-str 'entry {placeholder: "Select a theme...";}')
 RTR=$?
 if [ "${RTR}" = 10 ]; then
     exit 0
