@@ -20,7 +20,7 @@ pidof redshift || redshift &
 
 # systemd (=~/.config/systemd/user/emacs.service=) emacs cannot inherit
 # environment variables in shell startup
-emacsclient -e "1" &>/dev/null || env LC_CTYPE='zh_CN.UTF-8' emacs --daemon &
+# emacsclient -e "1" &>/dev/null || env LC_CTYPE='zh_CN.UTF-8' emacs --daemon &
 
 # set screen saver time
 xset s 920
