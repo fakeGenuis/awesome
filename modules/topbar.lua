@@ -116,9 +116,9 @@ local myinfoblock = mywidgets.block({
 
 screen.connect_signal("request::desktop_decoration", function(s)
     -- Each screen has its own tag table.
-    local names = { "1", "2", "3", "4", "5", "6", "7" }
+    local names = { "1", "2", "3", "4"}
     local l = awful.layout.suit
-    local layouts = l.max
+    local layouts = l.floating
     -- local layouts = {
     --     l.max, l.max, l.tile, l.floating, l.max, l.tile, l.floating
     -- }
