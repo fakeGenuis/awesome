@@ -23,7 +23,14 @@ function set_wallpaper {
 }
 
 function get_slideshow_dir {
-    realpath $CACHE_DIR/slideshow
+    file="$(realpath $CACHE_DIR/slideshow)"
+    if [ -d "$file" ]; then
+        echo "$file"
+    # a file server as symbol link
+    # so that slideshow work through nextcloud sync
+    elif [ -f "$file" ]; then
+        echo "$(dirname "$file")"/"$(head -n 1 "$file")"
+    fi
 }
 
 function set_slideshow_dir {
