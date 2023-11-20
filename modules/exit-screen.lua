@@ -45,9 +45,8 @@ local actions = { -- index table to preserve order
 
 local profile_action = {
     name      = os.getenv("USER"),
-    icon_name = os.getenv("HOME") .. "/.face"
+    icon_name = string.format("/var/lib/AccountsService/icons/%s.png", os.getenv("USER"))
 }
-
 
 local existed = {}
 -- update actions by add act.key and act.name
