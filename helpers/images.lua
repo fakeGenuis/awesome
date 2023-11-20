@@ -11,8 +11,7 @@ local images = {}
 function images.get_icon(icon_name, args)
     local args = args or {}
     local prefix = args.prefix or ""
-    local icon_path = lookup_icon(icon_name) or lookup_icon(prefix .. icon_name)
-    if icon_path then return icon_path end
+    local icon_path
 
     for _, ext in pairs({ "png", "jpg", "svg" }) do
         icon_path = string.format('%sicons/%s.%s',
@@ -21,6 +20,9 @@ function images.get_icon(icon_name, args)
             return icon_path
         end
     end
+
+    icon_path = lookup_icon(icon_name) or lookup_icon(prefix .. icon_name)
+    if icon_path then return icon_path end
 
     return icon_name
 end
