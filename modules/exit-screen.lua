@@ -14,8 +14,12 @@ local actions = { -- index table to preserve order
         command   = awesome.restart
     }, {
         name      = "suspend",
-        icon_name = "suspend",
+        icon_name = "sleep",
         command   = "systemctl suspend"
+    }, {
+        name      = "hibernation",
+        icon_name = "hibernation",
+        command   = "systemctl hibernate"
     }, {
         name      = "reboot",
         icon_name = "reboot",

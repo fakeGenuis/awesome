@@ -6,3 +6,5 @@
 - clipboard :: <a href="https://www.flaticon.com/free-icons/files-and-folders" title="files and folders icons">Files and folders icons created by Smashicons - Flaticon</a>
 - gallery :: <a href="https://www.flaticon.com/free-icons/gallery" title="gallery icons">Gallery icons created by Freepik - Flaticon</a>
 - sweeping :: <a href="https://www.flaticon.com/free-icons/broom" title="broom icons">Broom icons created by Freepik - Flaticon</a>
+- sleep :: <a href="https://www.flaticon.com/free-icons/sleep" title="sleep icons">Sleep icons created by Freepik - Flaticon</a>
+- hibernation :: <a href="https://www.flaticon.com/free-icons/hibernation" title="hibernation icons">Hibernation icons created by Freepik - Flaticon</a>
