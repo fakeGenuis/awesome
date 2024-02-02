@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if ! ping -c 2 bing.com &> /dev/null; then
+if ! curl --max-time 5 google.com &> /dev/null; then
    printf "No network connection!"
    exit 0
 fi
