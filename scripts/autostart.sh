@@ -8,6 +8,7 @@ function run {
 
 run xsettingsd -c ~/.cache/xsettingsd/xsettingsd.conf
 run /usr/bin/lxqt-policykit-agent
+run udiskie -ans
 run blueman-applet
 run qv2ray
 # if one use =via= ...
