@@ -26,6 +26,7 @@ local pipewire    = require("widgets.pipewire")
 -- Create a textclock widget
 local mytextclock = mywidgets.block {
     refresh = 1,
+    font = beautiful.mono_font,
     format = "%H:%M:%S",
     widget = wibox.widget.textclock
 }
