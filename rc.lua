@@ -49,15 +49,18 @@ awful.spawn.with_shell(SCRIPTS_DIR .. "wallpaper.sh -r")
 --     gears.wallpaper.maximized(beautiful.wallpaper, s, true)
 -- end
 
+local function gio_launch(desktop)
+    return string.format("gio launch %s/.local/share/applications/%s.desktop", os.getenv("HOME"), desktop)
+end
+
 -- define default apps (global variable so other modules can access it)
 APPS = {
-    terminal =
-    "emacsclient -e \"(+vterm/here t)\" -nc",
+    terminal = gio_launch("vterm"),
     editor = os.getenv("VISUAL") or os.getenv("EDITOR"),
-    emacs_everywhere = "emacsclient --eval \"(emacs-everywhere)\"",
+    emacs_everywhere = "emacsclient -s utility --eval \"(emacs-everywhere)\"",
     launcher = "rofi -show combi",
     browser = "librewolf",
-    filebrowser = "emacsclient -nc -e \"(dirvish)\"",
+    filebrowser = gio_launch("dirvish"),
     theme_selector = SCRIPTS_DIR .. "theme-selector.sh"
 }
 -- }}}
