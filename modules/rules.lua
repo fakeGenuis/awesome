@@ -17,7 +17,7 @@ ruled.client.connect_signal("request::rules", function(c)
             raise = true,
             screen = awful.screen.preferred,
             -- shape = mywidgets.shape,
-            placement = awful.placement.centered + awful.placement.no_overlap +
+            placement = awful.placement.centered +
                 awful.placement.no_offscreen,
             titlebars_enabled = false
         }
@@ -29,13 +29,13 @@ ruled.client.connect_signal("request::rules", function(c)
         rule_any = {
             instance = {},
             type = { "dialog", "Dialog" },
-            class = { "Blueman-manager", "TelegramDesktop",
+            class = { "Blueman-manager", "TelegramDesktop", "galaxybudsclient",
                 "com.xunlei.download", "scrcpy", "r3play" },
             -- Note that the name property shown in xprop might be set slightly after creation of the client
             -- and the name shown there might not match defined rules here.
             name = { "OSD", "Preferences" },
             role = {
-                "pop-up"         -- e.g. Google Chrome's (detached) Developer Tools.
+                "pop-up" -- e.g. Google Chrome's (detached) Developer Tools.
             }
         },
         properties = { floating = true, placement = awful.placement.centered }

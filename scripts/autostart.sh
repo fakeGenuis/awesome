@@ -14,7 +14,7 @@ run qv2ray
 # if one use =via= ...
 run xcape -e "Control_L=Escape"
 
-fcitx5 -rd &>/dev/null
+pidof fcitx5 || fcitx5 -rd &>/dev/null
 pidof picom || picom -b
 pidof nextcloud || nextcloud &
 pidof redshift || redshift &
