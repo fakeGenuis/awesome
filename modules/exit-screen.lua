@@ -49,7 +49,7 @@ local actions = { -- index table to preserve order
 
 local profile_action = {
     name      = os.getenv("USER"),
-    icon_name = string.format("/var/lib/AccountsService/icons/%s.png", os.getenv("USER"))
+    icon_name = string.format("/var/lib/AccountsService/icons/%s.face.icon", os.getenv("USER"))
 }
 
 local existed = {}
