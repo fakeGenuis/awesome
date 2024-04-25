@@ -19,7 +19,7 @@ function get_prev {
 
 function set_wallpaper {
     ln -sf "$1" $CACHE_DIR/current
-    DISPLAY=:0 feh --bg-fill "$1"
+    feh --bg-fill "$1"
 }
 
 function get_slideshow_dir {
