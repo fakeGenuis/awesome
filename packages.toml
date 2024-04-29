@@ -1,0 +1,40 @@
+enable_default=true
+
+[modules]
+packages=[
+    "betterlockscreen",
+    "feh",
+    "lain-git",
+    "lm_sensors",
+    "luarocks",
+    # "network-manager-applet", # =nm-applet= system tray, also =wpa_supplicant= for wifi
+    "maim",
+    "pipewire-pulse",
+    "rofi",
+    "upower",
+    "xclip"
+]
+
+[theme]
+packages=[
+    "otf-comicshanns-nerd",
+    "ttf-material-design-icons-git",
+    "ttf-sarasa-gothic-sc"
+]
+
+[scripts]
+packages=[
+    "picom",
+    "python-pywal",
+    "redshift",
+    "xcape",
+    "xidlehook",
+    "xsettingsd"
+]
+
+[test]
+packages=[
+    # "awesome-bling-git",
+    # "awesome-revelation-git",
+    "lua-inspect"
+]
