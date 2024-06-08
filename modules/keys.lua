@@ -287,6 +287,19 @@ keys.globalkeys = gears.table.join(-- =========================================
         { description = "focus previous tag by index", group = "tag" }),
     awful.key({ modkey }, "l", function(s) awful.tag.viewnext(s) end,
         { description = "focus next tag by index", group = "tag" }),
+    awful.key({ modkey }, "=", function()
+        local tags = awful.screen.focused().tags
+        local tag_name = string.format('%d', #tags + 1)
+        awful.tag.add(tag_name, {
+            screen = awful.screen.focused(),
+            layout = awful.layout.suit.floating
+        }):view_only()
+    end, { description = "add new tag", group = "tag" }),
+    awful.key({ modkey, "Shift" }, "=", function()
+        local t = awful.screen.focused().selected_tag
+        if not t then return end
+        t:delete()
+    end, { description = "delete current tag", group = "tag" }),
     awful.key {
         modifiers = { modkey },
         keygroup = "numrow",
