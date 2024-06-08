@@ -159,9 +159,9 @@ screen.connect_signal("request::desktop_decoration", function(s)
         buttons = {
             awful.button({}, 1, function(t) t:view_only() end),
             awful.button({}, 3, awful.tag.viewtoggle),
-            awful.button({ modkey }, 1, function(t)
+            awful.button({ "Mod4" }, 1, function(t)
                 if client.focus then client.focus:move_to_tag(t) end
-            end), awful.button({ modkey }, 3, function(t)
+            end), awful.button({ "Mod4" }, 3, function(t)
             if client.focus then client.focus:toggle_tag(t) end
         end),
             awful.button({}, 4, function(t)
