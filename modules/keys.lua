@@ -151,6 +151,9 @@ keys.globalkeys = gears.table.join(-- =========================================
         { description = "open browser", group = "launcher" }),
     awful.key({ modkey }, "s", function() awful.spawn(APPS.theme_selector) end,
         { description = "switch color themes from <u>wal</u>", group = "awesome" }),
+    awful.key({ modkey}, "c",
+        function() if client.focus then awful.placement.centered(client.focus) end end,
+        { description = "center current windows", group = "awesome" }),
     --   awful.key({ modkey }, "p",
     --      function()
     --         menubar.show()
