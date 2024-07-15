@@ -1,23 +1,25 @@
 #!/usr/bin/env bash
 
 function run {
-  if ! pgrep -f "$1" && which "$1"; then
+  if ! pidof "$1" && which "$1" &> /dev/null; then
     "$@" &
   fi
 }
 
 run xsettingsd -c ~/.cache/xsettingsd/xsettingsd.conf
 run /usr/bin/lxqt-policykit-agent
-run udiskie -ans
-run blueman-applet
-run qv2ray
+run redshift
+run picom -b
 # if one use =via= ...
 run xcape -e "Control_L=Escape"
 
-pidof fcitx5 || fcitx5 -rd &>/dev/null
-pidof picom || picom -b
-pidof nextcloud || nextcloud &
-pidof redshift || redshift &
+# system tray related
+run udiskie -ans
+run blueman-applet
+run qv2ray
+run barrier
+run nextcloud
+run fcitx5 -rd &>/dev/null
 
 # set screen saver time
 xset s 920
