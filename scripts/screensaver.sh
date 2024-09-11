@@ -21,11 +21,10 @@ function main {
       ;;
     lock )
       xrandr --output "$_OUT" --brightness 1
-      pkill -9 picom
+      # `betterlockscreen`'s option `--off 5` not work if once you cancel that off?!!
+      sleep 7 && xset dpms force off &
       betterlockscreen -l
       ;;
-    unlock )
-      run picom -b
   esac
 }
 

@@ -38,7 +38,7 @@ run xidlehook \
   `# Undim & lock after 10 more seconds` \
   --timer 10 \
   "$SCRIPT_DIR"'/screensaver.sh lock' \
-  "$SCRIPT_DIR"'/screensaver.sh unlock' \
+  "" \
   `# Finally, suspend an hour after it locks`
 #   --timer 3600 \
 #     'systemctl suspend' \
