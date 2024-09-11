@@ -6,6 +6,9 @@ function run {
   fi
 }
 
+# set current screen out
+_OUT=$(xrandr | grep " connected" | cut -d' ' -f1 | head -1)
+
 function main {
   case "$1" in
     dim )

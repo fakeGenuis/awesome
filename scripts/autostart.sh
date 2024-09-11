@@ -23,9 +23,6 @@ run fcitx5 -rd &>/dev/null
 # set screen off time
 xset s 920
 
-# set current screen out
-export _OUT=$(xrandr | grep " connected" | cut -d' ' -f1 | head -1)
-
 # Run xidlehook
 run xidlehook \
   --detect-sleep \
