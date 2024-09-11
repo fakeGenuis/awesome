@@ -39,12 +39,15 @@ function set_slideshow_dir {
     ln -sv "$1" $CACHE_DIR/slideshow
 }
 
-# ./wallpaper.sh -l $(./wallpaper.sh -c) $(basename $(dirname $(./wallpaper.sh -c)))
+function filename_with_source_dir {
+    name="$(basename "$1")"
+    dir="$(dirname "$1")"
+    echo "${dir##*/}-$name"
+}
+
+# ./wallpaper.sh -l $(./wallpaper.sh -c)
 function like {
-    target="$(basename "$1")"
-    # if wallpaper from different slideshow directory has same name,
-    # but distinct from file already added to favorite directory
-    [ -n "$2" ] && target="$2-$target"
+    target="$(filename_with_source_dir "$1")"
     if [ -f $FAVORITE_DIR/"$target" ]; then
         echo "file already exist"
         exit 15
@@ -53,8 +56,7 @@ function like {
 }
 
 function isliked {
-    target="$(basename "$1")"
-    [ -n "$2" ] && target="$2-$target"
+    target="$(filename_with_source_dir "$1")"
     [ -f $FAVORITE_DIR/"$target" ] && echo yes || echo no
 }
 
@@ -70,15 +72,13 @@ function next {
 }
 
 function print_help {
-    printf "Usage: wallpaper [OPTIONS] IMAGE/IMAGE_DIR PREFIX\n\n"
+    printf "Usage: wallpaper [OPTIONS] IMAGE/IMAGE_DIR\n\n"
     printf "Options:\n"
     printf "  -c                get current wallpaper\n"
     printf "  -d                get current slideshow directory\n"
     printf "  -h                print this message\n"
     printf "  -i                is IMAGE in favorite\n"
-    printf "                        if PREFIX not empty, add before filename\n"
     printf "  -l                copy IMAGE to favorite\n"
-    printf "                        if PREFIX not empty, add before filename\n"
     printf "  -n                slideshow next wallpaper\n"
     printf "  -p                get previous wallpaper\n"
     printf "  -r                restore current wallpaper\n"
@@ -87,14 +87,14 @@ function print_help {
 }
 
 case "$1" in
-    -c) get_cur ;;
-    -p) get_prev ;;
-    -s) set_wallpaper "$2" ;;
-    -r) set_wallpaper "$(get_cur)" ;;
-    -d) get_slideshow_dir ;;
-    -w) set_slideshow_dir "$2" ;;
-    -l) like "$2" "$3" ;;
-    -i) isliked "$2" "$3" ;;
-    -n) next ;;
-    -h) print_help ;;
+-c) get_cur ;;
+-p) get_prev ;;
+-s) set_wallpaper "$2" ;;
+-r) set_wallpaper "$(get_cur)" ;;
+-d) get_slideshow_dir ;;
+-w) set_slideshow_dir "$2" ;;
+-l) like "$2" ;;
+-i) isliked "$2" ;;
+-n) next ;;
+-h) print_help ;;
 esac
