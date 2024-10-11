@@ -41,7 +41,7 @@ local actions    = {
         {
             name = "attach",
             icon_name = "pin",
-            argu = " | feh --no-screen-clip -"
+            argu = " | feh --no-screen-clip --class=attached_window -"
         }, {
         name = "file",
         icon_name = "gallery",

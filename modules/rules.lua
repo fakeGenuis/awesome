@@ -42,12 +42,13 @@ ruled.client.connect_signal("request::rules", function(c)
     }
 
     ruled.client.append_rule {
-        id = "screen capture",
-        rule = { class = "feh", name = "stdin" },
+        id = "attached",
+        rule = { class = "attached_window" },
         properties = {
             floating = true,
             placement = awful.placement.under_mouse,
             skip_taskbar = true,
+            sticky = true,
             ontop = true
         }
     }
