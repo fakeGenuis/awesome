@@ -31,7 +31,7 @@ local actions = { -- index table to preserve order
             -- stop key grabber first for betterlockscreen (i3lock) to work
             -- otherwise: `i3lock: Cannot grab pointer/keyboard`
             self:stop()
-            awful.spawn("betterlockscreen -l")
+            awful.spawn(APPS.lock_screen)
         end,
     }, {
         name      = "logout",

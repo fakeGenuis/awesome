@@ -61,7 +61,8 @@ APPS = {
     launcher = "rofi -show combi",
     browser = "librewolf",
     filebrowser = gio_launch("dirvish"),
-    theme_selector = SCRIPTS_DIR .. "theme-selector.sh"
+    theme_selector = SCRIPTS_DIR .. "theme-selector.sh",
+    lock_screen = SCRIPTS_DIR .. "screensaver.sh lock"
 }
 -- }}}
 
