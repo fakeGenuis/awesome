@@ -2,10 +2,13 @@ local helpers   = require("lain.helpers")
 local shell     = require("awful.util").shell
 local wibox     = require("wibox")
 local beautiful = require("beautiful")
+local gears = require("gears")
+local awful = require("awful")
 local string    = string
 
 -- pipewire volume
 -- lain.widget.pipewire
+-- libpulse or pipewire-pulse
 
 local function factory(args)
     args = args or {}
@@ -17,14 +20,17 @@ local function factory(args)
     pipewire.devicetype = args.devicetype or "sink"
     VOLUME_NOW = {}
 
-    -- pipewire.widget:buttons(gears.table.join(
-    --     awful.button({}, 4, function() -- scroll up
-    --         awful.spawn("pactl set-sink-volume @DEFAULT_SINK@ +3%", false)
-    --     end),
-    --     awful.button({}, 5, function() -- scroll down
-    --         awful.spawn("pactl set-sink-volume @DEFAULT_SINK@ -3%", false)
-    --     end))
-    -- )
+    pipewire.widget:buttons(gears.table.join(
+        awful.button({}, 2, function() -- middle click
+            awful.spawn("pactl set-sink-mute @DEFAULT_SINK@ toggle", false)
+        end),
+        awful.button({}, 4, function() -- scroll up
+            awful.spawn("pactl set-sink-volume @DEFAULT_SINK@ +3%", false)
+        end),
+        awful.button({}, 5, function() -- scroll down
+            awful.spawn("pactl set-sink-volume @DEFAULT_SINK@ -3%", false)
+        end))
+    )
 
     function pipewire.update()
         helpers.async({ shell, "-c",
