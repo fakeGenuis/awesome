@@ -404,16 +404,16 @@ keys.clientkeys = gears.table.join(-- Focus client by direction (jk keys)
         c:raise()
     end, { description = "(un)maximize", group = "client" }), -- client resizing
     awful.key({ modkey, "Control" }, "j",
-        function(c) resize_client(client.focus, "up") end,
+        function(_) resize_client(client.focus, "up") end,
         { description = "resize up", group = "client" }),
     awful.key({ modkey, "Control" }, "k",
-        function(c) resize_client(client.focus, "down") end,
+        function(_) resize_client(client.focus, "down") end,
         { description = "resize down", group = "client" }),
     awful.key({ modkey, "Control" }, "h",
-        function(c) resize_client(client.focus, "left") end,
+        function(_) resize_client(client.focus, "left") end,
         { description = "resize left", group = "client" }),
     awful.key({ modkey, "Control" }, "l",
-        function(c) resize_client(client.focus, "right") end,
+        function(_) resize_client(client.focus, "right") end,
         { description = "resize right", group = "client" }),
 
     -- Number of master clients

@@ -1,14 +1,15 @@
 #!/usr/bin/env bash
 
 # https://stackoverflow.com/questions/59895/how-do-i-get-the-directory-where-a-bash-script-is-located-from-within-the-script
-SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 
 source "$SCRIPT_DIR"/screensaver.sh
 
 run xsettingsd -c ~/.cache/xsettingsd/xsettingsd.conf
-run /usr/bin/lxqt-policykit-agent
+run lxqt-policykit-agent
 run redshift
 run picom -b
+
 # if one use =via= ...
 run xcape -e "Control_L=Escape"
 

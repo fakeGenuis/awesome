@@ -53,20 +53,6 @@ ruled.client.connect_signal("request::rules", function(c)
         }
     }
 
-    ruled.client.append_rule {
-        id = "navigator",
-        rule_any = { class = { "Navigator", "librewolf" } },
-        properties = {
-            titlebars_enabled = false,
-            placement = awful.placement.centered
-            -- width = math.ceil(geo.width / 3),
-            -- height = math.ceil(geo.height / 8)
-        }
-        -- callback = function( c )
-        --   c:geometry( { width = math.ceil(geo.width/3) , height = math.ceil(geo.height/8) } )
-        --            end
-    }
-
     -- can be memory comsume
     -- TODO change following to properties and change by connect signal
     local fx, fy, fwidth, fheight = mywidgets.geometry(0.3, "bottom_left")
