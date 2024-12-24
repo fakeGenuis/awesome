@@ -17,14 +17,13 @@ run xcape -e "Control_L=Escape"
 run udiskie -ans
 run blueman-applet
 run qv2ray
-run barrier
+run deskflow
 run nextcloud
 run fcitx5 -rd &>/dev/null
 
 # set screen off time
 xset s 920
 
-# Run xidlehook
 run xidlehook \
   --detect-sleep \
   `# Don't lock when there's a fullscreen application` \
