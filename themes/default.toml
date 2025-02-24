@@ -13,7 +13,7 @@ font_alt                    = "ComicShannsMono Nerd Font 13"
 bold_font                   = "Sarasa Gothic SC Semi-Bold 14"
 light_font                  = "Sarasa Gothic SC 12"
 icon_font                   = "Material Design Icons 14"
-mono_font                   = "Maple NF 14"
+mono_font                   = "Maple6 NF 14"
 
 [distances]
 # theme[key]                = dpi(value)
