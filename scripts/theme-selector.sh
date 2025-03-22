@@ -2,14 +2,21 @@
 # This script is written reference to Dave Davenport's =rofi-theme-selecto=
 # <qball@gmpclient.org>
 
+# https://stackoverflow.com/questions/4774054/reliable-way-for-a-bash-script-to-get-the-full-path-to-itself/4774063
+SCRIPTPATH="$(
+    cd "$(dirname "$0")" >/dev/null 2>&1 || exit
+    pwd -P
+)"
+
 # GTK_DARK="Orchis-Pink-Dark-Compact"
 # GTK_LIGHT="Orchis-Pink-Light-Compact"
-QT_DARK="Orchis-dark"
+QT_DARK="OrchisDark"
 QT_LIGHT="Orchis"
 
 get_themes() {
     CUR_CATE=""
 
+    echo -e "[Dark] - wallpaper\n[Light] - wallpaper"
     # https://superuser.com/a/284192
     wal --theme | while read -r line; do
         if
@@ -20,7 +27,7 @@ get_themes() {
             # https://stackoverflow.com/a/18000433
             CUR_CATE="$(echo "$line" | cut -d":" -f1 | sed -r 's/\x1B\[([0-9]{1,3}(;[0-9]{1,2})?)?[mGK]//g')"
         else
-            echo -e "[$CUR_CATE]" "$line" # "\0icon\x1ffile"
+            echo -e "[${CUR_CATE//' Themes'/}]" "$line" # "\0icon\x1ffile"
         fi
     done
 }
@@ -42,27 +49,45 @@ fi
 WAL_FLAGS=(-n -e)
 SR=(Light Dark)
 QT_THEME="${QT_DARK}"
+
 if echo "${theme}" | grep "[Ll]ight" >/dev/null; then
     WAL_FLAGS+=(-l)
     SR=(Dark Light)
     QT_THEME="${QT_LIGHT}"
 fi
 
-theme=$(echo "${theme}" | cut -d'-' -f2- | cut -c2-)
-echo -n "${SR[1]} ${theme}" >~/.cache/wal/current_theme
+gen_theme_from_wal() {
+    cur_wall="$(${SCRIPTPATH}/wallpaper.sh -c)"
+    wal -i "$cur_wall" "${WAL_FLAGS[@]}"
+    echo -n "${SR[1]} ${cur_wall}" >~/.cache/wal/current_theme
+}
+
+set_theme() {
+    theme="$1"
+    theme=$(echo "${theme}" | awk '{print $3}')
+    echo -n "${SR[1]} ${theme}" >~/.cache/wal/current_theme
+
+    wal --theme "$theme" "${WAL_FLAGS[@]}"
+}
+
+if [[ "$theme" == *"wallpaper" ]]; then
+    gen_theme_from_wal
+else
+    set_theme "$theme"
+fi
 
 # update all colors
-wal --theme "$theme" "${WAL_FLAGS[@]}"
 # firefox based browser
 pywalfox update
 # emacs
 emacsclient -e "(load-theme 'ewal-doom-one t)"
+emacsclient -s utility -e "(load-theme 'ewal-doom-one t)"
 # gtk (only dark/light switch)
 sed -i "s/${SR[0]}/${SR[1]}/g;s/${SR[0],,}/${SR[1],,}/g" ~/.cache/xsettingsd/xsettingsd.conf
 # TODO change gtk color theme use =oomox=
 # /opt/oomox/plugins/theme_oomox/change_color.sh -o oomox -d true -m gtk320 /opt/oomox/scripted_colors/xresources/xresources
 killall -HUP xsettingsd
-# qt (use kvantum theme, only dark/light switch)
+# qt (use kvantum theme, only dark/light switch), app effect after restart 😭️
 kvantummanager --set "${QT_THEME}"
 # awesome wm
 awesome-client "awesome.restart()"

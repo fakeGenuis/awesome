@@ -130,6 +130,7 @@ CUR_THEME = "default"
 local wal_file = io.open(os.getenv("HOME") .. "/.cache/wal/current_theme", "rb")
 if wal_file ~= nil then
     CUR_THEME = wal_file:read "a"
+    CUR_THEME = CUR_THEME:match(".*/([^/]+/[^/]+)$") or CUR_THEME
 end
 
 naughty.notification {
