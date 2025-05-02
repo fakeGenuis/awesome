@@ -107,6 +107,30 @@ end
 -- raise focused client
 local function raise_client() if client.focus then client.focus:raise() end end
 
+-- Toggle function
+local function toggle_gapped_maximize(c)
+  -- Check if already maximized (or has stored geometry)
+  if c._old_geometry then
+    -- Restore old geometry and floating state
+    c:geometry(c._old_geometry)
+    -- Clear stored values
+    c._old_geometry = nil
+  else
+    -- Store current geometry and floating state
+    c._old_geometry = c:geometry()
+
+    -- Apply gapped maximized geometry
+    local gap = beautiful.useless_gap or 0
+    local workarea = c.screen.workarea
+    c:geometry({
+      x = workarea.x + 2*gap,
+      y = workarea.y + 2*gap,
+      width = workarea.width - 4 * gap,
+      height = workarea.height - 4 * gap
+    })
+  end
+end
+
 -- ===================================================================
 -- Mouse bindings
 -- ===================================================================
@@ -400,7 +424,8 @@ keys.clientkeys = gears.table.join(-- Focus client by direction (jk keys)
     awful.key({ modkey }, "n", function(c) c.minimized = true end,
         { description = "minimize", group = "client" }), -- Maximize
     awful.key({ modkey }, "m", function(c)
-        c.maximized = not c.maximized
+        -- c.maximized = not c.maximized
+        toggle_gapped_maximize(c)
         c:raise()
     end, { description = "(un)maximize", group = "client" }), -- client resizing
     awful.key({ modkey, "Control" }, "j",
